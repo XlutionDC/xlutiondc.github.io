@@ -281,6 +281,12 @@ input:focus{
 .memory-callout.good{background:var(--mint-soft);border-color:#d4eee3;color:#276c57}
 .memory-callout.focus{background:var(--amber-soft);border-color:#f1dfb9;color:#85601f}
 .skill-tag{display:inline-block;margin-left:6px;padding:3px 7px;border-radius:999px;background:#eef0ff;color:#5a4bc6;font-size:11px;font-weight:800}
+.home-card{margin:18px 0;padding:22px;border-radius:18px;background:linear-gradient(135deg,#f7f5ff,#f1f9ff 55%,#f2fbf7);border:1px solid #e3e3f5}
+.home-card h2{margin:0 0 8px;color:#45418c;font-size:22px}
+.home-card p{margin:0;color:#667087;line-height:1.55}
+.home-tip{margin-top:12px;padding:11px 13px;border-radius:12px;background:#fff;border:1px solid #e5e8f1;color:#687188;font-size:14px}
+.home-start{margin-top:18px}
+.rest-btn{background:#f7f8fb;color:#586176;border:1px solid #dfe4ed}
 @media(max-width:700px){
   .progress-grid{grid-template-columns:1fr}
 }
@@ -299,26 +305,50 @@ input:focus{
 <body>
 <div class="app">
 <h1>Latihan Memori</h1>
-<p class="sub">Setiap ronde memakai jenis cerita berbeda. Banyak detail sengaja mirip atau berubah, dan kamu tidak tahu detail mana yang akan ditanya.</p>
-<div class="stats"><span class="stat" id="playedStat">Selesai: 0</span><span class="stat" id="bestStat">Best: -</span><span class="stat" id="typeStat">Mode: -</span><span class="stat hidden" id="timerStat"></span></div>
-<div class="difficulty">
-<button class="level-btn" id="level-easy" onclick="setDifficulty('easy')">Mudah</button>
-<button class="level-btn" id="level-medium" onclick="setDifficulty('medium')">Sedang</button>
-<button class="level-btn" id="level-hard" onclick="setDifficulty('hard')">Susah</button>
+<p class="sub">Latih perhatian dan ingatan melalui cerita singkat dengan detail yang terus berubah.</p>
+<div class="stats"><span class="stat" id="playedStat">Selesai: 0</span><span class="stat" id="bestStat">Best: -</span><span class="stat" id="typeStat">Mode: Home</span><span class="stat hidden" id="timerStat"></span></div>
+
+<div id="homeSection">
+  <div class="home-card">
+    <h2>Siap latihan?</h2>
+    <p>Pilih tingkat kesulitan, lalu mulai satu ronde saat kamu siap. Tidak ada ronde yang berjalan sebelum kamu menekan tombol mulai.</p>
+    <div class="home-tip">Kamu bisa kembali ke Home kapan saja untuk istirahat. Pada level Susah, kembali ke Home akan langsung menghentikan timer.</div>
+  </div>
+  <div class="difficulty">
+    <button class="level-btn" id="level-easy" onclick="setDifficulty('easy')">Mudah</button>
+    <button class="level-btn" id="level-medium" onclick="setDifficulty('medium')">Sedang</button>
+    <button class="level-btn" id="level-hard" onclick="setDifficulty('hard')">Susah</button>
+  </div>
+  <div class="level-desc" id="levelDesc"></div>
+  <div class="actions home-start">
+    <button class="primary" onclick="beginSession()">Mulai Latihan</button>
+    <button class="secondary" onclick="toggleProgress()">Lihat Progress Saya</button>
+  </div>
+  <div id="progressPanel" class="progress-panel hidden"></div>
 </div>
-<div class="level-desc" id="levelDesc"></div>
-<div class="actions"><button class="secondary" onclick="toggleProgress()">Lihat Progress Saya</button></div>
-<div id="progressPanel" class="progress-panel hidden"></div>
-<div id="storySection">
-<div id="storyMeta" class="meta"></div>
-<div id="story" class="story"></div>
-<div class="actions"><button class="primary" onclick="startQuiz()">Sudah Hafal</button><button class="secondary" onclick="newStory()">Ganti Cerita</button></div>
+
+<div id="storySection" class="hidden">
+  <div id="storyMeta" class="meta"></div>
+  <div id="story" class="story"></div>
+  <div class="actions">
+    <button class="primary" onclick="startQuiz()">Sudah Hafal</button>
+    <button class="secondary" onclick="newStory()">Ganti Cerita</button>
+    <button class="rest-btn" onclick="showHome()">Istirahat / Home</button>
+  </div>
 </div>
+
 <div id="quizSection" class="hidden">
-<div id="questions"></div>
-<div class="actions"><button class="primary" id="checkBtn" onclick="checkAnswers()">Cek Jawaban</button><button class="secondary" id="peekBtn" onclick="showStoryAgain()">Lihat Cerita</button></div>
-<div id="result" class="result hidden"></div>
-<div class="actions"><button id="nextBtn" class="primary hidden" onclick="newStory()">Cerita Baru</button></div>
+  <div id="questions"></div>
+  <div class="actions">
+    <button class="primary" id="checkBtn" onclick="checkAnswers()">Cek Jawaban</button>
+    <button class="secondary" id="peekBtn" onclick="showStoryAgain()">Lihat Cerita</button>
+    <button class="rest-btn" onclick="showHome()">Istirahat / Home</button>
+  </div>
+  <div id="result" class="result hidden"></div>
+  <div class="actions">
+    <button id="nextBtn" class="primary hidden" onclick="newStory()">Cerita Baru</button>
+    <button id="homeAfterBtn" class="secondary hidden" onclick="showHome()">Selesai & Kembali Home</button>
+  </div>
 </div>
 </div>
 <script>
@@ -852,7 +882,7 @@ function setDifficulty(x){
  clearStoryTimer();
  difficulty=x;
  localStorage.setItem("memoryDifficulty",x);
- newStory();
+ updateStats();
 }
 function clearStoryTimer(){
  if(storyTimer){clearInterval(storyTimer);storyTimer=null}
@@ -875,17 +905,20 @@ function updateStats(){
  document.getElementById("playedStat").textContent="Selesai: "+completed;
  const b=bestScores[difficulty]||0;
  document.getElementById("bestStat").textContent=b?"Best "+LEVELS[difficulty].label+": "+b+"%":"Best "+LEVELS[difficulty].label+": -";
- document.getElementById("typeStat").textContent="Mode: "+(currentStory?currentStory.type:"-");
+ const homeVisible=!document.getElementById("homeSection").classList.contains("hidden");
+ document.getElementById("typeStat").textContent=homeVisible?"Mode: Home":"Mode: "+(currentStory?currentStory.type:"Latihan");
  updateDifficultyUI();
 }
 function render(){
  peekUsed=false;
+ document.getElementById("homeSection").classList.add("hidden");
  document.getElementById("storyMeta").textContent="Cerita #"+storyNumber+" - "+currentStory.questions.length+" pertanyaan - Level "+LEVELS[difficulty].label;
  document.getElementById("story").textContent=currentStory.story;
  document.getElementById("storySection").classList.remove("hidden");
  document.getElementById("quizSection").classList.add("hidden");
  document.getElementById("result").classList.add("hidden");
  document.getElementById("nextBtn").classList.add("hidden");
+ document.getElementById("homeAfterBtn").classList.add("hidden");
  document.getElementById("checkBtn").disabled=false;
  updateStats();
  startStoryTimer();
@@ -948,6 +981,7 @@ function checkAnswers(){
  const skillMessage=skillGain?'<br><b>Improvement spesifik:</b> '+MEMORY_CATEGORIES[skillGain.cat].label+' naik sekitar '+skillGain.delta+' poin dibanding performa sebelumnya.':'';
  r.innerHTML='<div class="score-big">Skor: '+total+'/'+max+' ('+pct+'%)</div><div class="result-note"><b>'+esc(imp.message)+'</b>'+skillMessage+'<br>'+scoreMsg(pct)+'</div><div>Benar: '+correctCount+' · Hampir benar: '+partialCount+' · Salah: '+wrongCount+'</div>'+details.join("");
  document.getElementById("nextBtn").classList.remove("hidden");
+ document.getElementById("homeAfterBtn").classList.remove("hidden");
  document.getElementById("checkBtn").disabled=true;
  if(!document.getElementById("progressPanel").classList.contains("hidden"))renderProgress();
  r.scrollIntoView({behavior:"smooth",block:"start"});
@@ -960,13 +994,33 @@ function showStoryAgain(){
  p.disabled=true;
  p.textContent="Kesempatan lihat ulang habis";
 }
+function beginSession(){
+ clearStoryTimer();
+ currentStory=generate();
+ render();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
 function newStory(){
  clearStoryTimer();
  currentStory=generate();
  render();
  window.scrollTo({top:0,behavior:"smooth"});
 }
-newStory();
+function showHome(){
+ clearStoryTimer();
+ const timer=document.getElementById("timerStat");
+ timer.classList.add("hidden");
+ currentStory=null;
+ document.getElementById("storySection").classList.add("hidden");
+ document.getElementById("quizSection").classList.add("hidden");
+ document.getElementById("homeSection").classList.remove("hidden");
+ document.getElementById("result").classList.add("hidden");
+ document.getElementById("nextBtn").classList.add("hidden");
+ document.getElementById("homeAfterBtn").classList.add("hidden");
+ updateStats();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+showHome();
 </script>
 </body>
 </html>
