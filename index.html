@@ -415,8 +415,51 @@ function memoryCategory(text){
 }
 function lev(a,b){const m=a.length,n=b.length,d=Array.from({length:m+1},()=>Array(n+1).fill(0));for(let i=0;i<=m;i++)d[i][0]=i;for(let j=0;j<=n;j++)d[0][j]=j;for(let i=1;i<=m;i++)for(let j=1;j<=n;j++){const c=a[i-1]===b[j-1]?0:1;d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+c)}return d[m][n]}
 function typo(a,b){a=norm(a);b=norm(b);if(!a||!b)return false;if(a===b)return true;if(Math.min(a.length,b.length)<=3)return false;const sim=1-lev(a,b)/Math.max(a.length,b.length);return sim>=(Math.max(a.length,b.length)>=12?.82:Math.max(a.length,b.length)>=7?.86:.9)}
-function match(u,list){u=norm(u);return(list||[]).some(v=>{v=norm(v);return u===v||(v.length>=4&&u.includes(v))||typo(u,v)})}
-function grade(u,x){if(!norm(u))return{score:0,label:"Salah"};if(match(u,x.correct))return{score:1,label:"Benar"};if(match(u,x.partial))return{score:.5,label:"Hampir benar"};return{score:0,label:"Salah"}}
+function tokens(s){
+ return norm(s).split(" ").filter(function(t){
+   return t && !["yang","dan","di","ke","dari","buat","untuk","dengan","nya","sebuah","satu"].includes(t);
+ });
+}
+function numericParts(s){
+ return (norm(s).match(/\d+(?:[.,]\d+)?/g)||[]).map(function(x){return x.replace(",",".")});
+}
+function hasNumberConflict(a,b){
+ const na=numericParts(a),nb=numericParts(b);
+ if(!na.length||!nb.length)return false;
+ return na.some(function(x){return !nb.includes(x)})||nb.some(function(x){return !na.includes(x)});
+}
+function tokenOverlap(user,target){
+ const u=tokens(user),t=tokens(target);
+ if(!u.length||!t.length)return {shared:0,userCoverage:0,targetCoverage:0};
+ const shared=t.filter(function(x){return u.includes(x)}).length;
+ return {shared:shared,userCoverage:shared/u.length,targetCoverage:shared/t.length};
+}
+function fullSoftMatch(user,target){
+ const u=norm(user),t=norm(target);
+ if(!u||!t)return false;
+ if(u===t)return true;
+ if(hasNumberConflict(u,t))return false;
+ if(t.length>=4&&u.includes(t))return true;
+ if(typo(u,t))return true;
+ const ov=tokenOverlap(u,t);
+ return ov.shared>=2 && ov.userCoverage>=0.8 && ov.targetCoverage>=0.66;
+}
+function partialSoftMatch(user,target){
+ const u=norm(user),t=norm(target);
+ if(!u||!t||hasNumberConflict(u,t))return false;
+ const ov=tokenOverlap(u,t);
+ if(ov.shared>=1 && ov.userCoverage>=0.8 && ov.targetCoverage>=0.45)return true;
+ return false;
+}
+function match(u,list){return(list||[]).some(function(v){return fullSoftMatch(u,v)})}
+function partialMatch(u,list){return(list||[]).some(function(v){return fullSoftMatch(u,v)||partialSoftMatch(u,v)})}
+function grade(u,x){
+ if(!norm(u))return{score:0,label:"Salah"};
+ if(match(u,x.correct))return{score:1,label:"Benar"};
+ if(partialMatch(u,x.partial))return{score:.5,label:"Hampir benar"};
+ if((x.correct||[]).some(function(v){return partialSoftMatch(u,v)}))return{score:.5,label:"Hampir benar"};
+ return{score:0,label:"Salah"};
+}
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
 function yes(x){return [x,"iya","ya"]}
 function no(x){return [x,"tidak","nggak","enggak"]}
