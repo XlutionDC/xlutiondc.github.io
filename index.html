@@ -359,13 +359,118 @@ function generate(){
  storyNumber++;localStorage.setItem("storyNumber",String(storyNumber));
  return s
 }
-function updateStats(){document.getElementById("playedStat").textContent="Selesai: "+completed;document.getElementById("bestStat").textContent=bestScore?"Best: "+bestScore+"/10":"Best: -";document.getElementById("typeStat").textContent="Mode: "+(currentStory?currentStory.type:"-")}
-function render(){document.getElementById("storyMeta").textContent="Cerita #"+storyNumber+" · 10 pertanyaan acak dari detail cerita";document.getElementById("story").textContent=currentStory.story;document.getElementById("storySection").classList.remove("hidden");document.getElementById("quizSection").classList.add("hidden");document.getElementById("result").classList.add("hidden");document.getElementById("nextBtn").classList.add("hidden");document.getElementById("checkBtn").disabled=false;updateStats()}
-function startQuiz(){document.getElementById("storySection").classList.add("hidden");document.getElementById("quizSection").classList.remove("hidden");const c=document.getElementById("questions");c.innerHTML="";currentStory.questions.forEach((x,i)=>c.innerHTML+='<div class="question"><label><strong>'+(i+1)+'. '+x.q+'</strong></label><input id="q'+i+'" type="text" autocomplete="off"></div>');const f=document.getElementById("q0");if(f)f.focus()}
-function scoreMsg(s){if(s>=9)return"Tajam. Detail pengalih perhatian tidak banyak menjebakmu.";if(s>=7)return"Bagus. Beberapa detail yang berubah masih lolos.";if(s>=5)return"Lumayan. Perhatikan pilihan awal vs pilihan akhir dan siapa melakukan apa.";return"Banyak detail tertukar. Fokus pada perubahan rencana, kepemilikan barang, angka, dan urutan."}
-function checkAnswers(){let total=0,details=[];currentStory.questions.forEach((x,i)=>{const u=document.getElementById("q"+i).value,r=grade(u,x);total+=r.score;details.push('<div class="item"><strong>'+(i+1)+'. '+x.q+'</strong><span class="badge">'+r.label+' — '+r.score+' poin</span><div class="answer-line">Jawaban kamu: <b>'+esc(u||"(kosong)")+'</b></div><div class="answer-line">Jawaban utama: <b>'+esc(x.correct[0])+'</b></div></div>')});completed++;localStorage.setItem("completedMemoryStories",String(completed));if(total>bestScore){bestScore=total;localStorage.setItem("bestMemoryScore",String(bestScore))}updateStats();const r=document.getElementById("result");r.classList.remove("hidden");r.innerHTML='<div class="score-big">Skor: '+total+'/10</div><div class="result-note">'+scoreMsg(total)+'</div><div>Benar = 1 · Hampir benar = 0.5 · Salah = 0</div>'+details.join("");document.getElementById("nextBtn").classList.remove("hidden");document.getElementById("checkBtn").disabled=true;r.scrollIntoView({behavior:"smooth",block:"start"})}
-function showStoryAgain(){alert(currentStory.story)}
-function newStory(){currentStory=generate();render();window.scrollTo({top:0,behavior:"smooth"})}
+const LEVELS={
+ easy:{label:"Mudah",desc:"8 soal. Mayoritas fakta langsung dan satu-detail. Cerita boleh dilihat ulang 1x saat menjawab. Tanpa batas waktu.",time:0,peek:true},
+ medium:{label:"Sedang",desc:"10 soal. Campuran fakta, angka, kepemilikan, urutan, dan beberapa pilihan awal vs akhir. Cerita tidak bisa dilihat ulang.",time:0,peek:false},
+ hard:{label:"Susah",desc:"12 soal. Dominan detail mirip, perubahan rencana, pembatalan, dan relasi antar-fakta. Waktu membaca 45 detik, tanpa lihat ulang.",time:45,peek:false}
+};
+function updateDifficultyUI(){
+ ["easy","medium","hard"].forEach(function(x){document.getElementById("level-"+x).classList.toggle("active",x===difficulty)});
+ document.getElementById("levelDesc").textContent=LEVELS[difficulty].desc;
+ const p=document.getElementById("peekBtn");
+ p.style.display=LEVELS[difficulty].peek?"":"none";
+ p.disabled=false;
+ p.textContent="Lihat Cerita (1x)";
+}
+function setDifficulty(x){
+ clearStoryTimer();
+ difficulty=x;
+ localStorage.setItem("memoryDifficulty",x);
+ newStory();
+}
+function clearStoryTimer(){
+ if(storyTimer){clearInterval(storyTimer);storyTimer=null}
+}
+function startStoryTimer(){
+ const t=document.getElementById("timerStat");
+ clearStoryTimer();
+ if(!LEVELS[difficulty].time){t.classList.add("hidden");return}
+ timerRemaining=LEVELS[difficulty].time;
+ t.classList.remove("hidden");
+ t.classList.add("timer-hot");
+ t.textContent="Waktu baca: "+timerRemaining+"s";
+ storyTimer=setInterval(function(){
+   timerRemaining--;
+   t.textContent="Waktu baca: "+timerRemaining+"s";
+   if(timerRemaining<=0){clearStoryTimer();startQuiz()}
+ },1000);
+}
+function updateStats(){
+ document.getElementById("playedStat").textContent="Selesai: "+completed;
+ const b=bestScores[difficulty]||0;
+ document.getElementById("bestStat").textContent=b?"Best "+LEVELS[difficulty].label+": "+b+"%":"Best "+LEVELS[difficulty].label+": -";
+ document.getElementById("typeStat").textContent="Mode: "+(currentStory?currentStory.type:"-");
+ updateDifficultyUI();
+}
+function render(){
+ peekUsed=false;
+ document.getElementById("storyMeta").textContent="Cerita #"+storyNumber+" - "+currentStory.questions.length+" pertanyaan - Level "+LEVELS[difficulty].label;
+ document.getElementById("story").textContent=currentStory.story;
+ document.getElementById("storySection").classList.remove("hidden");
+ document.getElementById("quizSection").classList.add("hidden");
+ document.getElementById("result").classList.add("hidden");
+ document.getElementById("nextBtn").classList.add("hidden");
+ document.getElementById("checkBtn").disabled=false;
+ updateStats();
+ startStoryTimer();
+}
+function startQuiz(){
+ clearStoryTimer();
+ document.getElementById("timerStat").classList.add("hidden");
+ document.getElementById("storySection").classList.add("hidden");
+ document.getElementById("quizSection").classList.remove("hidden");
+ const c=document.getElementById("questions");
+ c.innerHTML="";
+ currentStory.questions.forEach(function(x,i){
+   c.innerHTML+='<div class="question"><label><strong>'+(i+1)+'. '+x.q+'</strong></label><input id="q'+i+'" type="text" autocomplete="off"></div>';
+ });
+ const first=document.getElementById("q0");
+ if(first)first.focus();
+}
+function scoreMsg(p){
+ if(p>=90)return"Tajam. Detail pengalih perhatian tidak banyak menjebakmu.";
+ if(p>=70)return"Bagus. Beberapa detail yang berubah masih lolos.";
+ if(p>=50)return"Lumayan. Perhatikan pilihan awal vs pilihan akhir, angka, dan siapa memegang apa.";
+ return"Banyak detail tertukar. Fokus pada perubahan rencana, kepemilikan barang, angka, dan urutan.";
+}
+function checkAnswers(){
+ let total=0,details=[];
+ currentStory.questions.forEach(function(x,i){
+   const u=document.getElementById("q"+i).value;
+   const r=grade(u,x);
+   total+=r.score;
+   details.push('<div class="item"><strong>'+(i+1)+'. '+x.q+'</strong><span class="badge">'+r.label+' - '+r.score+' poin</span><div class="answer-line">Jawaban kamu: <b>'+esc(u||"(kosong)")+'</b></div><div class="answer-line">Jawaban utama: <b>'+esc(x.correct[0])+'</b></div></div>');
+ });
+ completed++;
+ localStorage.setItem("completedMemoryStories",String(completed));
+ const max=currentStory.questions.length;
+ const pct=Math.round(total/max*100);
+ if(pct>(bestScores[difficulty]||0)){
+   bestScores[difficulty]=pct;
+   localStorage.setItem("bestMemoryScores",JSON.stringify(bestScores));
+ }
+ updateStats();
+ const r=document.getElementById("result");
+ r.classList.remove("hidden");
+ r.innerHTML='<div class="score-big">Skor: '+total+'/'+max+' ('+pct+'%)</div><div class="result-note">'+scoreMsg(pct)+'</div><div>Benar = 1 - Hampir benar = 0.5 - Salah = 0</div>'+details.join("");
+ document.getElementById("nextBtn").classList.remove("hidden");
+ document.getElementById("checkBtn").disabled=true;
+ r.scrollIntoView({behavior:"smooth",block:"start"});
+}
+function showStoryAgain(){
+ if(!LEVELS[difficulty].peek||peekUsed)return;
+ alert(currentStory.story);
+ peekUsed=true;
+ const p=document.getElementById("peekBtn");
+ p.disabled=true;
+ p.textContent="Kesempatan lihat ulang habis";
+}
+function newStory(){
+ clearStoryTimer();
+ currentStory=generate();
+ render();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
 newStory();
 </script>
 </body>
