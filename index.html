@@ -1,713 +1,339 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Latihan Memori</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      margin: 0;
-      padding: 24px;
-      color: #222;
-    }
-    .app {
-      max-width: 800px;
-      margin: 0 auto;
-      background: white;
-      padding: 24px;
-      border-radius: 16px;
-      box-shadow: 0 8px 30px rgba(0,0,0,.08);
-    }
-    h1 { margin: 0 0 6px; }
-    .sub { margin: 0; color: #666; }
-    .stats {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin: 14px 0;
-      font-size: 13px;
-    }
-    .stat {
-      background: #f2f2f2;
-      border-radius: 999px;
-      padding: 7px 11px;
-    }
-    .meta {
-      font-size: 13px;
-      color: #777;
-      margin: 14px 0 8px;
-    }
-    .story {
-      white-space: pre-line;
-      line-height: 1.75;
-      background: #fafafa;
-      padding: 18px;
-      border-radius: 12px;
-      border: 1px solid #e7e7e7;
-    }
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 16px;
-    }
-    button {
-      border: none;
-      padding: 12px 18px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-    button:disabled { opacity: .55; cursor: default; }
-    .primary { background: #111; color: white; }
-    .secondary { background: #e9e9e9; color: #111; }
-    .question { margin: 16px 0; }
-    input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      margin-top: 6px;
-      font-size: 15px;
-    }
-    .hidden { display: none; }
-    .result {
-      margin-top: 20px;
-      padding: 16px;
-      border-radius: 10px;
-      background: #f0f0f0;
-    }
-    .item {
-      margin: 10px 0;
-      padding: 10px;
-      background: white;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-    }
-    .score-big {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 6px;
-    }
-    .result-note { margin-bottom: 12px; color: #555; }
-    .badge {
-      font-size: 13px;
-      font-weight: bold;
-      padding: 3px 7px;
-      border-radius: 999px;
-      background: #eee;
-      display: inline-block;
-      margin-left: 6px;
-    }
-    .answer-line { margin-top: 4px; font-size: 14px; }
-    @media (max-width: 600px) {
-      body { padding: 12px; }
-      .app { padding: 18px; }
-      button { width: 100%; }
-      .actions { display: grid; grid-template-columns: 1fr; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Latihan Memori</title>
+<style>
+*{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f5f5f5;margin:0;padding:24px;color:#222}.app{max-width:820px;margin:auto;background:#fff;padding:24px;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,.08)}h1{margin:0 0 6px}.sub{margin:0;color:#666;line-height:1.5}.stats{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0;font-size:13px}.stat{background:#f2f2f2;border-radius:999px;padding:7px 11px}.meta{font-size:13px;color:#777;margin:14px 0 8px}.story{white-space:pre-line;line-height:1.78;background:#fafafa;padding:18px;border-radius:12px;border:1px solid #e7e7e7}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}button{border:none;padding:12px 18px;border-radius:10px;cursor:pointer;font-size:16px}button:disabled{opacity:.55;cursor:default}.primary{background:#111;color:#fff}.secondary{background:#e9e9e9;color:#111}.question{margin:16px 0}input{width:100%;padding:12px;border:1px solid #ccc;border-radius:8px;margin-top:6px;font-size:15px}.hidden{display:none}.result{margin-top:20px;padding:16px;border-radius:10px;background:#f0f0f0}.item{margin:10px 0;padding:10px;background:#fff;border-radius:8px;border:1px solid #ddd}.score-big{font-size:24px;font-weight:700;margin-bottom:6px}.result-note{margin-bottom:12px;color:#555}.badge{font-size:13px;font-weight:700;padding:3px 7px;border-radius:999px;background:#eee;display:inline-block;margin-left:6px}.answer-line{margin-top:4px;font-size:14px}@media(max-width:600px){body{padding:12px}.app{padding:18px}button{width:100%}.actions{display:grid;grid-template-columns:1fr}}
+</style>
 </head>
 <body>
-  <div class="app">
-    <h1>Latihan Memori</h1>
-    <p class="sub">Setiap cerita punya detail berbeda. Kamu tidak tahu 10 detail mana yang akan ditanyakan.</p>
-
-    <div class="stats">
-      <span class="stat" id="playedStat">Selesai: 0</span>
-      <span class="stat" id="bestStat">Best: -</span>
-    </div>
-
-    <div id="storySection">
-      <div id="storyMeta" class="meta"></div>
-      <div id="story" class="story"></div>
-      <div class="actions">
-        <button class="primary" onclick="startQuiz()">Sudah Hafal</button>
-        <button class="secondary" onclick="newStory()">Ganti Cerita</button>
-      </div>
-    </div>
-
-    <div id="quizSection" class="hidden">
-      <div id="questions"></div>
-      <div class="actions">
-        <button class="primary" id="checkBtn" onclick="checkAnswers()">Cek Jawaban</button>
-        <button class="secondary" onclick="showStoryAgain()">Lihat Cerita</button>
-      </div>
-      <div id="result" class="result hidden"></div>
-      <div class="actions">
-        <button id="nextBtn" class="primary hidden" onclick="newStory()">Cerita Baru</button>
-      </div>
-    </div>
-  </div>
-
+<div class="app">
+<h1>Latihan Memori</h1>
+<p class="sub">Setiap ronde memakai jenis cerita berbeda. Banyak detail sengaja mirip atau berubah, dan kamu tidak tahu detail mana yang akan ditanya.</p>
+<div class="stats"><span class="stat" id="playedStat">Selesai: 0</span><span class="stat" id="bestStat">Best: -</span><span class="stat" id="typeStat">Mode: -</span></div>
+<div id="storySection">
+<div id="storyMeta" class="meta"></div>
+<div id="story" class="story"></div>
+<div class="actions"><button class="primary" onclick="startQuiz()">Sudah Hafal</button><button class="secondary" onclick="newStory()">Ganti Cerita</button></div>
+</div>
+<div id="quizSection" class="hidden">
+<div id="questions"></div>
+<div class="actions"><button class="primary" id="checkBtn" onclick="checkAnswers()">Cek Jawaban</button><button class="secondary" onclick="showStoryAgain()">Lihat Cerita</button></div>
+<div id="result" class="result hidden"></div>
+<div class="actions"><button id="nextBtn" class="primary hidden" onclick="newStory()">Cerita Baru</button></div>
+</div>
+</div>
 <script>
-const days = ["Senin","Selasa","Rabu","Kamis","Jumat","Sabtu","Minggu"];
+const D={
+places:["Grand Indonesia","Plaza Indonesia","Senayan City","Kota Kasablanka","Central Park","Pondok Indah Mall","Blok M","PIK"],
+spots:["lobby utama","depan lift","depan toko buku","area informasi","depan restoran","pintu timur"],
+transport:["MRT","taksi online","mobil","motor","TransJakarta","ojek online"],
+items:["sepatu","jaket","tas","parfum","buku","dompet","headphone","jam tangan","kacamata","kemeja"],
+colors:["hitam","putih","cokelat","biru tua","abu-abu","merah"],
+foods:["ramen","sushi","bakmi","ayam panggang","nasi goreng","udon","burger","dim sum"],
+drinks:["es kopi susu","matcha latte","lemon tea","air mineral","cokelat dingin","thai tea"],
+people:["adik","kakak","mama","papa","tante","teman kantor"],
+names:["Rina","Dimas","Yosia","Siska","Andi","Maya"],
+returnItems:["charger","payung","buku","earphone","power bank","jaket","flashdisk","kacamata"],
+budgets:["Rp300 ribu","Rp500 ribu","Rp700 ribu","Rp800 ribu","Rp1 juta","Rp1,5 juta"],
+tasks:["ambil paket di kantor","ambil laundry","ambil obat di apotek","transfer uang","antar dokumen","ambil kacamata di optik","mampir ke ATM"],
+after:["ngopi sebentar","cari dessert","mampir ke toko buku","foto di photobox","lihat toko elektronik","beli roti"],
+obligations:["jemput mama","ke rumah nenek","antar adik les","pergi ke gym","potong rambut","ikut rapat online"],
+movies:["film action","film horror","film komedi","film animasi","film thriller"],
+cinemas:["CGV","XXI","Cinepolis"],
+seats:["baris F","baris G","baris H","baris J"],
+terminals:["Terminal 2","Terminal 3"],
+airlines:["Garuda Indonesia","Batik Air","Citilink","AirAsia"],
+cities:["Bandung","Bogor","Puncak","Cirebon","Anyer"],
+parks:["Taman Suropati","Tebet Eco Park","Hutan Kota GBK","Taman Menteng"],
+studyPlaces:["Perpustakaan Jakarta","Perpustakaan Nasional","toko buku besar","kafe dekat kampus"],
+subjects:["statistik","bahasa Inggris","akuntansi","marketing","sejarah"],
+events:["pameran buku","konser kecil","workshop fotografi","bazaar makanan","pameran kartu koleksi"],
+gates:["Gate A","Gate B","Gate C"],
+docs:["proposal","laporan bulanan","kontrak vendor","presentasi penjualan"],
+souvenirs:["brownies","kopi lokal","keripik","batik"],
+rooms:["Meeting Room A","Meeting Room B","ruang kaca","ruang training"],
+floors:["lantai 2","lantai 3","lantai 5","lantai 7"],
+hotels:["Hotel Merdeka","Hotel Panorama","Hotel Santika","Hotel Cendana"],
+plates:["B 1432 KJ","B 8217 TA","B 5064 NQ","B 2719 LX"],
+sizes:["S","M","L","XL"],
+quantities:["2","3","4","5"],
+durations:["30 menit","45 menit","1 jam","90 menit"],
+payments:["tunai","QRIS","kartu debit","transfer bank"]
+};
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+function diff(a,x){const y=a.filter(v=>v!==x);return pick(y.length?y:a)}
+function shuf(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function hour(){return pick([9,10,11,12,13,14,15,16,17,18,19])}
+function htxt(h){return "jam "+(h>12?h-12:h)}
+function hans(h){const x=h>12?h-12:h;return [String(x),"jam "+x,String(h).padStart(2,"0")+":00",String(h).padStart(2,"0")+".00"]}
+function ans(x){return Array.isArray(x)?x:[x]}
+function q(text,correct,partial=[]){return{q:pick(text),correct:ans(correct),partial:ans(partial)}}
+function choose(pool){return shuf(pool).slice(0,10)}
+function norm(s){return String(s||"").toLowerCase().trim().replace(/[^\p{L}\p{N}\s.,:]/gu,"").replace(/\s+/g," ")}
+function lev(a,b){const m=a.length,n=b.length,d=Array.from({length:m+1},()=>Array(n+1).fill(0));for(let i=0;i<=m;i++)d[i][0]=i;for(let j=0;j<=n;j++)d[0][j]=j;for(let i=1;i<=m;i++)for(let j=1;j<=n;j++){const c=a[i-1]===b[j-1]?0:1;d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+c)}return d[m][n]}
+function typo(a,b){a=norm(a);b=norm(b);if(!a||!b)return false;if(a===b)return true;if(Math.min(a.length,b.length)<=3)return false;const sim=1-lev(a,b)/Math.max(a.length,b.length);return sim>=(Math.max(a.length,b.length)>=12?.82:Math.max(a.length,b.length)>=7?.86:.9)}
+function match(u,list){u=norm(u);return(list||[]).some(v=>{v=norm(v);return u===v||(v.length>=4&&u.includes(v))||typo(u,v)})}
+function grade(u,x){if(!norm(u))return{score:0,label:"Salah"};if(match(u,x.correct))return{score:1,label:"Benar"};if(match(u,x.partial))return{score:.5,label:"Hampir benar"};return{score:0,label:"Salah"}}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
+function yes(x){return [x,"iya","ya"]}
+function no(x){return [x,"tidak","nggak","enggak"]}
 
-const places = [
-  {name:"Grand Indonesia", correct:["grand indonesia","gi","mall grand indonesia"], partial:["mall"]},
-  {name:"Plaza Indonesia", correct:["plaza indonesia","pi","mall plaza indonesia"], partial:["mall"]},
-  {name:"Blok M", correct:["blok m"], partial:["blok"]},
-  {name:"Senayan City", correct:["senayan city","sency"], partial:["senayan","mall"]},
-  {name:"Kota Kasablanka", correct:["kota kasablanka","kokas"], partial:["kasablanka","mall"]},
-  {name:"Central Park", correct:["central park","cp"], partial:["mall"]},
-  {name:"PIK", correct:["pik","pantai indah kapuk"], partial:["pantai indah"]},
-  {name:"Kemang", correct:["kemang"], partial:[]},
-  {name:"Sarinah", correct:["sarinah"], partial:[]},
-  {name:"Gandaria City", correct:["gandaria city","gancit"], partial:["gandaria","mall"]},
-  {name:"Pondok Indah Mall", correct:["pondok indah mall","pim"], partial:["pondok indah","mall"]},
-  {name:"Cilandak Town Square", correct:["cilandak town square","citos"], partial:["cilandak","mall"]}
-];
-
-const meetSpots = [
-  {name:"lobby utama", correct:["lobby utama","lobi utama"], partial:["lobby","lobi"]},
-  {name:"depan pintu masuk", correct:["depan pintu masuk","pintu masuk"], partial:["depan"]},
-  {name:"depan lift", correct:["depan lift","lift"], partial:[]},
-  {name:"area informasi", correct:["area informasi","meja informasi","informasi"], partial:["lobby","lobi"]},
-  {name:"depan restoran", correct:["depan restoran","restoran"], partial:[]},
-  {name:"depan toko buku", correct:["depan toko buku","toko buku"], partial:["toko"]}
-];
-
-const transports = [
-  {name:"taksi online", correct:["taksi online","taxi online","grab","gocar"], partial:["taksi","taxi"]},
-  {name:"MRT", correct:["mrt"], partial:["kereta"]},
-  {name:"mobil", correct:["mobil"], partial:[]},
-  {name:"motor", correct:["motor"], partial:[]},
-  {name:"TransJakarta", correct:["transjakarta","busway"], partial:["bus"]},
-  {name:"ojek online", correct:["ojek online","ojol","gojek","grab bike"], partial:["ojek"]}
-];
-
-const preTasks = [
-  {text:"ambil paket di kantor", answer:"ambil paket", correct:["ambil paket","paket"], partial:["kantor"]},
-  {text:"isi bensin", answer:"isi bensin", correct:["isi bensin","mengisi bensin","bensin"], partial:[]},
-  {text:"ambil laundry", answer:"ambil laundry", correct:["ambil laundry","laundry"], partial:[]},
-  {text:"ambil obat di apotek", answer:"ambil obat", correct:["ambil obat","obat","apotek"], partial:[]},
-  {text:"transfer uang ke kakakku", answer:"transfer uang", correct:["transfer uang","transfer","kirim uang"], partial:["kakak"]},
-  {text:"antar dokumen ke kantor", answer:"antar dokumen", correct:["antar dokumen","dokumen"], partial:["kantor"]},
-  {text:"ambil kacamata di optik", answer:"ambil kacamata", correct:["ambil kacamata","kacamata","optik"], partial:[]},
-  {text:"mampir ke ATM", answer:"ke atm", correct:["atm","ke atm","mampir ke atm"], partial:[]}
-];
-
-const shoppingItems = [
-  {item:"sepatu", correct:["sepatu"], partial:["alas kaki"]},
-  {item:"jaket", correct:["jaket"], partial:["baju","pakaian"]},
-  {item:"kemeja", correct:["kemeja"], partial:["baju","pakaian"]},
-  {item:"tas", correct:["tas"], partial:[]},
-  {item:"parfum", correct:["parfum"], partial:["wewangian"]},
-  {item:"buku", correct:["buku"], partial:[]},
-  {item:"dompet", correct:["dompet"], partial:[]},
-  {item:"headphone", correct:["headphone","headset"], partial:["earphone"]},
-  {item:"jam tangan", correct:["jam tangan"], partial:["jam"]},
-  {item:"kacamata", correct:["kacamata"], partial:[]}
-];
-
-const colors = [
-  {name:"hitam", correct:["hitam"], partial:["gelap"]},
-  {name:"putih", correct:["putih"], partial:[]},
-  {name:"cokelat", correct:["cokelat","coklat"], partial:[]},
-  {name:"biru tua", correct:["biru tua","navy"], partial:["biru"]},
-  {name:"abu-abu", correct:["abu abu","abu-abu","grey","gray"], partial:["abu"]},
-  {name:"merah", correct:["merah"], partial:[]}
-];
-
-const reasons = [
-  {text:"buat acara kantor minggu depan", answer:"acara kantor", correct:["acara kantor","kantor"], partial:["acara"]},
-  {text:"buat dipakai liburan bulan depan", answer:"liburan", correct:["liburan","buat liburan"], partial:["bulan depan"]},
-  {text:"karena yang lama sudah rusak", answer:"yang lama rusak", correct:["yang lama rusak","rusak"], partial:["ganti yang lama"]},
-  {text:"buat hadiah ulang tahun", answer:"hadiah ulang tahun", correct:["hadiah ulang tahun","hadiah","ulang tahun"], partial:[]},
-  {text:"buat dipakai ke acara keluarga", answer:"acara keluarga", correct:["acara keluarga","keluarga"], partial:["acara"]}
-];
-
-const foods = [
-  {name:"ramen", correct:["ramen"], partial:["mie","makanan jepang"]},
-  {name:"sushi", correct:["sushi"], partial:["makanan jepang"]},
-  {name:"bakmi", correct:["bakmi","mie"], partial:[]},
-  {name:"ayam panggang", correct:["ayam panggang"], partial:["ayam"]},
-  {name:"nasi goreng", correct:["nasi goreng"], partial:["nasi"]},
-  {name:"udon", correct:["udon"], partial:["mie","makanan jepang"]},
-  {name:"burger", correct:["burger","hamburger"], partial:[]},
-  {name:"dim sum", correct:["dim sum","dimsum"], partial:[]}
-];
-
-const recommenders = [
-  {name:"Rina", correct:["rina"], partial:[]},
-  {name:"Dimas", correct:["dimas"], partial:[]},
-  {name:"Yosia", correct:["yosia"], partial:[]},
-  {name:"Siska", correct:["siska"], partial:[]},
-  {name:"Andi", correct:["andi"], partial:[]},
-  {name:"Maya", correct:["maya"], partial:[]}
-];
-
-const afterActivities = [
-  {text:"ngopi sebentar", answer:"ngopi", correct:["ngopi","minum kopi","kopi"], partial:["cafe","kafe"]},
-  {text:"cari dessert", answer:"cari dessert", correct:["dessert","cari dessert","makanan penutup"], partial:["makanan manis"]},
-  {text:"mampir ke toko buku", answer:"ke toko buku", correct:["toko buku","ke toko buku"], partial:["toko"]},
-  {text:"beli minuman di minimarket", answer:"beli minuman", correct:["beli minuman","minimarket"], partial:["minuman","toko"]},
-  {text:"lihat-lihat toko elektronik", answer:"ke toko elektronik", correct:["toko elektronik","elektronik"], partial:["toko"]},
-  {text:"cari hadiah ulang tahun", answer:"cari hadiah", correct:["cari hadiah","hadiah","hadiah ulang tahun"], partial:["belanja"]},
-  {text:"foto di photobox", answer:"foto di photobox", correct:["photobox","foto di photobox","foto"], partial:[]},
-  {text:"beli roti untuk dibawa pulang", answer:"beli roti", correct:["beli roti","roti"], partial:["makanan"]}
-];
-
-const obligations = [
-  {text:"jemput mama", answer:"jemput mama", correct:["jemput mama","mama","ibu"], partial:["orang tua"]},
-  {text:"ke rumah nenek", answer:"ke rumah nenek", correct:["rumah nenek","nenek"], partial:["keluarga"]},
-  {text:"ketemu kakak", answer:"ketemu kakak", correct:["ketemu kakak","kakak"], partial:["keluarga"]},
-  {text:"antar adik les", answer:"antar adik les", correct:["antar adik","adik les","antar adik les"], partial:["adik"]},
-  {text:"makan malam keluarga", answer:"makan malam keluarga", correct:["makan malam keluarga","keluarga"], partial:["makan malam"]},
-  {text:"pergi ke gym", answer:"ke gym", correct:["gym","gim","ke gym"], partial:["olahraga"]},
-  {text:"potong rambut", answer:"potong rambut", correct:["potong rambut","barbershop","salon"], partial:[]},
-  {text:"ikut rapat online", answer:"rapat online", correct:["rapat online","meeting online","meeting"], partial:["rapat"]}
-];
-
-const returnItems = [
-  {name:"charger", correct:["charger","casan","charger hp"], partial:[]},
-  {name:"payung", correct:["payung"], partial:[]},
-  {name:"buku", correct:["buku"], partial:[]},
-  {name:"earphone", correct:["earphone"], partial:["headset"]},
-  {name:"power bank", correct:["power bank","powerbank"], partial:[]},
-  {name:"jaket", correct:["jaket"], partial:["baju","pakaian"]},
-  {name:"flashdisk", correct:["flashdisk","flash drive","usb"], partial:[]},
-  {name:"kacamata", correct:["kacamata"], partial:[]}
-];
-
-const giftPeople = [
-  {name:"adik", correct:["adik"], partial:["keluarga"]},
-  {name:"kakak", correct:["kakak"], partial:["keluarga"]},
-  {name:"mama", correct:["mama","ibu"], partial:["orang tua"]},
-  {name:"papa", correct:["papa","ayah"], partial:["orang tua"]},
-  {name:"tante", correct:["tante"], partial:["keluarga"]},
-  {name:"teman kantor", correct:["teman kantor","rekan kerja"], partial:["teman"]}
-];
-
-const budgets = [
-  {value:"Rp300 ribu", correct:["300 ribu","rp300 ribu","300000","rp300000"], partial:["300"]},
-  {value:"Rp500 ribu", correct:["500 ribu","rp500 ribu","500000","rp500000"], partial:["500"]},
-  {value:"Rp700 ribu", correct:["700 ribu","rp700 ribu","700000","rp700000"], partial:["700"]},
-  {value:"Rp800 ribu", correct:["800 ribu","rp800 ribu","800000","rp800000"], partial:["800"]},
-  {value:"Rp1 juta", correct:["1 juta","rp1 juta","1000000","rp1000000"], partial:["1"]},
-  {value:"Rp1,5 juta", correct:["1,5 juta","1.5 juta","rp1,5 juta","1500000","rp1500000"], partial:["1,5","1.5"]}
-];
-
-const fallbacks = [
-  {text:"cari di toko lain", answer:"toko lain", correct:["toko lain","cari di toko lain"], partial:["tempat lain"]},
-  {text:"pesan lewat online", answer:"pesan online", correct:["pesan online","beli online","online"], partial:[]},
-  {text:"cari alternatif yang mirip", answer:"alternatif yang mirip", correct:["alternatif","yang mirip","cari alternatif"], partial:["barang lain"]},
-  {text:"balik lagi minggu depan", answer:"balik minggu depan", correct:["minggu depan","balik minggu depan"], partial:["lain hari"]}
-];
-
-let currentStory = null;
-let storyNumber = Number(localStorage.getItem("storyNumber") || 0);
-let completed = Number(localStorage.getItem("completedMemoryStories") || 0);
-let bestScore = Number(localStorage.getItem("bestMemoryScore") || 0);
-let recentSignatures = JSON.parse(localStorage.getItem("recentMemoryStories") || "[]");
-
-function pick(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
+function shopping(){
+ const p1=pick(D.places),p2=diff(D.places,p1),t1=pick(D.transport),t2=diff(D.transport,t1),item=pick(D.items),color=pick(D.colors),budget=pick(D.budgets),food1=pick(D.foods),food2=diff(D.foods,food1),spot=pick(D.spots),task=pick(D.tasks),back=pick(D.returnItems),after=pick(D.after),h=hour();
+ const story='A: “Aku tadinya mau ke '+p1+', tapi '+pick(D.names)+' bilang stok '+item+' lebih lengkap di '+p2+'. Jadi kita ke sana aja.”\n\nB: “Naik '+t1+'?”\n\nA: “Kayaknya jangan. Lebih praktis '+t2+'. Ketemu '+htxt(h)+' di '+spot+'. Sebelumnya aku harus '+task+'.”\n\nB: “Kamu cari '+item+' yang gimana?”\n\nA: “Warna '+color+', budget maksimal '+budget+'. Kalau nggak ada, aku nggak mau ganti warna.”\n\nB: “Makan '+food1+' setelahnya?”\n\nA: “Tadi kepikiran itu, tapi akhirnya '+food2+'. Habis makan aku mau '+after+'. Oh iya, '+back+' kamu juga aku bawa.”';
+ const pool=[
+ q(["Tempat yang akhirnya dipilih apa?","Mereka akhirnya jadi pergi ke mana?"],p2),
+ q(["Tempat yang sempat dipertimbangkan tetapi batal apa?","Rencana lokasi awalnya di mana?"],p1),
+ q(["Transportasi yang akhirnya dipakai apa?","Pilihan kendaraan akhirnya apa?"],t2),
+ q(["Transportasi yang sempat diusulkan apa?","Kendaraan pertama yang dibahas apa?"],t1),
+ q(["Barang yang dicari apa?","A sedang memburu barang apa?"],item),
+ q(["Warna yang tidak mau diganti A apa?","A bersikeras mencari warna apa?"],color),
+ q(["Batas budget A berapa?","Maksimal uang yang mau dikeluarkan berapa?"],budget),
+ q(["Titik ketemu mereka di mana?","Mereka janjian di bagian mana?"],spot),
+ q(["Apa yang harus dibereskan A sebelum bertemu?","Urusan sebelum pertemuan apa?"],task),
+ q(["Makanan yang akhirnya dipilih apa?","Setelah berubah pikiran, mereka makan apa?"],food2),
+ q(["Makanan apa yang tadinya sempat dipikirkan?","Pilihan makan awalnya apa?"],food1),
+ q(["Barang milik B apa yang dibawa A?","Apa yang akan dikembalikan A ke B?"],back),
+ q(["Rencana A setelah makan apa?","Setelah makan A masih mau apa?"],after),
+ q(["Jam pertemuan mereka berapa?","Mereka sepakat ketemu pukul berapa?"],hans(h))
+ ];
+ return {type:"Belanja — perubahan rencana",story,questions:choose(pool)};
 }
 
-function shuffle(arr) {
-  const copy = [...arr];
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
-  }
-  return copy;
+function cinema(){
+ const cinema=pick(D.cinemas),movie1=pick(D.movies),movie2=diff(D.movies,movie1),seat=pick(D.seats),drink=pick(D.drinks),food=pick(D.foods),person=pick(D.names),pay=pick(D.payments),qty=pick(D.quantities),h=hour(),back=pick(D.returnItems),spot=pick(D.spots),transport=pick(D.transport);
+ const story='A: “Tiket '+movie1+' ternyata hampir habis. Jadi aku ganti ke '+movie2+' di '+cinema+'.”\n\nB: “Kursinya masih dapat tengah?”\n\nA: “Dapat '+seat+'. Aku beli '+qty+' tiket karena '+person+' jadi ikut. Ketemu '+htxt(h)+' di '+spot+'.”\n\nB: “Kita naik apa?”\n\nA: “'+transport+'. Tiketnya aku bayar pakai '+pay+'. Jangan beli popcorn dulu, aku mau makan '+food+' sebelum masuk.”\n\nB: “Minumnya?”\n\nA: “Aku pilih '+drink+'. Oh iya, '+back+' kamu ada di tasku.”';
+ const pool=[
+ q(["Film yang akhirnya ditonton apa?","Setelah tiket awal hampir habis, mereka pilih film apa?"],movie2),
+ q(["Film yang batal ditonton apa?","Judul/jenis film pilihan awal apa?"],movie1),
+ q(["Mereka nonton di bioskop apa?","Nama bioskopnya apa?"],cinema),
+ q(["Kursi mereka di baris apa?","Posisi baris kursinya apa?"],seat),
+ q(["Berapa tiket yang dibeli A?","Jumlah tiketnya berapa?"],qty),
+ q(["Siapa yang akhirnya ikut sehingga tiket bertambah?","Orang tambahan yang ikut siapa?"],person),
+ q(["Tiket dibayar dengan apa?","Metode pembayaran tiket apa?"],pay),
+ q(["Apa yang dimakan sebelum film?","Mereka makan apa sebelum masuk studio?"],food),
+ q(["Minuman pilihan A apa?","A memilih minuman apa?"],drink),
+ q(["Barang B yang ada di tas A apa?","Apa barang milik B yang dibawa A?"],back),
+ q(["Mereka berangkat naik apa?","Transportasinya apa?"],transport),
+ q(["Mereka bertemu di bagian mana?","Titik pertemuan mereka apa?"],spot),
+ q(["Jam pertemuannya berapa?","Mereka janjian pukul berapa?"],hans(h))
+ ];
+ return {type:"Bioskop",story,questions:choose(pool)};
 }
 
-function randomMeetingHour() {
-  return pick([10,11,12,13,14,15,16,17,18,19]);
+function airport(){
+ const city=pick(D.cities),air=pick(D.airlines),term1=pick(D.terminals),term2=diff(D.terminals,term1),bag=pick(D.colors),transport=pick(D.transport),person=pick(D.people),souvenir=pick(D.souvenirs),drink=pick(D.drinks),h=pick([5,6,7,8,9]),gate=pick(D.gates),back=pick(D.returnItems),pay=pick(D.payments);
+ const story='A: “Untuk trip ke '+city+', terminalnya ternyata berubah. Email lama bilang '+term1+', tapi update terakhir jadi '+term2+'.”\n\nB: “Maskapainya tetap '+air+' kan?”\n\nA: “Iya. Aku bawa koper '+bag+'. Kita berangkat '+htxt(h)+' pakai '+transport+'. Jangan lupa oleh-oleh '+souvenir+' buat '+person+'.”\n\nB: “Gate-nya?”\n\nA: “'+gate+'. Aku mau beli '+drink+' setelah security. Taksinya nanti aku bayar '+pay+'. Oh iya, '+back+' kamu masih sama aku.”';
+ const pool=[
+ q(["Terminal yang benar setelah update apa?","Mereka harus menuju terminal mana akhirnya?"],term2),
+ q(["Terminal yang tertulis di informasi lama apa?","Sebelum dikoreksi, terminalnya apa?"],term1),
+ q(["Tujuan perjalanan mereka kota apa?","Mereka terbang menuju mana?"],city),
+ q(["Maskapai yang dipakai apa?","Mereka terbang dengan maskapai apa?"],air),
+ q(["Warna koper A apa?","Koper yang dibawa berwarna apa?"],bag),
+ q(["Mereka menuju bandara naik apa?","Transportasi ke bandara apa?"],transport),
+ q(["Oleh-oleh yang dibawa apa?","Barang oleh-oleh pilihan mereka apa?"],souvenir),
+ q(["Oleh-oleh itu untuk siapa?","Siapa penerima oleh-olehnya?"],person),
+ q(["Gate keberangkatannya apa?","Mereka harus ke gate mana?"],gate),
+ q(["Setelah security A mau membeli apa?","Minuman setelah pemeriksaan apa?"],drink),
+ q(["Transportasi akan dibayar dengan apa?","Metode pembayarannya apa?"],pay),
+ q(["Barang B yang masih dipegang A apa?","Apa milik B yang belum dikembalikan?"],back),
+ q(["Mereka berangkat pukul berapa?","Jam berangkat menuju bandara berapa?"],hans(h))
+ ];
+ return {type:"Bandara",story,questions:choose(pool)};
 }
 
-function laterHour(meetHour) {
-  const options = [meetHour + 2, meetHour + 3, meetHour + 4].filter(h => h <= 22);
-  return pick(options.length ? options : [Math.min(meetHour + 2, 22)]);
+function study(){
+ const place=pick(D.studyPlaces),subject1=pick(D.subjects),subject2=diff(D.subjects,subject1),duration=pick(D.durations),drink=pick(D.drinks),name=pick(D.names),item=pick(D.items),color=pick(D.colors),qty=pick(D.quantities),pay=pick(D.payments),task=pick(D.tasks),spot=pick(D.spots),h=hour();
+ const story='A: “Besok kita belajar di '+place+'. Aku tadinya mau fokus '+subject1+', tapi ternyata kuis terdekat '+subject2+', jadi itu dulu.”\n\nB: “Berapa lama?”\n\nA: “'+duration+'. Ketemu '+htxt(h)+' di '+spot+'. Aku harus '+task+' sebelum datang.”\n\nB: “Bawa catatan?”\n\nA: “Iya. '+name+' juga nitip '+qty+' '+item+' warna '+color+'. Nanti aku beli '+drink+' dan bayarnya '+pay+'.”';
+ const pool=[
+ q(["Pelajaran yang akhirnya diprioritaskan apa?","Mereka jadi fokus belajar apa?"],subject2),
+ q(["Pelajaran yang tadinya mau dipelajari dulu apa?","Fokus awalnya apa?"],subject1),
+ q(["Durasi belajar yang direncanakan berapa?","Mereka akan belajar selama apa?"],duration),
+ q(["Tempat belajarnya di mana?","Mereka belajar di lokasi apa?"],place),
+ q(["Siapa yang menitip barang?","Barang tambahan itu titipan siapa?"],name),
+ q(["Berapa jumlah barang titipannya?","Jumlah barang yang dititip berapa?"],qty),
+ q(["Barang titipannya apa?","Apa yang dititip oleh temannya?"],item),
+ q(["Warna barang titipan apa?","Barang titipan diminta warna apa?"],color),
+ q(["Minuman yang akan dibeli apa?","A mau minum apa saat belajar?"],drink),
+ q(["Pembayarannya pakai apa?","A akan membayar dengan metode apa?"],pay),
+ q(["A punya urusan apa sebelum datang?","Sebelum belajar A harus apa?"],task),
+ q(["Titik ketemu mereka di mana?","Mereka sepakat bertemu di bagian mana?"],spot),
+ q(["Jam mulainya berapa?","Mereka mulai bertemu pukul berapa?"],hans(h))
+ ];
+ return {type:"Belajar",story,questions:choose(pool)};
 }
 
-function hourDisplay(hour) {
-  if (hour === 12) return "jam 12";
-  return hour > 12 ? `jam ${hour - 12}` : `jam ${hour}`;
+function eventStory(){
+ const event1=pick(D.events),event2=diff(D.events,event1),gate1=pick(D.gates),gate2=diff(D.gates,gate1),place=pick(D.places),name=pick(D.names),transport=pick(D.transport),drink=pick(D.drinks),item=pick(D.items),budget=pick(D.budgets),h=hour(),back=pick(D.returnItems),pay=pick(D.payments);
+ const story='A: “Aku kira kita masuk ke '+event1+', ternyata tiket kita untuk '+event2+' di '+place+'.”\n\nB: “Gate-nya '+gate1+' kan?”\n\nA: “Bukan, panitia koreksi jadi '+gate2+'. '+name+' nanti nyusul. Kita datang '+htxt(h)+' naik '+transport+'.”\n\nB: “Kamu mau beli apa di sana?”\n\nA: “Kalau ada, '+item+', tapi budget-ku cuma '+budget+'. Aku juga mau '+drink+'. Pembayarannya pakai '+pay+'. Oh iya, '+back+' kamu masih aku bawa.”';
+ const pool=[
+ q(["Acara yang benar di tiket mereka apa?","Mereka sebenarnya datang ke acara apa?"],event2),
+ q(["Acara apa yang sempat dikira sebagai tujuan?","A awalnya mengira tiketnya untuk acara apa?"],event1),
+ q(["Gate yang benar setelah dikoreksi apa?","Mereka akhirnya harus masuk lewat gate mana?"],gate2),
+ q(["Gate yang sempat disebut tetapi salah apa?","Gate awal yang dikira benar apa?"],gate1),
+ q(["Acara berlangsung di mana?","Lokasi acaranya apa?"],place),
+ q(["Siapa yang akan menyusul?","Orang yang datang belakangan siapa?"],name),
+ q(["Mereka datang menggunakan apa?","Transportasi menuju acara apa?"],transport),
+ q(["Barang yang ingin dibeli A apa?","A berharap menemukan barang apa?"],item),
+ q(["Batas budget belanja A berapa?","A membatasi pengeluaran sampai berapa?"],budget),
+ q(["Minuman yang diinginkan A apa?","A mau beli minuman apa?"],drink),
+ q(["Metode pembayaran yang dipakai apa?","A berencana bayar pakai apa?"],pay),
+ q(["Barang B yang masih dibawa A apa?","Apa yang belum dikembalikan A?"],back),
+ q(["Jam mereka datang berapa?","Mereka berencana tiba pukul berapa?"],hans(h))
+ ];
+ return {type:"Event",story,questions:choose(pool)};
 }
 
-function hourAnswers(hour) {
-  const twelve = hour > 12 ? hour - 12 : hour;
-  return [
-    String(twelve),
-    `jam ${twelve}`,
-    `${String(hour).padStart(2,"0")}:00`,
-    `${String(hour).padStart(2,"0")}.00`
-  ];
+function office(){
+ const room1=pick(D.rooms),room2=diff(D.rooms,room1),floor=pick(D.floors),doc=pick(D.docs),name=pick(D.names),duration=pick(D.durations),drink=pick(D.drinks),qty=pick(D.quantities),item=pick(D.items),color=pick(D.colors),task=pick(D.tasks),h=hour(),pay=pick(D.payments);
+ const story='A: “Meeting klien pindah. Awalnya di '+room1+', sekarang jadi '+room2+' di '+floor+'.”\n\nB: “Dokumen utamanya '+doc+'?”\n\nA: “Iya. '+name+' yang presentasi, durasinya kira-kira '+duration+'. Mulai '+htxt(h)+'. Sebelum itu aku harus '+task+'.”\n\nB: “Ada titipan?”\n\nA: “Ada, beli '+qty+' '+item+' warna '+color+' buat meja meeting. Aku juga pesan '+drink+' dan bayarnya '+pay+'.”';
+ const pool=[
+ q(["Ruang meeting yang akhirnya dipakai apa?","Meeting dipindahkan ke ruangan mana?"],room2),
+ q(["Ruang meeting sebelum dipindah apa?","Lokasi ruangan awalnya apa?"],room1),
+ q(["Meeting ada di lantai berapa?","Ruangan akhirnya berada di lantai mana?"],floor),
+ q(["Dokumen utama yang dibahas apa?","Materi dokumen meeting apa?"],doc),
+ q(["Siapa yang presentasi?","Pembicara utamanya siapa?"],name),
+ q(["Durasi meeting diperkirakan berapa?","Meeting berlangsung sekitar berapa lama?"],duration),
+ q(["Apa yang harus dilakukan A sebelum meeting?","Urusan A sebelum rapat apa?"],task),
+ q(["Berapa jumlah barang yang dibeli untuk meja meeting?","Jumlah barang titipan berapa?"],qty),
+ q(["Barang apa yang dibeli untuk meja meeting?","Titipan untuk meja rapat apa?"],item),
+ q(["Barang itu harus warna apa?","Warna barang untuk meja meeting apa?"],color),
+ q(["Minuman yang dipesan apa?","Pesanan minum meeting apa?"],drink),
+ q(["Pembayaran pesanannya menggunakan apa?","Minuman dibayar pakai apa?"],pay),
+ q(["Meeting mulai jam berapa?","Waktu mulai meeting pukul berapa?"],hans(h))
+ ];
+ return {type:"Meeting kantor",story,questions:choose(pool)};
 }
 
-function dayPart(hour) {
-  if (hour < 12) return "pagi";
-  if (hour < 15) return "siang";
-  if (hour < 18) return "sore";
-  return "malam";
+function roadtrip(){
+ const city1=pick(D.cities),city2=diff(D.cities,city1),plate=pick(D.plates),color=pick(D.colors),food=pick(D.foods),souvenir=pick(D.souvenirs),person=pick(D.people),transport="mobil",h=pick([5,6,7,8,9]),task=pick(D.tasks),drink=pick(D.drinks),hotel=pick(D.hotels),pay=pick(D.payments);
+ const story='A: “Road trip-nya berubah. Kita tadinya ke '+city1+', tapi penginapan penuh, jadi pindah ke '+city2+'.”\n\nB: “Pakai mobil yang mana?”\n\nA: “Yang plat '+plate+', warnanya '+color+'. Berangkat '+htxt(h)+'. Sebelum berangkat aku harus '+task+'.”\n\nB: “Hotel sudah ada?”\n\nA: “Sudah, '+hotel+'. Di jalan aku mau makan '+food+' dan beli '+drink+'. Pulangnya bawa '+souvenir+' buat '+person+'. Hotel dibayar '+pay+'.”';
+ const pool=[
+ q(["Tujuan akhir road trip mereka ke mana?","Setelah rencana berubah, mereka pergi ke kota mana?"],city2),
+ q(["Kota yang batal didatangi apa?","Tujuan awal sebelum berubah apa?"],city1),
+ q(["Nomor plat mobilnya apa?","Mobil yang dipakai punya plat apa?"],plate),
+ q(["Warna mobilnya apa?","Mobil road trip berwarna apa?"],color),
+ q(["Mereka menginap di hotel apa?","Nama penginapannya apa?"],hotel),
+ q(["Apa yang harus diselesaikan sebelum berangkat?","Urusan sebelum road trip apa?"],task),
+ q(["Makanan yang ingin dimakan di jalan apa?","Mereka berencana makan apa selama perjalanan?"],food),
+ q(["Minuman untuk perjalanan apa?","A ingin membeli minuman apa?"],drink),
+ q(["Oleh-oleh yang akan dibawa pulang apa?","Mereka akan membeli apa sebagai oleh-oleh?"],souvenir),
+ q(["Oleh-oleh itu untuk siapa?","Siapa yang akan menerima oleh-oleh?"],person),
+ q(["Hotel dibayar dengan apa?","Metode pembayaran penginapan apa?"],pay),
+ q(["Jam keberangkatannya berapa?","Mereka berangkat pukul berapa?"],hans(h))
+ ];
+ return {type:"Road trip",story,questions:choose(pool)};
 }
 
-function question(wordings, correct, partial = []) {
-  return { q: pick(wordings), correct, partial };
+function birthday(){
+ const person=pick(D.people),place1=pick(D.places),place2=diff(D.places,place1),item1=pick(D.items),item2=diff(D.items,item1),color=pick(D.colors),budget=pick(D.budgets),food=pick(D.foods),drink=pick(D.drinks),name=pick(D.names),qty=pick(D.quantities),pay=pick(D.payments),back=pick(D.returnItems);
+ const story='A: “Hadiah ulang tahun buat '+person+' jadi kita ubah. Awalnya mau '+item1+', tapi akhirnya pilih '+item2+' warna '+color+'.”\n\nB: “Belinya di '+place1+'?”\n\nA: “Nggak, pindah ke '+place2+' karena '+name+' bilang pilihannya lebih banyak. Budget '+budget+'. Sekalian pesan '+qty+' porsi '+food+' dan '+drink+'.”\n\nB: “Bayarnya?”\n\nA: “'+pay+'. Jangan lupa, '+back+' kamu juga mau aku balikin.”';
+ const pool=[
+ q(["Hadiah yang akhirnya dipilih apa?","Barang final untuk hadiah apa?"],item2),
+ q(["Hadiah yang awalnya dipertimbangkan apa?","Pilihan hadiah pertama apa?"],item1),
+ q(["Warna hadiah akhirnya apa?","Hadiah final dipilih warna apa?"],color),
+ q(["Hadiah itu untuk siapa?","Siapa penerima hadiahnya?"],person),
+ q(["Toko/lokasi yang akhirnya dipilih di mana?","Mereka akhirnya membeli hadiah di mana?"],place2),
+ q(["Lokasi yang tadinya mau didatangi apa?","Rencana tempat belanja awal apa?"],place1),
+ q(["Siapa yang menyarankan pindah tempat?","Rekomendasi tempat baru datang dari siapa?"],name),
+ q(["Budget hadiahnya berapa?","Batas anggaran hadiah berapa?"],budget),
+ q(["Berapa porsi makanan yang dipesan?","Jumlah porsi pesanan makanan berapa?"],qty),
+ q(["Makanan yang dipesan apa?","Menu makanan untuk perayaan apa?"],food),
+ q(["Minuman yang dipesan apa?","Minuman pendampingnya apa?"],drink),
+ q(["Pembayarannya pakai apa?","Metode bayar pesanan apa?"],pay),
+ q(["Barang B yang akan dikembalikan apa?","Apa milik B yang dibawa A?"],back)
+ ];
+ return {type:"Persiapan ulang tahun",story,questions:choose(pool)};
 }
 
-function makeSignature(parts) {
-  return parts.join("|").toLowerCase();
+function restaurant(){
+ const place=pick(D.places),food1=pick(D.foods),food2=diff(D.foods,food1),drink1=pick(D.drinks),drink2=diff(D.drinks,drink1),qty=pick(D.quantities),name=pick(D.names),spot=pick(D.spots),pay=pick(D.payments),h=hour(),budget=pick(D.budgets),back=pick(D.returnItems),after=pick(D.after);
+ const story='A: “Reservasi makan di '+place+' sudah jadi. Meja untuk '+qty+' orang, ketemu '+htxt(h)+' di '+spot+'.”\n\nB: “Kita pesan '+food1+'?”\n\nA: “Awalnya iya, tapi '+name+' alergi salah satu bahannya, jadi pilih '+food2+'. Minumanku juga berubah dari '+drink1+' ke '+drink2+'.”\n\nB: “Budget?”\n\nA: “Sekitar '+budget+', bayarnya '+pay+'. Setelah makan aku mau '+after+'. '+back+' kamu juga aku bawa.”';
+ const pool=[
+ q(["Berapa orang yang masuk reservasi?","Mejanya dipesan untuk berapa orang?"],qty),
+ q(["Makanan yang akhirnya dipilih apa?","Menu final mereka apa?"],food2),
+ q(["Makanan yang awalnya direncanakan apa?","Menu sebelum diganti apa?"],food1),
+ q(["Siapa yang menyebabkan menu diganti?","Nama orang yang punya masalah dengan menu awal siapa?"],name),
+ q(["Minuman final A apa?","A akhirnya memilih minuman apa?"],drink2),
+ q(["Minuman yang tadinya dipilih A apa?","Pilihan minuman sebelum berubah apa?"],drink1),
+ q(["Budget makan mereka sekitar berapa?","Anggaran makannya berapa?"],budget),
+ q(["Pembayarannya menggunakan apa?","Metode bayar makan apa?"],pay),
+ q(["Setelah makan A ingin apa?","Rencana sesudah makan apa?"],after),
+ q(["Barang B yang dibawa A apa?","Apa yang akan dikembalikan A?"],back),
+ q(["Titik pertemuannya di mana?","Mereka janjian di bagian mana?"],spot),
+ q(["Reservasinya berada di mana?","Lokasi makan mereka apa?"],place),
+ q(["Jam pertemuan mereka berapa?","Mereka janjian pukul berapa?"],hans(h))
+ ];
+ return {type:"Reservasi makan",story,questions:choose(pool)};
 }
 
-function chooseTen(pool) {
-  return shuffle(pool).slice(0, 10);
+function park(){
+ const park=pick(D.parks),transport1=pick(D.transport),transport2=diff(D.transport,transport1),drink=pick(D.drinks),food=pick(D.foods),name=pick(D.names),item=pick(D.items),color=pick(D.colors),duration=pick(D.durations),spot=pick(D.spots),task=pick(D.tasks),back=pick(D.returnItems);
+ const story='A: “Piknik di '+park+' tetap jadi. Tadinya aku mau naik '+transport1+', tapi '+name+' ngajak bareng jadi akhirnya '+transport2+'.”\n\nB: “Kita duduk di mana?”\n\nA: “Ketemu dulu di '+spot+'. Aku bawa '+food+' dan '+drink+'. '+name+' minta aku bawa '+item+' warna '+color+' juga.”\n\nB: “Berapa lama di sana?”\n\nA: “Sekitar '+duration+'. Sebelum datang aku harus '+task+'. Sama '+back+' kamu aku bawa.”';
+ const pool=[
+ q(["Transportasi yang akhirnya dipakai apa?","Setelah diajak bareng, A akhirnya naik apa?"],transport2),
+ q(["Transportasi yang tadinya mau dipakai apa?","Rencana kendaraan awal apa?"],transport1),
+ q(["Siapa yang membuat rencana transportasi berubah?","A berubah kendaraan karena siapa?"],name),
+ q(["Lokasi pikniknya di mana?","Mereka piknik di taman mana?"],park),
+ q(["Titik ketemu mereka di mana?","Sebelum duduk mereka bertemu di mana?"],spot),
+ q(["Makanan yang dibawa apa?","Bekal makanannya apa?"],food),
+ q(["Minuman yang dibawa apa?","Bekal minumannya apa?"],drink),
+ q(["Barang tambahan yang diminta dibawa apa?","Apa barang titipan untuk piknik?"],item),
+ q(["Warna barang titipan apa?","Barang tambahan itu berwarna apa?"],color),
+ q(["Mereka berencana berada di sana berapa lama?","Durasi pikniknya berapa?"],duration),
+ q(["Apa urusan A sebelum datang?","Sebelum piknik A harus apa?"],task),
+ q(["Barang B yang dibawa A apa?","Apa milik B yang ada pada A?"],back)
+ ];
+ return {type:"Piknik",story,questions:choose(pool)};
 }
 
-function commonQuestionPool(d) {
-  return [
-    question(["Mereka pergi hari apa?","Hari apa rencana mereka?","Kapan mereka jadi pergi?"],[d.day]),
-    question(["Mereka pergi ke mana?","Tujuan mereka di mana?","Tempat yang mereka datangi apa?"],d.place.correct,d.place.partial),
-    question(["Mereka janjian jam berapa?","Ketemu jam berapa?","Kapan mereka bertemu?"],hourAnswers(d.meet),[dayPart(d.meet)]),
-    question(["Mereka ketemu di bagian mana?","Titik ketemunya di mana?","Mereka janjian bertemu di mana?"],d.spot.correct,d.spot.partial),
-    question(["Sebelum berangkat, A harus apa?","Apa urusan A sebelum pergi?","A perlu menyelesaikan apa dulu?"],d.pre.correct,d.pre.partial),
-    question(["Mereka berencana naik apa?","Transportasi yang dipilih apa?","Mereka pergi menggunakan apa?"],d.transport.correct,d.transport.partial),
-    question(["A mau makan apa?","Makanan yang mereka rencanakan apa?","Mereka ingin makan apa?"],d.food.correct,d.food.partial),
-    question(["Siapa yang merekomendasikan makanannya?","Rekomendasi makanan itu dari siapa?","Siapa yang bilang makanannya enak?"],d.recommender.correct,d.recommender.partial),
-    question(["Setelah makan, A mau apa?","Apa rencana A setelah makan?","Habis makan mereka mau melakukan apa?"],d.after.correct,d.after.partial),
-    question(["B harus pergi jam berapa?","Sampai jam berapa B bisa ikut?","Jam berapa B harus meninggalkan tempat?"],hourAnswers(d.leave),[dayPart(d.leave)]),
-    question(["Kenapa B harus pergi?","B punya urusan apa setelah itu?","Setelah pergi dari sana, B harus apa?"],d.obligation.correct,d.obligation.partial),
-    question(["Barang apa yang mau dikembalikan A?","A membawa barang milik B apa?","Barang B yang ada pada A apa?"],d.returned.correct,d.returned.partial)
-  ];
+function errand(){
+ const task1=pick(D.tasks),task2=diff(D.tasks,task1),task3=diff(D.tasks,task2),place=pick(D.places),item=pick(D.items),color=pick(D.colors),pay=pick(D.payments),food=pick(D.foods),drink=pick(D.drinks),name=pick(D.names),back=pick(D.returnItems),transport=pick(D.transport),qty=pick(D.quantities);
+ const story='A: “Aku punya beberapa urusan. Pertama '+task1+', habis itu '+task2+'. Yang '+task3+' justru aku batalin.”\n\nB: “Setelah itu ke '+place+'?”\n\nA: “Iya. Mau beli '+qty+' '+item+' warna '+color+' titipan '+name+'. Bayarnya '+pay+'. Kita naik '+transport+'.”\n\nB: “Makan sekalian?”\n\nA: “Iya, '+food+' dan '+drink+'. Oh iya, '+back+' kamu jangan sampai lupa aku kasih.”';
+ const pool=[
+ q(["Urusan pertama A apa?","Apa yang harus dilakukan A paling awal?"],task1),
+ q(["Urusan kedua setelah itu apa?","Setelah urusan pertama, A harus apa?"],task2),
+ q(["Urusan mana yang justru dibatalkan?","Apa yang tidak jadi dilakukan A?"],task3),
+ q(["Setelah urusan selesai mereka ke mana?","Lokasi tujuan berikutnya apa?"],place),
+ q(["Barang titipan yang dibeli apa?","A harus membeli barang apa?"],item),
+ q(["Berapa jumlah barang titipan?","Jumlah barang yang harus dibeli berapa?"],qty),
+ q(["Warna barang titipan apa?","Barang yang dibeli harus warna apa?"],color),
+ q(["Barang itu titipan siapa?","Siapa yang meminta barang tersebut?"],name),
+ q(["Pembayaran barang pakai apa?","A akan bayar menggunakan apa?"],pay),
+ q(["Transportasi yang dipakai apa?","Mereka pergi naik apa?"],transport),
+ q(["Makanan yang akan dimakan apa?","Menu makan mereka apa?"],food),
+ q(["Minuman yang akan diminum apa?","Minuman pilihan mereka apa?"],drink),
+ q(["Barang B yang harus dikembalikan apa?","Apa milik B yang jangan sampai lupa diberikan?"],back)
+ ];
+ return {type:"Rangkaian urusan",story,questions:choose(pool)};
 }
 
-function buildShoppingStory() {
-  const d = {
-    day: pick(days),
-    place: pick(places),
-    meet: randomMeetingHour(),
-    spot: pick(meetSpots),
-    pre: pick(preTasks),
-    transport: pick(transports),
-    item: pick(shoppingItems),
-    color: pick(colors),
-    reason: pick(reasons),
-    food: pick(foods),
-    recommender: pick(recommenders),
-    after: pick(afterActivities),
-    obligation: pick(obligations),
-    returned: pick(returnItems),
-    fallback: pick(fallbacks)
-  };
-  d.leave = laterHour(d.meet);
+const builders=[shopping,cinema,airport,study,eventStory,office,roadtrip,birthday,restaurant,park,errand];
+let currentStory=null;
+let storyNumber=Number(localStorage.getItem("storyNumber")||0);
+let completed=Number(localStorage.getItem("completedMemoryStories")||0);
+let bestScore=Number(localStorage.getItem("bestMemoryScore")||0);
+let recentTypes=JSON.parse(localStorage.getItem("recentTypes")||"[]");
 
-  const story = `A: “${d.day} jadi ke ${d.place.name} nggak? Aku mau cari ${d.item.item} warna ${d.color.name}, ${d.reason.text}.”
-
-B: “Jadi. Kita naik ${d.transport.name} aja? Ketemu ${hourDisplay(d.meet)}.”
-
-A: “Boleh. Tapi sebelumnya aku harus ${d.pre.text}. Jadi ketemu langsung di ${d.spot.name} aja ya.”
-
-B: “Oke. Kalau barangnya nggak ada gimana?”
-
-A: “Kita ${d.fallback.text}. Setelah itu aku mau makan ${d.food.name}. ${d.recommender.name} bilang tempatnya enak.”
-
-B: “Sip. Habis makan?”
-
-A: “Aku mau ${d.after.text}. Oh iya, aku sekalian bawa ${d.returned.name} kamu yang kemarin ketinggalan.”
-
-B: “Mantap. Tapi ${hourDisplay(d.leave)} aku harus pergi karena mau ${d.obligation.text}.”`;
-
-  const pool = [
-    ...commonQuestionPool(d),
-    question(["A mau membeli apa?","Barang apa yang dicari A?","A sedang mencari barang apa?"],d.item.correct,d.item.partial),
-    question(["Warna barang yang dicari apa?","A mencari warna apa?","Barangnya mau warna apa?"],d.color.correct,d.color.partial),
-    question(["Kenapa A ingin membeli barang itu?","Barang itu dibeli untuk apa?","Apa alasan A mencari barang tersebut?"],d.reason.correct,d.reason.partial),
-    question(["Kalau barangnya tidak ada, mereka mau apa?","Apa rencana cadangannya?","Kalau tidak ketemu, mereka akan bagaimana?"],d.fallback.correct,d.fallback.partial)
-  ];
-
-  return {
-    story,
-    questions: chooseTen(pool),
-    signature: makeSignature(["shopping",d.day,d.place.name,d.meet,d.item.item,d.color.name,d.food.name,d.after.text,d.returned.name])
-  };
+function generate(){
+ let options=builders.filter(b=>!recentTypes.includes(b.name));
+ if(!options.length)options=builders;
+ const b=pick(options),s=b();
+ recentTypes.unshift(b.name);recentTypes=recentTypes.slice(0,5);
+ localStorage.setItem("recentTypes",JSON.stringify(recentTypes));
+ storyNumber++;localStorage.setItem("storyNumber",String(storyNumber));
+ return s
 }
-
-function buildGiftStory() {
-  const d = {
-    day: pick(days),
-    place: pick(places),
-    meet: randomMeetingHour(),
-    spot: pick(meetSpots),
-    pre: pick(preTasks),
-    transport: pick(transports),
-    item: pick(shoppingItems),
-    person: pick(giftPeople),
-    budget: pick(budgets),
-    food: pick(foods),
-    recommender: pick(recommenders),
-    after: pick(afterActivities),
-    obligation: pick(obligations),
-    returned: pick(returnItems),
-    fallback: pick(fallbacks)
-  };
-  d.leave = laterHour(d.meet);
-
-  const story = `A: “${d.day} jadi ke ${d.place.name}? Aku mau cari hadiah buat ${d.person.name}.”
-
-B: “Jadi. Kita naik ${d.transport.name} aja. Ketemu ${hourDisplay(d.meet)}?”
-
-A: “Boleh, tapi aku harus ${d.pre.text} dulu. Kita ketemu di ${d.spot.name} aja.”
-
-B: “Kamu mau beli apa?”
-
-A: “Kepikirannya ${d.item.item}. Budget-ku sekitar ${d.budget.value}. Kalau nggak ketemu, kita ${d.fallback.text}.”
-
-B: “Setelah itu makan?”
-
-A: “Iya, aku mau ${d.food.name}. ${d.recommender.name} yang rekomendasi. Habis makan aku mau ${d.after.text}.”
-
-B: “Oke. Tapi ${hourDisplay(d.leave)} aku harus pergi karena mau ${d.obligation.text}.”
-
-A: “Siap. Aku juga bawa ${d.returned.name} kamu yang kemarin ketinggalan.”`;
-
-  const pool = [
-    ...commonQuestionPool(d),
-    question(["Hadiah itu untuk siapa?","A mencari hadiah buat siapa?","Siapa yang akan menerima hadiah?"],d.person.correct,d.person.partial),
-    question(["A kepikiran membeli apa?","Hadiah yang dipikirkan A apa?","Barang apa yang mungkin dibeli A?"],d.item.correct,d.item.partial),
-    question(["Berapa budget A?","Budget hadiahnya berapa?","A menyiapkan anggaran berapa?"],d.budget.correct,d.budget.partial),
-    question(["Kalau barangnya tidak ketemu, mereka mau apa?","Apa rencana cadangannya?","Kalau gagal menemukan barang, mereka akan bagaimana?"],d.fallback.correct,d.fallback.partial)
-  ];
-
-  return {
-    story,
-    questions: chooseTen(pool),
-    signature: makeSignature(["gift",d.day,d.place.name,d.meet,d.person.name,d.item.item,d.budget.value,d.food.name,d.returned.name])
-  };
-}
-
-function buildErrandStory() {
-  const d = {
-    day: pick(days),
-    place: pick(places),
-    meet: randomMeetingHour(),
-    spot: pick(meetSpots),
-    pre: pick(preTasks),
-    transport: pick(transports),
-    food: pick(foods),
-    recommender: pick(recommenders),
-    after: pick(afterActivities),
-    obligation: pick(obligations),
-    returned: pick(returnItems),
-    item: pick(shoppingItems),
-    color: pick(colors),
-    fallback: pick(fallbacks)
-  };
-  d.leave = laterHour(d.meet);
-
-  const story = `A: “${d.day} makan di ${d.place.name} jadi kan? Aku pengin ${d.food.name}.”
-
-B: “Jadi. ${d.recommender.name} juga pernah bilang makanannya enak. Kita ketemu ${hourDisplay(d.meet)} di ${d.spot.name}.”
-
-A: “Oke. Aku mungkin agak mepet karena harus ${d.pre.text} dulu.”
-
-B: “Kita naik ${d.transport.name} dari sana?”
-
-A: “Boleh. Setelah makan aku mau cari ${d.item.item} warna ${d.color.name}. Kalau nggak ada, kita ${d.fallback.text}.”
-
-B: “Terus?”
-
-A: “Kalau masih sempat aku mau ${d.after.text}. Sama aku bawa ${d.returned.name} kamu.”
-
-B: “Sip. Aku cuma bisa sampai ${hourDisplay(d.leave)}, setelah itu harus ${d.obligation.text}.”`;
-
-  const pool = [
-    ...commonQuestionPool(d),
-    question(["Selain makan, A mau cari apa?","Barang apa yang mau dicari A setelah makan?","Setelah makan A ingin membeli apa?"],d.item.correct,d.item.partial),
-    question(["Barang yang dicari A warnanya apa?","A memilih warna apa?","Warna barang yang diinginkan apa?"],d.color.correct,d.color.partial),
-    question(["Kalau barangnya tidak ada, apa rencana mereka?","Apa rencana cadangannya?","Kalau barang tidak ditemukan, mereka mau bagaimana?"],d.fallback.correct,d.fallback.partial)
-  ];
-
-  return {
-    story,
-    questions: chooseTen(pool),
-    signature: makeSignature(["errand",d.day,d.place.name,d.meet,d.food.name,d.item.item,d.color.name,d.after.text,d.returned.name])
-  };
-}
-
-const builders = [buildShoppingStory, buildGiftStory, buildErrandStory];
-
-function generateStory() {
-  let candidate;
-  let tries = 0;
-  do {
-    candidate = pick(builders)();
-    tries++;
-  } while (recentSignatures.includes(candidate.signature) && tries < 40);
-
-  recentSignatures.unshift(candidate.signature);
-  recentSignatures = recentSignatures.slice(0,50);
-  localStorage.setItem("recentMemoryStories", JSON.stringify(recentSignatures));
-
-  storyNumber++;
-  localStorage.setItem("storyNumber", String(storyNumber));
-  return candidate;
-}
-
-function normalize(text) {
-  return String(text || "")
-    .toLowerCase()
-    .trim()
-    .replace(/[^\p{L}\p{N}\s.,:]/gu,"")
-    .replace(/\s+/g," ");
-}
-
-function levenshtein(a,b) {
-  const m = a.length, n = b.length;
-  const dp = Array.from({length:m+1},()=>Array(n+1).fill(0));
-  for (let i=0;i<=m;i++) dp[i][0]=i;
-  for (let j=0;j<=n;j++) dp[0][j]=j;
-  for (let i=1;i<=m;i++) {
-    for (let j=1;j<=n;j++) {
-      const cost = a[i-1]===b[j-1] ? 0 : 1;
-      dp[i][j]=Math.min(dp[i-1][j]+1,dp[i][j-1]+1,dp[i-1][j-1]+cost);
-    }
-  }
-  return dp[m][n];
-}
-
-function similarity(a,b) {
-  a=normalize(a); b=normalize(b);
-  if (!a || !b) return 0;
-  const maxLen=Math.max(a.length,b.length);
-  return maxLen===0 ? 1 : 1-(levenshtein(a,b)/maxLen);
-}
-
-function isTypoMatch(user,target) {
-  user=normalize(user); target=normalize(target);
-  if (!user || !target) return false;
-  if (user===target) return true;
-  if (Math.min(user.length,target.length)<=3) return false;
-  const sim=similarity(user,target);
-  if (Math.max(user.length,target.length)>=12) return sim>=0.82;
-  if (Math.max(user.length,target.length)>=7) return sim>=0.86;
-  return sim>=0.90;
-}
-
-function matchesAny(user,list) {
-  const u=normalize(user);
-  return (list||[]).some(item=>{
-    const t=normalize(item);
-    if (u===t) return true;
-    if (t.length>=4 && u.includes(t)) return true;
-    return isTypoMatch(u,t);
-  });
-}
-
-function gradeAnswer(user,q) {
-  const clean=normalize(user);
-  if (!clean) return {score:0,label:"Salah"};
-  if (matchesAny(clean,q.correct)) return {score:1,label:"Benar"};
-  if (matchesAny(clean,q.partial)) return {score:0.5,label:"Hampir benar"};
-  return {score:0,label:"Salah"};
-}
-
-function escapeHtml(text) {
-  return String(text)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-}
-
-function updateStats() {
-  document.getElementById("playedStat").textContent = `Selesai: ${completed}`;
-  document.getElementById("bestStat").textContent = bestScore ? `Best: ${bestScore}/10` : "Best: -";
-}
-
-function renderStory() {
-  document.getElementById("storyMeta").textContent = `Cerita #${storyNumber} · 10 pertanyaan dipilih secara acak`;
-  document.getElementById("story").textContent = currentStory.story;
-  document.getElementById("storySection").classList.remove("hidden");
-  document.getElementById("quizSection").classList.add("hidden");
-  document.getElementById("result").classList.add("hidden");
-  document.getElementById("nextBtn").classList.add("hidden");
-  document.getElementById("checkBtn").disabled=false;
-  updateStats();
-}
-
-function startQuiz() {
-  document.getElementById("storySection").classList.add("hidden");
-  document.getElementById("quizSection").classList.remove("hidden");
-  const container=document.getElementById("questions");
-  container.innerHTML="";
-  currentStory.questions.forEach((item,i)=>{
-    container.innerHTML += `
-      <div class="question">
-        <label><strong>${i+1}. ${item.q}</strong></label>
-        <input id="q${i}" type="text" autocomplete="off" />
-      </div>
-    `;
-  });
-  const first=document.getElementById("q0");
-  if (first) first.focus();
-}
-
-function scoreMessage(score) {
-  if (score >= 9) return "Tajam. Kamu menangkap hampir semua detail.";
-  if (score >= 7) return "Bagus. Masih ada beberapa detail kecil yang lolos.";
-  if (score >= 5) return "Lumayan. Coba fokus ke detail yang terasa tidak penting.";
-  return "Banyak detail lolos. Ulangi dengan fokus pada urutan, alasan, dan detail kecil.";
-}
-
-function checkAnswers() {
-  let total=0;
-  let details=[];
-
-  currentStory.questions.forEach((item,i)=>{
-    const input=document.getElementById(`q${i}`);
-    const user=input.value;
-    const result=gradeAnswer(user,item);
-    total+=result.score;
-
-    details.push(`
-      <div class="item">
-        <strong>${i+1}. ${item.q}</strong>
-        <span class="badge">${result.label} — ${result.score} poin</span>
-        <div class="answer-line">Jawaban kamu: <b>${escapeHtml(user || "(kosong)")}</b></div>
-        <div class="answer-line">Jawaban utama: <b>${escapeHtml(item.correct[0])}</b></div>
-      </div>
-    `);
-  });
-
-  completed++;
-  localStorage.setItem("completedMemoryStories",String(completed));
-  if (total > bestScore) {
-    bestScore=total;
-    localStorage.setItem("bestMemoryScore",String(bestScore));
-  }
-  updateStats();
-
-  const resultBox=document.getElementById("result");
-  resultBox.classList.remove("hidden");
-  resultBox.innerHTML = `
-    <div class="score-big">Skor: ${total}/10</div>
-    <div class="result-note">${scoreMessage(total)}</div>
-    <div>Benar = 1 · Hampir benar = 0.5 · Salah = 0</div>
-    ${details.join("")}
-  `;
-
-  document.getElementById("nextBtn").classList.remove("hidden");
-  document.getElementById("checkBtn").disabled=true;
-  resultBox.scrollIntoView({behavior:"smooth",block:"start"});
-}
-
-function showStoryAgain() {
-  alert(currentStory.story);
-}
-
-function newStory() {
-  currentStory=generateStory();
-  renderStory();
-  window.scrollTo({top:0,behavior:"smooth"});
-}
-
+function updateStats(){document.getElementById("playedStat").textContent="Selesai: "+completed;document.getElementById("bestStat").textContent=bestScore?"Best: "+bestScore+"/10":"Best: -";document.getElementById("typeStat").textContent="Mode: "+(currentStory?currentStory.type:"-")}
+function render(){document.getElementById("storyMeta").textContent="Cerita #"+storyNumber+" · 10 pertanyaan acak dari detail cerita";document.getElementById("story").textContent=currentStory.story;document.getElementById("storySection").classList.remove("hidden");document.getElementById("quizSection").classList.add("hidden");document.getElementById("result").classList.add("hidden");document.getElementById("nextBtn").classList.add("hidden");document.getElementById("checkBtn").disabled=false;updateStats()}
+function startQuiz(){document.getElementById("storySection").classList.add("hidden");document.getElementById("quizSection").classList.remove("hidden");const c=document.getElementById("questions");c.innerHTML="";currentStory.questions.forEach((x,i)=>c.innerHTML+='<div class="question"><label><strong>'+(i+1)+'. '+x.q+'</strong></label><input id="q'+i+'" type="text" autocomplete="off"></div>');const f=document.getElementById("q0");if(f)f.focus()}
+function scoreMsg(s){if(s>=9)return"Tajam. Detail pengalih perhatian tidak banyak menjebakmu.";if(s>=7)return"Bagus. Beberapa detail yang berubah masih lolos.";if(s>=5)return"Lumayan. Perhatikan pilihan awal vs pilihan akhir dan siapa melakukan apa.";return"Banyak detail tertukar. Fokus pada perubahan rencana, kepemilikan barang, angka, dan urutan."}
+function checkAnswers(){let total=0,details=[];currentStory.questions.forEach((x,i)=>{const u=document.getElementById("q"+i).value,r=grade(u,x);total+=r.score;details.push('<div class="item"><strong>'+(i+1)+'. '+x.q+'</strong><span class="badge">'+r.label+' — '+r.score+' poin</span><div class="answer-line">Jawaban kamu: <b>'+esc(u||"(kosong)")+'</b></div><div class="answer-line">Jawaban utama: <b>'+esc(x.correct[0])+'</b></div></div>')});completed++;localStorage.setItem("completedMemoryStories",String(completed));if(total>bestScore){bestScore=total;localStorage.setItem("bestMemoryScore",String(bestScore))}updateStats();const r=document.getElementById("result");r.classList.remove("hidden");r.innerHTML='<div class="score-big">Skor: '+total+'/10</div><div class="result-note">'+scoreMsg(total)+'</div><div>Benar = 1 · Hampir benar = 0.5 · Salah = 0</div>'+details.join("");document.getElementById("nextBtn").classList.remove("hidden");document.getElementById("checkBtn").disabled=true;r.scrollIntoView({behavior:"smooth",block:"start"})}
+function showStoryAgain(){alert(currentStory.story)}
+function newStory(){currentStory=generate();render();window.scrollTo({top:0,behavior:"smooth"})}
 newStory();
 </script>
 </body>
