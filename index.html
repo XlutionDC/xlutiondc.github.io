@@ -695,6 +695,64 @@ function levelSummary(level){
  const prev=avg(scores.slice(-10,-5));
  return {count:arr.length,best:Math.max.apply(null,scores),recent:recent,trend:arr.length>=6?recent-prev:null};
 }
+function categoryStats(history){
+ const stats={};
+ Object.keys(MEMORY_CATEGORIES).forEach(function(k){stats[k]={attempts:0,points:0,pct:0}});
+ (history||progressHistory).forEach(function(sess){
+   (sess.answers||[]).forEach(function(a){
+     const cat=a.category||memoryCategory(a.question);
+     if(!stats[cat])return;
+     stats[cat].attempts++;
+     stats[cat].points+=Number(a.score||0);
+   });
+ });
+ Object.keys(stats).forEach(function(k){
+   stats[k].pct=stats[k].attempts?Math.round(stats[k].points/stats[k].attempts*100):0;
+ });
+ return stats;
+}
+function memoryProfile(){
+ const recentSessions=progressHistory.slice(-20);
+ const stats=categoryStats(recentSessions);
+ const eligible=Object.keys(stats).filter(function(k){return stats[k].attempts>=3});
+ if(!eligible.length)return {stats:stats,strong:null,weak:null};
+ eligible.sort(function(a,b){return stats[b].pct-stats[a].pct});
+ return {stats:stats,strong:eligible[0],weak:eligible[eligible.length-1]};
+}
+function categoryImprovement(answerLog){
+ const previous=categoryStats(progressHistory.slice(-20));
+ const current={};
+ answerLog.forEach(function(a){
+   const cat=a.category||memoryCategory(a.question);
+   if(!current[cat])current[cat]={attempts:0,points:0};
+   current[cat].attempts++;
+   current[cat].points+=Number(a.score||0);
+ });
+ let best=null;
+ Object.keys(current).forEach(function(cat){
+   if(current[cat].attempts<2||previous[cat].attempts<3)return;
+   const now=Math.round(current[cat].points/current[cat].attempts*100);
+   const before=previous[cat].pct;
+   const delta=now-before;
+   if(delta>=10&&(!best||delta>best.delta))best={cat:cat,delta:delta,now:now};
+ });
+ return best;
+}
+function memoryProfileHtml(){
+ const p=memoryProfile();
+ let rows="";
+ Object.keys(MEMORY_CATEGORIES).forEach(function(k){
+   const x=p.stats[k];
+   const value=x.attempts>=3?x.pct:0;
+   const label=x.attempts>=3?x.pct+"%":"Belum cukup data";
+   rows+='<div class="memory-skill"><div class="memory-skill-row"><span>'+MEMORY_CATEGORIES[k].label+'</span><span>'+label+' · '+x.attempts+' soal</span></div><div class="memory-bar"><div class="memory-bar-fill" style="width:'+value+'%"></div></div></div>';
+ });
+ let callout='<div class="memory-callout">Selesaikan beberapa ronde lagi supaya profil memori mulai terbentuk.</div>';
+ if(p.strong&&p.weak){
+   callout='<div class="memory-callout good"><b>Kekuatan saat ini:</b> '+MEMORY_CATEGORIES[p.strong].label+' ('+p.stats[p.strong].pct+'%).</div><div class="memory-callout focus"><b>Fokus latihan:</b> '+MEMORY_CATEGORIES[p.weak].label+' ('+p.stats[p.weak].pct+'%). Nilai ini akan berubah mengikuti latihan terbaru.</div>';
+ }
+ return '<div class="memory-profile"><div class="memory-profile-head"><strong>Profil Memori</strong><span>Berdasarkan maksimal 20 sesi terakhir</span></div>'+rows+callout+'</div>';
+}
 function renderProgress(){
  const panel=document.getElementById("progressPanel");
  const labels={easy:"Mudah",medium:"Sedang",hard:"Susah"};
@@ -712,11 +770,11 @@ function renderProgress(){
    const date=new Date(sess.time).toLocaleString("id-ID",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"});
    let answers="";
    sess.answers.forEach(function(a,i){
-     answers+='<div class="answer-review"><b>'+(i+1)+'. '+esc(a.question)+'</b><br>Jawaban: '+esc(a.user||"(kosong)")+'<br>Kunci: '+esc(a.correct)+' · '+a.label+'</div>';
+     const cat=a.category||memoryCategory(a.question);\n     answers+='<div class="answer-review"><b>'+(i+1)+'. '+esc(a.question)+'</b><span class="skill-tag">'+MEMORY_CATEGORIES[cat].label+'</span><br>Jawaban: '+esc(a.user||"(kosong)")+'<br>Kunci: '+esc(a.correct)+' · '+a.label+'</div>';
    });
    historyHtml+='<details class="history-row"><summary><span class="history-score">'+sess.pct+'%</span> · '+labels[sess.difficulty]+' · '+esc(sess.type)+' · '+deltaText+'</summary><div class="history-meta">'+date+' · Benar '+sess.correct+' · Hampir '+sess.partial+' · Salah '+sess.wrong+'</div>'+answers+'</details>';
  });
- panel.innerHTML='<div class="progress-title">Progress per Level</div><div class="progress-grid">'+cards+'</div><div class="progress-title">Riwayat 10 Sesi Terakhir</div>'+(historyHtml||'<div class="empty-state">Belum ada sesi yang selesai. Selesaikan satu ronde untuk mulai melihat progress.</div>');
+ panel.innerHTML='<div class="progress-title">Progress per Level</div><div class="progress-grid">'+cards+'</div><div class="progress-title">Kekuatan & Area Latihan</div>'+memoryProfileHtml()+'<div class="progress-title">Riwayat 10 Sesi Terakhir</div>'+(historyHtml||'<div class="empty-state">Belum ada sesi yang selesai. Selesaikan satu ronde untuk mulai melihat progress.</div>');
 }
 function toggleProgress(){
  const p=document.getElementById("progressPanel");
@@ -804,14 +862,14 @@ function checkAnswers(){
    const gr=grade(u,x);
    total+=gr.score;
    if(gr.score===1)correctCount++;else if(gr.score===0.5)partialCount++;else wrongCount++;
-   answerLog.push({question:x.q,user:u,correct:x.correct[0],score:gr.score,label:gr.label});
+   answerLog.push({question:x.q,user:u,correct:x.correct[0],score:gr.score,label:gr.label,category:memoryCategory(x.q)});
    details.push('<div class="item"><strong>'+(i+1)+'. '+x.q+'</strong><span class="badge">'+gr.label+' - '+gr.score+' poin</span><div class="answer-line">Jawaban kamu: <b>'+esc(u||"(kosong)")+'</b></div><div class="answer-line">Jawaban utama: <b>'+esc(x.correct[0])+'</b></div></div>');
  });
  completed++;
  localStorage.setItem("completedMemoryStories",String(completed));
  const max=currentStory.questions.length;
  const pct=Math.round(total/max*100);
- const imp=improvementFor(difficulty,pct);
+ const imp=improvementFor(difficulty,pct);\n const skillGain=categoryImprovement(answerLog);
  if(pct>(bestScores[difficulty]||0)){
    bestScores[difficulty]=pct;
    localStorage.setItem("bestMemoryScores",JSON.stringify(bestScores));
@@ -832,7 +890,7 @@ function checkAnswers(){
  updateStats();
  const r=document.getElementById("result");
  r.classList.remove("hidden");
- r.innerHTML='<div class="score-big">Skor: '+total+'/'+max+' ('+pct+'%)</div><div class="result-note"><b>'+esc(imp.message)+'</b><br>'+scoreMsg(pct)+'</div><div>Benar: '+correctCount+' · Hampir benar: '+partialCount+' · Salah: '+wrongCount+'</div>'+details.join("");
+ const skillMessage=skillGain?'<br><b>Improvement spesifik:</b> '+MEMORY_CATEGORIES[skillGain.cat].label+' naik sekitar '+skillGain.delta+' poin dibanding performa sebelumnya.':'';\n r.innerHTML='<div class="score-big">Skor: '+total+'/'+max+' ('+pct+'%)</div><div class="result-note"><b>'+esc(imp.message)+'</b>'+skillMessage+'<br>'+scoreMsg(pct)+'</div><div>Benar: '+correctCount+' · Hampir benar: '+partialCount+' · Salah: '+wrongCount+'</div>'+details.join("");
  document.getElementById("nextBtn").classList.remove("hidden");
  document.getElementById("checkBtn").disabled=true;
  if(!document.getElementById("progressPanel").classList.contains("hidden"))renderProgress();
