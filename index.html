@@ -813,7 +813,8 @@ function renderProgress(){
    const date=new Date(sess.time).toLocaleString("id-ID",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"});
    let answers="";
    sess.answers.forEach(function(a,i){
-     const cat=a.category||memoryCategory(a.question);\n     answers+='<div class="answer-review"><b>'+(i+1)+'. '+esc(a.question)+'</b><span class="skill-tag">'+MEMORY_CATEGORIES[cat].label+'</span><br>Jawaban: '+esc(a.user||"(kosong)")+'<br>Kunci: '+esc(a.correct)+' · '+a.label+'</div>';
+     const cat=a.category||memoryCategory(a.question);
+     answers+='<div class="answer-review"><b>'+(i+1)+'. '+esc(a.question)+'</b><span class="skill-tag">'+MEMORY_CATEGORIES[cat].label+'</span><br>Jawaban: '+esc(a.user||"(kosong)")+'<br>Kunci: '+esc(a.correct)+' · '+a.label+'</div>';
    });
    historyHtml+='<details class="history-row"><summary><span class="history-score">'+sess.pct+'%</span> · '+labels[sess.difficulty]+' · '+esc(sess.type)+' · '+deltaText+'</summary><div class="history-meta">'+date+' · Benar '+sess.correct+' · Hampir '+sess.partial+' · Salah '+sess.wrong+'</div>'+answers+'</details>';
  });
@@ -912,7 +913,8 @@ function checkAnswers(){
  localStorage.setItem("completedMemoryStories",String(completed));
  const max=currentStory.questions.length;
  const pct=Math.round(total/max*100);
- const imp=improvementFor(difficulty,pct);\n const skillGain=categoryImprovement(answerLog);
+ const imp=improvementFor(difficulty,pct);
+ const skillGain=categoryImprovement(answerLog);
  if(pct>(bestScores[difficulty]||0)){
    bestScores[difficulty]=pct;
    localStorage.setItem("bestMemoryScores",JSON.stringify(bestScores));
@@ -933,7 +935,8 @@ function checkAnswers(){
  updateStats();
  const r=document.getElementById("result");
  r.classList.remove("hidden");
- const skillMessage=skillGain?'<br><b>Improvement spesifik:</b> '+MEMORY_CATEGORIES[skillGain.cat].label+' naik sekitar '+skillGain.delta+' poin dibanding performa sebelumnya.':'';\n r.innerHTML='<div class="score-big">Skor: '+total+'/'+max+' ('+pct+'%)</div><div class="result-note"><b>'+esc(imp.message)+'</b>'+skillMessage+'<br>'+scoreMsg(pct)+'</div><div>Benar: '+correctCount+' · Hampir benar: '+partialCount+' · Salah: '+wrongCount+'</div>'+details.join("");
+ const skillMessage=skillGain?'<br><b>Improvement spesifik:</b> '+MEMORY_CATEGORIES[skillGain.cat].label+' naik sekitar '+skillGain.delta+' poin dibanding performa sebelumnya.':'';
+ r.innerHTML='<div class="score-big">Skor: '+total+'/'+max+' ('+pct+'%)</div><div class="result-note"><b>'+esc(imp.message)+'</b>'+skillMessage+'<br>'+scoreMsg(pct)+'</div><div>Benar: '+correctCount+' · Hampir benar: '+partialCount+' · Salah: '+wrongCount+'</div>'+details.join("");
  document.getElementById("nextBtn").classList.remove("hidden");
  document.getElementById("checkBtn").disabled=true;
  if(!document.getElementById("progressPanel").classList.contains("hidden"))renderProgress();
