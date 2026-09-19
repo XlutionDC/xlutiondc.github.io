@@ -346,8 +346,9 @@ const builders=[shopping,cinema,airport,study,eventStory,office,roadtrip,birthda
 let currentStory=null;
 let storyNumber=Number(localStorage.getItem("storyNumber")||0);
 let completed=Number(localStorage.getItem("completedMemoryStories")||0);
-let bestScore=Number(localStorage.getItem("bestMemoryScore")||0);
+let bestScores=JSON.parse(localStorage.getItem("bestMemoryScores")||'{"easy":0,"medium":0,"hard":0}');
 let recentTypes=JSON.parse(localStorage.getItem("recentTypes")||"[]");
+let storyTimer=null,timerRemaining=0,peekUsed=false;
 
 function generate(){
  let options=builders.filter(b=>!recentTypes.includes(b.name));
