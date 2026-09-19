@@ -393,7 +393,17 @@ function choose(pool){
  localStorage.setItem("recentQuestionTexts",JSON.stringify(recentQuestionTexts));
  return out
 }
-function norm(s){return String(s||"").toLowerCase().trim().replace(/[^\p{L}\p{N}\s.,:]/gu,"").replace(/\s+/g," ")}
+function norm(s){
+ return String(s||"")
+   .toLowerCase()
+   .replace(/\brupiah\b/g," ")
+   .replace(/\brp\.?\s*/g,"")
+   .replace(/(\d)\s*jt\b/g,"$1 juta")
+   .replace(/(\d)\s*rb\b/g,"$1 ribu")
+   .trim()
+   .replace(/[^\p{L}\p{N}\s.,:]/gu,"")
+   .replace(/\s+/g," ");
+}
 const MEMORY_CATEGORIES={
  change:{label:"Perubahan Rencana"},
  order:{label:"Urutan Kejadian"},
