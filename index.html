@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Latihan Memori</title>
   <style>
+    * { box-sizing: border-box; }
     body {
       font-family: Arial, sans-serif;
       background: #f5f5f5;
@@ -13,21 +14,33 @@
       color: #222;
     }
     .app {
-      max-width: 760px;
+      max-width: 780px;
       margin: 0 auto;
       background: white;
       padding: 24px;
       border-radius: 16px;
       box-shadow: 0 8px 30px rgba(0,0,0,.08);
     }
-    h1 { margin-top: 0; }
+    h1 { margin: 0 0 6px; }
+    .sub { margin-top: 0; color: #666; }
+    .meta {
+      font-size: 13px;
+      color: #777;
+      margin: 14px 0 8px;
+    }
     .story {
       white-space: pre-line;
-      line-height: 1.7;
+      line-height: 1.75;
       background: #fafafa;
       padding: 18px;
       border-radius: 12px;
       border: 1px solid #e7e7e7;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
     }
     button {
       border: none;
@@ -35,14 +48,12 @@
       border-radius: 10px;
       cursor: pointer;
       font-size: 16px;
-      margin-top: 16px;
     }
     .primary { background: #111; color: white; }
-    .secondary { background: #e9e9e9; color: #111; margin-left: 8px; }
+    .secondary { background: #e9e9e9; color: #111; }
     .question { margin: 16px 0; }
     input {
       width: 100%;
-      box-sizing: border-box;
       padding: 12px;
       border: 1px solid #ccc;
       border-radius: 8px;
@@ -66,7 +77,7 @@
     .score-big {
       font-size: 24px;
       font-weight: bold;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
     .badge {
       font-size: 13px;
@@ -78,179 +89,455 @@
       margin-left: 6px;
     }
     .answer-line { margin-top: 4px; font-size: 14px; }
+    @media (max-width: 600px) {
+      body { padding: 12px; }
+      .app { padding: 18px; }
+      button { width: 100%; }
+      .actions { display: grid; grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
   <div class="app">
     <h1>Latihan Memori</h1>
-    <p>Baca cerita, sembunyikan, lalu jawab 10 pertanyaan.</p>
+    <p class="sub">Cerita dibuat otomatis. Baca, sembunyikan, lalu jawab 10 pertanyaan.</p>
 
     <div id="storySection">
+      <div id="storyMeta" class="meta"></div>
       <div id="story" class="story"></div>
-      <button class="primary" onclick="startQuiz()">Sudah Hafal</button>
+      <div class="actions">
+        <button class="primary" onclick="startQuiz()">Sudah Hafal</button>
+        <button class="secondary" onclick="newStory()">Ganti Cerita</button>
+      </div>
     </div>
 
     <div id="quizSection" class="hidden">
       <div id="questions"></div>
-      <button class="primary" onclick="checkAnswers()">Cek Jawaban</button>
-      <button class="secondary" onclick="showStoryAgain()">Lihat Cerita</button>
+      <div class="actions">
+        <button class="primary" id="checkBtn" onclick="checkAnswers()">Cek Jawaban</button>
+        <button class="secondary" onclick="showStoryAgain()">Lihat Cerita</button>
+      </div>
       <div id="result" class="result hidden"></div>
-      <button id="nextBtn" class="primary hidden" onclick="nextStory()">Cerita Berikutnya</button>
+      <div class="actions">
+        <button id="nextBtn" class="primary hidden" onclick="newStory()">Cerita Baru</button>
+      </div>
     </div>
   </div>
 
 <script>
-const stories = [
-  {
-    story: `A: “Sabtu siang jadi ke Grand Indonesia nggak? Aku mau cari sepatu baru.”
+const days = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"];
 
-B: “Jadi. Ketemu jam 1 aja?”
-
-A: “Boleh. Tapi aku harus ambil paket dulu sebelum berangkat.”
-
-B: “Oke. Ketemu langsung di lobby East Mall aja.”
-
-A: “Sip. Setelah beli sepatu, aku mau makan ramen.”
-
-B: “Boleh. Tapi jam 5 aku harus ke rumah kakakku.”
-
-A: “Oh iya, aku sekalian mau balikin charger kamu.”
-
-B: “Oke, jangan lupa dibawa.”`,
-    questions: [
-      { q: "Mereka pergi hari apa?", correct: ["sabtu"], partial: [] },
-      { q: "Mereka pergi ke mana?", correct: ["grand indonesia", "gi", "mall grand indonesia", "grand indonesia mall"], partial: ["mall"] },
-      { q: "Ketemu jam berapa?", correct: ["1", "jam 1", "13.00", "13:00"], partial: ["siang"] },
-      { q: "A mau beli apa?", correct: ["sepatu", "sepatu baru"], partial: [] },
-      { q: "Sebelum berangkat, A harus ambil apa?", correct: ["paket", "ambil paket"], partial: [] },
-      { q: "Mereka ketemu di mana?", correct: ["lobby east mall", "east mall", "lobi east mall"], partial: ["lobby", "lobi", "mall"] },
-      { q: "Setelah belanja, A mau makan apa?", correct: ["ramen"], partial: ["makanan jepang"] },
-      { q: "B harus pergi jam berapa?", correct: ["5", "jam 5", "17.00", "17:00"], partial: ["sore"] },
-      { q: "B mau pergi ke rumah siapa?", correct: ["kakak", "kakaknya", "rumah kakak"], partial: ["keluarga"] },
-      { q: "A mau mengembalikan apa?", correct: ["charger"], partial: ["casan", "charger hp"] }
-    ]
-  },
-  {
-    story: `A: “Besok sore jadi ke PIK nggak? Aku mau beli kue buat ulang tahun tanteku.”
-
-B: “Jadi. Ketemu jam 3 aja?”
-
-A: “Boleh. Tapi aku harus isi bensin dulu sebelum ke sana.”
-
-B: “Oke. Kita ketemu langsung di toko kuenya aja.”
-
-A: “Sip. Setelah beli kue, aku mau cari hadiah di toko kosmetik.”
-
-B: “Boleh. Tapi jam 6 aku harus pulang karena ada makan malam keluarga.”
-
-A: “Oh iya, aku juga mau balikin payung kamu yang ketinggalan di rumahku.”
-
-B: “Nah iya, jangan lupa.”`,
-    questions: [
-      { q: "Mereka pergi kapan?", correct: ["besok sore", "besok"], partial: ["sore"] },
-      { q: "Mereka pergi ke mana?", correct: ["pik"], partial: [] },
-      { q: "Ketemu jam berapa?", correct: ["3", "jam 3", "15.00", "15:00"], partial: ["sore"] },
-      { q: "A mau beli apa?", correct: ["kue"], partial: ["makanan"] },
-      { q: "Kue itu untuk siapa?", correct: ["tante", "tantenya"], partial: ["keluarga"] },
-      { q: "Sebelum pergi, A harus melakukan apa?", correct: ["isi bensin", "mengisi bensin"], partial: ["bensin"] },
-      { q: "Mereka ketemu di mana?", correct: ["toko kue", "toko kuenya"], partial: ["toko"] },
-      { q: "Setelah beli kue, A mau ke toko apa?", correct: ["toko kosmetik", "kosmetik"], partial: ["toko"] },
-      { q: "B harus pulang jam berapa?", correct: ["6", "jam 6", "18.00", "18:00"], partial: ["sore"] },
-      { q: "Barang apa yang mau dikembalikan A?", correct: ["payung"], partial: [] }
-    ]
-  },
-  {
-    story: `A: “Jumat malam jadi makan di Kemang nggak? Aku selesai kerja sekitar jam 6.”
-
-B: “Jadi. Ketemu jam 7 di restorannya aja.”
-
-A: “Boleh. Sebelum ke sana aku mau ambil obat di apotek.”
-
-B: “Oke. Setelah makan kita cari dessert?”
-
-A: “Boleh, tapi aku mau mampir ke minimarket dulu beli air mineral.”
-
-B: “Sip. Aku cuma bisa sampai jam 10 karena besok pagi harus bangun cepat.”
-
-A: “Oh iya, aku bawa earphone kamu yang kemarin tertinggal di meja kerjaku.”
-
-B: “Mantap, jangan sampai lupa lagi.”`,
-    questions: [
-      { q: "Mereka pergi hari apa?", correct: ["jumat"], partial: [] },
-      { q: "Mereka makan di mana?", correct: ["kemang"], partial: ["restoran"] },
-      { q: "A selesai kerja jam berapa?", correct: ["6", "jam 6", "18.00", "18:00"], partial: ["sore"] },
-      { q: "Mereka ketemu jam berapa?", correct: ["7", "jam 7", "19.00", "19:00"], partial: ["malam"] },
-      { q: "Sebelum ke restoran, A mau ke mana?", correct: ["apotek"], partial: ["ambil obat", "obat"] },
-      { q: "Setelah makan mereka mau cari apa?", correct: ["dessert"], partial: ["makanan penutup", "makanan manis"] },
-      { q: "A mau mampir ke mana dulu?", correct: ["minimarket"], partial: ["toko"] },
-      { q: "A mau beli apa?", correct: ["air mineral", "air"], partial: ["minuman"] },
-      { q: "B bisa sampai jam berapa?", correct: ["10", "jam 10", "22.00", "22:00"], partial: ["malam"] },
-      { q: "A mau mengembalikan apa?", correct: ["earphone"], partial: ["headset"] }
-    ]
-  }
+const places = [
+  { name: "Grand Indonesia", correct: ["grand indonesia", "gi", "mall grand indonesia"], partial: ["mall"] },
+  { name: "Plaza Indonesia", correct: ["plaza indonesia", "pi", "mall plaza indonesia"], partial: ["mall"] },
+  { name: "Blok M", correct: ["blok m"], partial: ["blok"] },
+  { name: "Senayan City", correct: ["senayan city", "sency"], partial: ["senayan", "mall"] },
+  { name: "Kota Kasablanka", correct: ["kota kasablanka", "kokas"], partial: ["kasablanka", "mall"] },
+  { name: "Central Park", correct: ["central park", "cp"], partial: ["mall"] },
+  { name: "PIK", correct: ["pik", "pantai indah kapuk"], partial: ["pantai indah"] },
+  { name: "Kemang", correct: ["kemang"], partial: [] },
+  { name: "Sarinah", correct: ["sarinah"], partial: [] },
+  { name: "Gandaria City", correct: ["gandaria city", "gancit"], partial: ["gandaria", "mall"] },
+  { name: "Pondok Indah Mall", correct: ["pondok indah mall", "pim"], partial: ["pondok indah", "mall"] },
+  { name: "Cilandak Town Square", correct: ["cilandak town square", "citos"], partial: ["cilandak", "mall"] }
 ];
-let current = 0;
-function normalize(text) {
-  return String(text || "").toLowerCase().trim().replace(/[^\p{L}\p{N}\s.:]/gu, "").replace(/\s+/g, " ");
+
+const meetSpots = [
+  { name: "lobby utama", correct: ["lobby utama", "lobi utama"], partial: ["lobby", "lobi"] },
+  { name: "depan pintu masuk", correct: ["depan pintu masuk", "pintu masuk"], partial: ["depan"] },
+  { name: "depan lift", correct: ["depan lift", "lift"], partial: [] },
+  { name: "area informasi", correct: ["area informasi", "meja informasi", "informasi"], partial: ["lobby", "lobi"] },
+  { name: "depan restoran", correct: ["depan restoran", "restoran"], partial: [] },
+  { name: "depan toko buku", correct: ["depan toko buku", "toko buku"], partial: ["toko"] }
+];
+
+const preTasks = [
+  { text: "ambil paket di kantor", answer: "ambil paket", correct: ["ambil paket", "paket"], partial: ["kantor"] },
+  { text: "isi bensin", answer: "isi bensin", correct: ["isi bensin", "mengisi bensin", "bensin"], partial: [] },
+  { text: "ambil laundry", answer: "ambil laundry", correct: ["ambil laundry", "laundry"], partial: [] },
+  { text: "ambil obat di apotek", answer: "ambil obat", correct: ["ambil obat", "obat", "apotek"], partial: [] },
+  { text: "transfer uang ke kakakku", answer: "transfer uang", correct: ["transfer uang", "transfer", "kirim uang"], partial: ["kakak"] },
+  { text: "antar dokumen ke kantor", answer: "antar dokumen", correct: ["antar dokumen", "dokumen"], partial: ["kantor"] },
+  { text: "ambil kacamata di optik", answer: "ambil kacamata", correct: ["ambil kacamata", "kacamata", "optik"], partial: [] },
+  { text: "mampir ke ATM", answer: "ke ATM", correct: ["atm", "ke atm", "mampir ke atm"], partial: [] }
+];
+
+const shoppingItems = [
+  { item: "sepatu", correct: ["sepatu"], partial: ["alas kaki"] },
+  { item: "jaket", correct: ["jaket"], partial: ["baju", "pakaian"] },
+  { item: "kemeja", correct: ["kemeja"], partial: ["baju", "pakaian"] },
+  { item: "tas", correct: ["tas"], partial: [] },
+  { item: "parfum", correct: ["parfum"], partial: ["wewangian"] },
+  { item: "buku", correct: ["buku"], partial: [] },
+  { item: "dompet", correct: ["dompet"], partial: [] },
+  { item: "headphone", correct: ["headphone", "headset"], partial: ["earphone"] },
+  { item: "jam tangan", correct: ["jam tangan"], partial: ["jam"] },
+  { item: "kacamata", correct: ["kacamata"], partial: [] }
+];
+
+const foods = [
+  { name: "ramen", correct: ["ramen"], partial: ["mie", "makanan jepang"] },
+  { name: "sushi", correct: ["sushi"], partial: ["makanan jepang"] },
+  { name: "bakmi", correct: ["bakmi", "mie"], partial: [] },
+  { name: "ayam panggang", correct: ["ayam panggang"], partial: ["ayam"] },
+  { name: "nasi goreng", correct: ["nasi goreng"], partial: ["nasi"] },
+  { name: "udon", correct: ["udon"], partial: ["mie", "makanan jepang"] },
+  { name: "burger", correct: ["burger", "hamburger"], partial: [] },
+  { name: "dim sum", correct: ["dim sum", "dimsum"], partial: [] }
+];
+
+const afterActivities = [
+  { text: "ngopi sebentar", answer: "ngopi", correct: ["ngopi", "minum kopi", "kopi"], partial: ["cafe", "kafe"] },
+  { text: "cari dessert", answer: "cari dessert", correct: ["dessert", "cari dessert", "makanan penutup"], partial: ["makanan manis"] },
+  { text: "mampir ke toko buku", answer: "ke toko buku", correct: ["toko buku", "ke toko buku"], partial: ["toko"] },
+  { text: "beli minuman di minimarket", answer: "ke minimarket", correct: ["minimarket", "beli minuman"], partial: ["toko"] },
+  { text: "lihat-lihat toko elektronik", answer: "ke toko elektronik", correct: ["toko elektronik", "elektronik"], partial: ["toko"] },
+  { text: "cari hadiah ulang tahun", answer: "cari hadiah", correct: ["cari hadiah", "hadiah", "hadiah ulang tahun"], partial: ["belanja"] },
+  { text: "foto di photobox", answer: "foto di photobox", correct: ["photobox", "foto di photobox", "foto"], partial: [] },
+  { text: "beli roti untuk dibawa pulang", answer: "beli roti", correct: ["beli roti", "roti"], partial: ["makanan"] }
+];
+
+const obligations = [
+  { text: "jemput mama", person: "mama", correct: ["mama", "ibu"], partial: ["orang tua"] },
+  { text: "ke rumah nenek", person: "nenek", correct: ["nenek"], partial: ["keluarga"] },
+  { text: "ketemu kakak", person: "kakak", correct: ["kakak"], partial: ["keluarga"] },
+  { text: "antar adik les", person: "adik", correct: ["adik"], partial: ["keluarga"] },
+  { text: "makan malam keluarga", person: "keluarga", correct: ["keluarga"], partial: [] },
+  { text: "pergi ke gym", person: "gym", correct: ["gym", "gim"], partial: ["olahraga"] },
+  { text: "potong rambut", person: "potong rambut", correct: ["potong rambut", "barbershop", "salon"], partial: [] },
+  { text: "ikut rapat online", person: "rapat online", correct: ["rapat online", "meeting online", "meeting"], partial: ["rapat"] }
+];
+
+const returnItems = [
+  { name: "charger", correct: ["charger", "casan", "charger hp"], partial: [] },
+  { name: "payung", correct: ["payung"], partial: [] },
+  { name: "buku", correct: ["buku"], partial: [] },
+  { name: "earphone", correct: ["earphone"], partial: ["headset"] },
+  { name: "power bank", correct: ["power bank", "powerbank"], partial: [] },
+  { name: "jaket", correct: ["jaket"], partial: ["baju", "pakaian"] },
+  { name: "flashdisk", correct: ["flashdisk", "flash drive", "usb"], partial: [] },
+  { name: "kacamata", correct: ["kacamata"], partial: [] }
+];
+
+const giftPeople = [
+  { name: "adik", correct: ["adik"], partial: ["keluarga"] },
+  { name: "kakak", correct: ["kakak"], partial: ["keluarga"] },
+  { name: "mama", correct: ["mama", "ibu"], partial: ["orang tua"] },
+  { name: "papa", correct: ["papa", "ayah"], partial: ["orang tua"] },
+  { name: "tante", correct: ["tante"], partial: ["keluarga"] },
+  { name: "teman kantor", correct: ["teman kantor", "rekan kerja"], partial: ["teman"] }
+];
+
+let currentStory = null;
+let storyNumber = Number(localStorage.getItem("storyNumber") || 0);
+let recentSignatures = JSON.parse(localStorage.getItem("recentMemoryStories") || "[]");
+
+function pick(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
 }
+
+function pickDifferent(arr, avoidValue) {
+  const filtered = arr.filter(x => (x.name || x.item || x.text || x) !== avoidValue);
+  return pick(filtered.length ? filtered : arr);
+}
+
+function randomMeetingHour() {
+  return pick([10, 11, 12, 13, 14, 15, 16, 17, 18, 19]);
+}
+
+function laterHour(meetHour) {
+  const options = [meetHour + 2, meetHour + 3, meetHour + 4].filter(h => h <= 22);
+  return pick(options.length ? options : [Math.min(meetHour + 2, 22)]);
+}
+
+function hourDisplay(hour) {
+  return hour < 12 ? `jam ${hour}` : hour === 12 ? "jam 12" : `jam ${hour - 12}`;
+}
+
+function hourAnswers(hour) {
+  const twelve = hour > 12 ? hour - 12 : hour;
+  return [
+    String(twelve),
+    `jam ${twelve}`,
+    `${String(hour).padStart(2, "0")}:00`,
+    `${String(hour).padStart(2, "0")}.00`
+  ];
+}
+
+function dayPart(hour) {
+  if (hour < 12) return "pagi";
+  if (hour < 15) return "siang";
+  if (hour < 18) return "sore";
+  return "malam";
+}
+
+function q(question, correct, partial = []) {
+  return { q: question, correct, partial };
+}
+
+function makeSignature(parts) {
+  return parts.join("|").toLowerCase();
+}
+
+function buildShoppingStory() {
+  const day = pick(days);
+  const place = pick(places);
+  const meet = randomMeetingHour();
+  const leave = laterHour(meet);
+  const pre = pick(preTasks);
+  const item = pick(shoppingItems);
+  const food = pick(foods);
+  const after = pick(afterActivities);
+  const obligation = pick(obligations);
+  const returned = pick(returnItems);
+  const spot = pick(meetSpots);
+
+  const story = `A: “${day} jadi ke ${place.name} nggak? Aku mau cari ${item.item}.”
+
+B: “Jadi. Ketemu ${hourDisplay(meet)} aja?”
+
+A: “Boleh. Tapi sebelumnya aku harus ${pre.text}.”
+
+B: “Oke. Kita ketemu di ${spot.name} aja.”
+
+A: “Sip. Setelah belanja aku mau makan ${food.name}. Habis itu aku pengin ${after.text}.”
+
+B: “Boleh. Tapi ${hourDisplay(leave)} aku harus pergi karena mau ${obligation.text}.”
+
+A: “Oh iya, aku sekalian mau balikin ${returned.name} kamu yang kemarin ketinggalan.”
+
+B: “Nah iya, jangan lupa dibawa.”`;
+
+  const questions = [
+    q("Mereka pergi hari apa?", [day], []),
+    q("Mereka pergi ke mana?", place.correct, place.partial),
+    q("Ketemu jam berapa?", hourAnswers(meet), [dayPart(meet)]),
+    q("A mau cari apa?", item.correct, item.partial),
+    q("Sebelum berangkat, A harus apa?", pre.correct, pre.partial),
+    q("Mereka ketemu di mana?", spot.correct, spot.partial),
+    q("Setelah belanja, A mau makan apa?", food.correct, food.partial),
+    q("Setelah makan, A mau apa?", after.correct, after.partial),
+    q("B harus pergi jam berapa?", hourAnswers(leave), [dayPart(leave)]),
+    q("A mau mengembalikan apa?", returned.correct, returned.partial)
+  ];
+
+  return {
+    story,
+    questions,
+    signature: makeSignature(["shopping", day, place.name, meet, item.item, food.name, after.text, obligation.text, returned.name])
+  };
+}
+
+function buildGiftStory() {
+  const day = pick(days);
+  const place = pick(places);
+  const meet = randomMeetingHour();
+  const leave = laterHour(meet);
+  const pre = pick(preTasks);
+  const gift = pick(shoppingItems);
+  const person = pick(giftPeople);
+  const food = pick(foods);
+  const returned = pick(returnItems);
+  const spot = pick(meetSpots);
+
+  const story = `A: “${day} jadi ke ${place.name}? Aku mau cari hadiah buat ${person.name}.”
+
+B: “Jadi. Kita ketemu ${hourDisplay(meet)} ya.”
+
+A: “Oke. Tapi aku harus ${pre.text} dulu.”
+
+B: “Ketemu di ${spot.name} aja?”
+
+A: “Boleh. Aku kepikiran beli ${gift.item}. Setelah itu kita makan ${food.name}.”
+
+B: “Sip. Tapi ${hourDisplay(leave)} aku harus pulang.”
+
+A: “Oh iya, aku juga bawa ${returned.name} kamu yang kemarin tertinggal.”
+
+B: “Mantap. Jangan lupa ya.”`;
+
+  const questions = [
+    q("Mereka pergi hari apa?", [day]),
+    q("Mereka pergi ke mana?", place.correct, place.partial),
+    q("Ketemu jam berapa?", hourAnswers(meet), [dayPart(meet)]),
+    q("A mau cari hadiah untuk siapa?", person.correct, person.partial),
+    q("A kepikiran membeli apa?", gift.correct, gift.partial),
+    q("Sebelum pergi, A harus apa?", pre.correct, pre.partial),
+    q("Mereka ketemu di mana?", spot.correct, spot.partial),
+    q("Mereka mau makan apa?", food.correct, food.partial),
+    q("B harus pulang jam berapa?", hourAnswers(leave), [dayPart(leave)]),
+    q("Barang apa yang dibawa A untuk dikembalikan?", returned.correct, returned.partial)
+  ];
+
+  return {
+    story,
+    questions,
+    signature: makeSignature(["gift", day, place.name, meet, person.name, gift.item, food.name, returned.name])
+  };
+}
+
+function buildMealStory() {
+  const day = pick(days);
+  const place = pick(places);
+  const meet = randomMeetingHour();
+  const leave = laterHour(meet);
+  const food = pick(foods);
+  const pre = pick(preTasks);
+  const after = pick(afterActivities);
+  const returned = pick(returnItems);
+  const obligation = pick(obligations);
+  const spot = pick(meetSpots);
+
+  const story = `A: “${day} jadi makan di ${place.name}? Aku lagi pengin ${food.name}.”
+
+B: “Boleh. Ketemu ${hourDisplay(meet)}?”
+
+A: “Boleh, tapi sebelum ke sana aku harus ${pre.text}.”
+
+B: “Oke. Ketemu di ${spot.name} aja.”
+
+A: “Setelah makan, aku mau ${after.text}.”
+
+B: “Sip. Aku cuma bisa sampai ${hourDisplay(leave)}, habis itu harus ${obligation.text}.”
+
+A: “Oh iya, ${returned.name} kamu yang kemarin ketinggalan juga aku bawa.”
+
+B: “Oke, jangan lupa kasih ke aku.”`;
+
+  const questions = [
+    q("Mereka pergi hari apa?", [day]),
+    q("Mereka pergi ke mana?", place.correct, place.partial),
+    q("Mereka mau makan apa?", food.correct, food.partial),
+    q("Ketemu jam berapa?", hourAnswers(meet), [dayPart(meet)]),
+    q("Sebelum ke sana, A harus apa?", pre.correct, pre.partial),
+    q("Mereka ketemu di mana?", spot.correct, spot.partial),
+    q("Setelah makan, A mau apa?", after.correct, after.partial),
+    q("B bisa sampai jam berapa?", hourAnswers(leave), [dayPart(leave)]),
+    q("Setelah itu B harus apa?", [obligation.text, obligation.person], obligation.correct),
+    q("Barang apa yang dibawa A?", returned.correct, returned.partial)
+  ];
+
+  return {
+    story,
+    questions,
+    signature: makeSignature(["meal", day, place.name, meet, food.name, pre.text, after.text, obligation.text, returned.name])
+  };
+}
+
+const builders = [buildShoppingStory, buildGiftStory, buildMealStory];
+
+function generateStory() {
+  let candidate;
+  let tries = 0;
+
+  do {
+    candidate = pick(builders)();
+    tries++;
+  } while (recentSignatures.includes(candidate.signature) && tries < 30);
+
+  recentSignatures.unshift(candidate.signature);
+  recentSignatures = recentSignatures.slice(0, 40);
+  localStorage.setItem("recentMemoryStories", JSON.stringify(recentSignatures));
+
+  storyNumber++;
+  localStorage.setItem("storyNumber", String(storyNumber));
+
+  return candidate;
+}
+
+function normalize(text) {
+  return String(text || "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^\p{L}\p{N}\s.:]/gu, "")
+    .replace(/\s+/g, " ");
+}
+
 function levenshtein(a, b) {
   const m = a.length, n = b.length;
-  const dp = Array.from({length: m + 1}, () => Array(n + 1).fill(0));
+  const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
   for (let i = 0; i <= m; i++) dp[i][0] = i;
   for (let j = 0; j <= n; j++) dp[0][j] = j;
+
   for (let i = 1; i <= m; i++) {
     for (let j = 1; j <= n; j++) {
       const cost = a[i - 1] === b[j - 1] ? 0 : 1;
-      dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost);
+      dp[i][j] = Math.min(
+        dp[i - 1][j] + 1,
+        dp[i][j - 1] + 1,
+        dp[i - 1][j - 1] + cost
+      );
     }
   }
   return dp[m][n];
 }
+
 function similarity(a, b) {
-  a = normalize(a); b = normalize(b);
+  a = normalize(a);
+  b = normalize(b);
   if (!a || !b) return 0;
   const maxLen = Math.max(a.length, b.length);
   return maxLen === 0 ? 1 : 1 - (levenshtein(a, b) / maxLen);
 }
+
 function isTypoMatch(user, target) {
-  user = normalize(user); target = normalize(target);
+  user = normalize(user);
+  target = normalize(target);
   if (!user || !target) return false;
   if (user === target) return true;
   if (Math.min(user.length, target.length) <= 3) return false;
+
   const sim = similarity(user, target);
   if (Math.max(user.length, target.length) >= 12) return sim >= 0.82;
   if (Math.max(user.length, target.length) >= 7) return sim >= 0.86;
   return sim >= 0.90;
 }
+
 function matchesAny(user, list) {
   const u = normalize(user);
-  return list.some(item => {
+  return (list || []).some(item => {
     const t = normalize(item);
     if (u === t) return true;
     if (t.length >= 4 && u.includes(t)) return true;
     return isTypoMatch(u, t);
   });
 }
+
 function gradeAnswer(user, question) {
   const clean = normalize(user);
-  if (!clean) return {score: 0, label: "Salah"};
-  if (matchesAny(clean, question.correct)) return {score: 1, label: "Benar"};
-  if (matchesAny(clean, question.partial)) return {score: 0.5, label: "Hampir benar"};
-  return {score: 0, label: "Salah"};
+  if (!clean) return { score: 0, label: "Salah" };
+  if (matchesAny(clean, question.correct)) return { score: 1, label: "Benar" };
+  if (matchesAny(clean, question.partial)) return { score: 0.5, label: "Hampir benar" };
+  return { score: 0, label: "Salah" };
 }
+
+function escapeHtml(text) {
+  return String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 function renderStory() {
-  document.getElementById("story").textContent = stories[current].story;
+  document.getElementById("storyMeta").textContent = `Cerita #${storyNumber} · dibuat otomatis`;
+  document.getElementById("story").textContent = currentStory.story;
   document.getElementById("storySection").classList.remove("hidden");
   document.getElementById("quizSection").classList.add("hidden");
   document.getElementById("result").classList.add("hidden");
   document.getElementById("nextBtn").classList.add("hidden");
+  document.getElementById("checkBtn").disabled = false;
 }
+
 function startQuiz() {
   document.getElementById("storySection").classList.add("hidden");
   document.getElementById("quizSection").classList.remove("hidden");
+
   const container = document.getElementById("questions");
   container.innerHTML = "";
-  stories[current].questions.forEach((item, i) => {
+
+  currentStory.questions.forEach((item, i) => {
     container.innerHTML += `
       <div class="question">
         <label><strong>${i + 1}. ${item.q}</strong></label>
@@ -258,35 +545,55 @@ function startQuiz() {
       </div>
     `;
   });
+
+  const first = document.getElementById("q0");
+  if (first) first.focus();
 }
+
 function checkAnswers() {
   let total = 0;
   let details = [];
-  stories[current].questions.forEach((item, i) => {
-    const user = document.getElementById(`q${i}`).value;
+
+  currentStory.questions.forEach((item, i) => {
+    const input = document.getElementById(`q${i}`);
+    const user = input.value;
     const result = gradeAnswer(user, item);
     total += result.score;
+
     details.push(`
       <div class="item">
         <strong>${i + 1}. ${item.q}</strong>
         <span class="badge">${result.label} — ${result.score} poin</span>
-        <div class="answer-line">Jawaban kamu: <b>${user || "(kosong)"}</b></div>
-        <div class="answer-line">Jawaban utama: <b>${item.correct[0]}</b></div>
+        <div class="answer-line">Jawaban kamu: <b>${escapeHtml(user || "(kosong)")}</b></div>
+        <div class="answer-line">Jawaban utama: <b>${escapeHtml(item.correct[0])}</b></div>
       </div>
     `);
   });
+
   const resultBox = document.getElementById("result");
   resultBox.classList.remove("hidden");
   resultBox.innerHTML = `
     <div class="score-big">Skor: ${total}/10</div>
-    <div>Benar = 1 poin · Hampir benar = 0.5 · Salah = 0</div>
+    <div>Benar = 1 · Hampir benar = 0.5 · Salah = 0</div>
     ${details.join("")}
   `;
+
   document.getElementById("nextBtn").classList.remove("hidden");
+  document.getElementById("checkBtn").disabled = true;
+  resultBox.scrollIntoView({ behavior: "smooth", block: "start" });
 }
-function showStoryAgain() { alert(stories[current].story); }
-function nextStory() { current = (current + 1) % stories.length; renderStory(); }
-renderStory();
+
+function showStoryAgain() {
+  alert(currentStory.story);
+}
+
+function newStory() {
+  currentStory = generateStory();
+  renderStory();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+newStory();
 </script>
 </body>
 </html>
