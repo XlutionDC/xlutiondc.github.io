@@ -270,6 +270,17 @@ input:focus{
 .answer-review{font-size:14px;padding:9px 0;border-top:1px solid #edf0f5;line-height:1.45}
 .answer-review:first-child{border-top:0}
 .empty-state{color:#727b8d;font-size:14px}
+.memory-profile{margin:14px 0 4px;padding:16px;border-radius:14px;background:linear-gradient(135deg,#f8f7ff,#f4fbff);border:1px solid #e1e4f4}
+.memory-profile-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.memory-profile-head strong{color:#454e68}
+.memory-skill{margin:11px 0}
+.memory-skill-row{display:flex;justify-content:space-between;gap:10px;font-size:13px;margin-bottom:5px;color:#586176}
+.memory-bar{height:9px;background:#e8ebf3;border-radius:999px;overflow:hidden}
+.memory-bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--purple),var(--blue),var(--mint))}
+.memory-callout{margin-top:13px;padding:11px 12px;border-radius:11px;background:#fff;border:1px solid #e4e8f1;font-size:14px;line-height:1.5}
+.memory-callout.good{background:var(--mint-soft);border-color:#d4eee3;color:#276c57}
+.memory-callout.focus{background:var(--amber-soft);border-color:#f1dfb9;color:#85601f}
+.skill-tag{display:inline-block;margin-left:6px;padding:3px 7px;border-radius:999px;background:#eef0ff;color:#5a4bc6;font-size:11px;font-weight:800}
 @media(max-width:700px){
   .progress-grid{grid-template-columns:1fr}
 }
@@ -383,6 +394,25 @@ function choose(pool){
  return out
 }
 function norm(s){return String(s||"").toLowerCase().trim().replace(/[^\p{L}\p{N}\s.,:]/gu,"").replace(/\s+/g," ")}
+const MEMORY_CATEGORIES={
+ change:{label:"Perubahan Rencana"},
+ order:{label:"Urutan Kejadian"},
+ people:{label:"Nama & Orang"},
+ numbers:{label:"Angka & Waktu"},
+ ownership:{label:"Kepemilikan & Titipan"},
+ location:{label:"Lokasi & Navigasi"},
+ detail:{label:"Detail Objek"}
+};
+function memoryCategory(text){
+ const z=norm(text);
+ if(/awalnya|tadinya|batal|sempat|akhirnya|final|dikoreksi|koreksi|berubah|rencana awal|informasi lama|yang benar|tidak jadi|justru/.test(z))return "change";
+ if(/milik|dibawa|dikembalikan|mengembalikan|titipan|nitip|dipegang|belum dikembalikan/.test(z))return "ownership";
+ if(/pertama|kedua|setelah itu|setelah|sebelum|paling awal|berikutnya|habis itu|urutan/.test(z))return "order";
+ if(/siapa|untuk siapa|penerima/.test(z))return "people";
+ if(/berapa|jam |pukul|jumlah|budget|anggaran|durasi|nomor plat|porsi/.test(z))return "numbers";
+ if(/di mana|dimana|lokasi|terminal|gate|ruang|lantai|bioskop|hotel|taman|tempat|titik/.test(z))return "location";
+ return "detail";
+}
 function lev(a,b){const m=a.length,n=b.length,d=Array.from({length:m+1},()=>Array(n+1).fill(0));for(let i=0;i<=m;i++)d[i][0]=i;for(let j=0;j<=n;j++)d[0][j]=j;for(let i=1;i<=m;i++)for(let j=1;j<=n;j++){const c=a[i-1]===b[j-1]?0:1;d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+c)}return d[m][n]}
 function typo(a,b){a=norm(a);b=norm(b);if(!a||!b)return false;if(a===b)return true;if(Math.min(a.length,b.length)<=3)return false;const sim=1-lev(a,b)/Math.max(a.length,b.length);return sim>=(Math.max(a.length,b.length)>=12?.82:Math.max(a.length,b.length)>=7?.86:.9)}
 function match(u,list){u=norm(u);return(list||[]).some(v=>{v=norm(v);return u===v||(v.length>=4&&u.includes(v))||typo(u,v)})}
