@@ -1024,6 +1024,382 @@ textarea{min-height:145px}
   .score-big{font-size:29px}
 }
 
+
+/* Yuk Bisa — visual depth pass */
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(circle at 8% 8%,rgba(110,148,126,.14),transparent 27%),
+    radial-gradient(circle at 92% 16%,rgba(220,174,118,.12),transparent 26%),
+    radial-gradient(circle at 82% 88%,rgba(99,145,137,.11),transparent 28%),
+    linear-gradient(180deg,#f2eee3 0%,#f7f4ec 38%,#eee9df 100%);
+  background-attachment:fixed;
+}
+body:before{
+  content:"";
+  position:fixed;inset:0;pointer-events:none;z-index:-1;
+  background-image:radial-gradient(rgba(43,79,67,.07) .7px,transparent .7px);
+  background-size:22px 22px;
+  mask-image:linear-gradient(to bottom,rgba(0,0,0,.5),transparent 72%);
+}
+.app{
+  margin:18px auto 34px;
+  border-radius:30px;
+  border:1px solid rgba(49,95,82,.08);
+  box-shadow:0 28px 80px rgba(54,70,61,.10);
+  background:
+    linear-gradient(rgba(255,253,248,.965),rgba(255,253,248,.965)),
+    radial-gradient(circle at top right,rgba(143,176,153,.10),transparent 25%);
+  overflow:hidden;
+}
+.site-header{
+  margin:0 -42px;
+  padding:0 42px;
+  background:rgba(255,253,248,.78);
+  backdrop-filter:blur(14px);
+  position:sticky;top:0;z-index:50;
+  box-shadow:0 1px 0 rgba(49,95,82,.06);
+}
+.brand-mark{
+  background:linear-gradient(145deg,#dcebdc,#edf3e8);
+  box-shadow:inset 0 0 0 1px rgba(49,95,82,.08),0 5px 14px rgba(49,95,82,.08);
+}
+.header-cta{
+  background:linear-gradient(135deg,#315f52,#244b40);
+  box-shadow:0 8px 20px rgba(49,95,82,.16);
+}
+
+/* Hero gets personality without illustrations */
+.hero-home{
+  margin:0 -42px;
+  padding:68px 50px 56px;
+  background:
+    linear-gradient(120deg,rgba(242,247,240,.88),rgba(255,251,243,.92) 52%,rgba(239,246,243,.88));
+  border-bottom:0;
+}
+.hero-home:before{
+  content:"";
+  position:absolute;
+  left:38px;bottom:30px;
+  width:120px;height:120px;
+  border:1px solid rgba(68,111,93,.10);
+  border-radius:50%;
+  box-shadow:34px -18px 0 -18px rgba(196,143,85,.13),66px 10px 0 -26px rgba(76,129,115,.12);
+}
+.hero-home:after{
+  right:10px;top:12px;
+  width:440px;height:360px;
+  background:
+    radial-gradient(circle at 30% 30%,rgba(110,151,128,.22),transparent 35%),
+    radial-gradient(circle at 76% 67%,rgba(211,167,111,.18),transparent 40%),
+    radial-gradient(circle at 55% 45%,rgba(255,255,255,.45),transparent 28%);
+}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:7px 10px 7px 8px;
+  border-radius:999px;
+  background:rgba(255,255,255,.68);
+  border:1px solid rgba(72,111,94,.10);
+}
+.eyebrow span{
+  width:8px;height:8px;border-radius:50%;
+  background:#6f967e;
+  box-shadow:0 0 0 4px rgba(111,150,126,.12);
+}
+.hero-copy h2{
+  max-width:720px;
+  text-wrap:balance;
+}
+.hero-copy p{max-width:590px}
+.hero-actions .primary{
+  box-shadow:0 10px 24px rgba(49,95,82,.17);
+}
+.hero-note{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.58);
+  border:1px solid rgba(78,112,97,.10);
+}
+.hero-note:before{
+  content:"";
+  width:6px;height:6px;border-radius:50%;
+  background:#c89556;
+}
+
+/* Quote feels like a designed object */
+.hero-quote{
+  min-height:290px;
+  border-radius:30px 30px 30px 10px;
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.84),rgba(241,245,238,.78)),
+    radial-gradient(circle at 85% 15%,rgba(204,158,103,.15),transparent 28%);
+  border:1px solid rgba(77,119,101,.13);
+  box-shadow:
+    0 20px 45px rgba(45,77,64,.08),
+    inset 0 1px 0 rgba(255,255,255,.65);
+}
+.hero-quote:before{
+  content:"";
+  position:absolute;top:18px;right:18px;
+  width:54px;height:54px;border-radius:50%;
+  border:1px dashed rgba(83,123,104,.18);
+}
+.hero-quote:after{
+  content:"";
+  position:absolute;bottom:18px;left:18px;
+  width:34px;height:8px;border-radius:999px;
+  background:linear-gradient(90deg,#6d947d,#d3a166);
+  opacity:.55;
+}
+.quote-mark{color:#6f927e}
+.quote-dots span:first-child{background:#5f8a73}
+
+/* Feature strip */
+.feature-strip{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin:-20px 18px 4px;
+  position:relative;z-index:4;
+}
+.feature-pill{
+  min-height:76px;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  grid-template-rows:auto auto;
+  column-gap:10px;
+  align-items:center;
+  padding:13px 16px;
+  border-radius:16px;
+  background:rgba(255,253,248,.94);
+  border:1px solid rgba(56,93,79,.10);
+  box-shadow:0 12px 30px rgba(52,75,66,.07);
+}
+.feature-dot{
+  grid-row:1/3;
+  width:31px;height:31px;border-radius:10px;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.04);
+}
+.memory-dot{background:linear-gradient(145deg,#b8d8bd,#7eaa8b)}
+.writing-dot{background:linear-gradient(145deg,#f3d0a4,#d69b5b)}
+.comm-dot{background:linear-gradient(145deg,#add8d2,#6da99f)}
+.feature-pill b{font-size:13px;color:#2d4a40}
+.feature-pill small{font-size:11px;color:#829089}
+
+/* Sections are no longer floating on white */
+#trainingChoices{
+  margin:36px -18px 0;
+  padding:38px 24px 30px;
+  border-radius:26px;
+  background:
+    linear-gradient(150deg,#f4f6ef,#fbf6ec 55%,#eef5f2);
+  border:1px solid #e3e7de;
+}
+#homepageProgress{
+  margin:28px -18px 0;
+  padding:34px 24px 28px;
+  border-radius:26px;
+  background:
+    linear-gradient(145deg,#fbf7ef,#f2f6f0);
+  border:1px solid #e7e3db;
+}
+.section-heading{
+  position:relative;
+  padding-left:15px;
+}
+.section-heading:before{
+  content:"";
+  position:absolute;left:0;top:5px;bottom:5px;width:3px;
+  border-radius:99px;
+  background:linear-gradient(#5d8b72,#d39c5c);
+}
+.section-kicker{letter-spacing:1.8px}
+
+/* Training cards get a proper visual language */
+.mode-grid{gap:18px}
+.mode-card{
+  min-height:270px;
+  padding:24px;
+  border:0;
+  box-shadow:
+    0 15px 34px rgba(44,68,59,.075),
+    inset 0 1px 0 rgba(255,255,255,.65);
+}
+.mode-card.memory{
+  background:
+    linear-gradient(150deg,#eaf4e8 0%,#dcebdd 100%);
+}
+.mode-card.writing{
+  background:
+    linear-gradient(150deg,#fbf0df 0%,#f3dfc5 100%);
+}
+.mode-card.communication{
+  background:
+    linear-gradient(150deg,#e5f2ef 0%,#d6e9e5 100%);
+}
+.mode-card:before{
+  content:"";
+  position:absolute;left:0;top:0;right:0;height:5px;
+  background:linear-gradient(90deg,rgba(255,255,255,.15),rgba(255,255,255,.7),rgba(255,255,255,.15));
+}
+.mode-card.memory:before{background:linear-gradient(90deg,#588a6b,#9cc3a4)}
+.mode-card.writing:before{background:linear-gradient(90deg,#bd7f42,#e5b474)}
+.mode-card.communication:before{background:linear-gradient(90deg,#4d8b82,#8ec2ba)}
+.mode-card:after{
+  right:-24px;bottom:-34px;
+  width:150px;height:150px;
+  border:1px solid rgba(255,255,255,.34);
+  background:rgba(255,255,255,.15);
+  box-shadow:-34px -38px 0 -24px rgba(255,255,255,.22);
+}
+.mode-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 22px 44px rgba(42,66,57,.12);
+}
+.mode-card-top{margin-bottom:14px}
+.mode-icon-badge{
+  background:rgba(255,255,255,.72);
+  border:1px solid rgba(255,255,255,.72);
+  box-shadow:0 8px 20px rgba(44,68,59,.07);
+}
+.mode-focus{
+  position:relative;z-index:1;
+  display:inline-flex;
+  margin-bottom:6px;
+  padding:5px 8px;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.45px;
+  text-transform:uppercase;
+  background:rgba(255,255,255,.46);
+  color:#5f7168;
+}
+.mode-card h3{margin-top:8px}
+.mode-card p{max-width:94%}
+.mode-link{
+  margin-top:auto;
+  padding:11px 13px;
+  border-radius:11px;
+  background:rgba(255,255,255,.48);
+  width:fit-content;
+  transition:background .15s ease,transform .15s ease;
+}
+.mode-card:hover .mode-link{
+  background:rgba(255,255,255,.75);
+  transform:translateX(2px);
+}
+
+/* Journey feels visual */
+.journey-card{
+  overflow:hidden;
+  background:
+    linear-gradient(110deg,#edf5ef 0%,#faf5e9 52%,#eef5f3 100%);
+  border:1px solid #dbe4dc;
+  box-shadow:0 18px 38px rgba(45,70,60,.07);
+}
+.journey-stat{position:relative}
+.journey-stat:before{
+  content:"";
+  display:block;
+  width:26px;height:4px;border-radius:99px;
+  background:#7ea18d;margin-bottom:12px;
+}
+.journey-stat:nth-child(2):before{background:#c89556}
+.journey-stat:nth-child(3):before{background:#709c94}
+.journey-stat:nth-child(4):before{background:#a47865}
+
+/* Daily message becomes a closer */
+.daily-message{
+  margin:34px -8px 0;
+  border-radius:24px;
+  background:
+    linear-gradient(120deg,#f5e7d6,#fbf6ec 50%,#e8f1e9);
+  border-color:#e8ddce;
+  box-shadow:0 18px 40px rgba(76,64,49,.07);
+}
+.daily-message:before{
+  content:"";
+  position:absolute;left:0;top:0;bottom:0;width:5px;
+  background:linear-gradient(#cb9459,#6f947d);
+}
+
+/* Exercise workspace gets more visual depth */
+#memoryHome>.home-card,#writingHome>.home-card,#communicationHome>.home-card{
+  background:
+    linear-gradient(145deg,rgba(245,248,242,.98),rgba(251,246,236,.96));
+  box-shadow:0 18px 38px rgba(44,70,60,.07);
+}
+#memoryHome>.home-card{border-top:4px solid #6c9878}
+#writingHome>.home-card{border-top:4px solid #cf9452}
+#communicationHome>.home-card{border-top:4px solid #5f9c94}
+.writing-shell,#storySection,#quizSection{
+  position:relative;
+}
+.writing-shell:before,#storySection:before,#quizSection:before{
+  content:"";
+  position:absolute;
+  inset:-18px -22px auto;
+  height:160px;
+  border-radius:26px;
+  background:
+    radial-gradient(circle at 14% 30%,rgba(105,151,126,.09),transparent 28%),
+    radial-gradient(circle at 86% 25%,rgba(205,153,91,.08),transparent 30%);
+  z-index:-1;
+}
+.prompt-card,.story{
+  box-shadow:0 14px 32px rgba(54,72,62,.06);
+}
+.prompt-card{
+  border-left-width:5px;
+}
+.question{
+  background:
+    linear-gradient(180deg,#fffefa,#fcfaf4)!important;
+  box-shadow:0 10px 24px rgba(45,68,60,.05);
+}
+.question:before{
+  content:"";
+  position:absolute;top:0;left:18px;right:18px;height:2px;
+  background:linear-gradient(90deg,transparent,#dce5de,transparent);
+}
+textarea,input{
+  background:#fff;
+}
+.result{
+  background:
+    radial-gradient(circle at 90% 10%,rgba(100,150,125,.10),transparent 22%),
+    linear-gradient(145deg,#eef5ef,#fbf7ee);
+  box-shadow:0 20px 45px rgba(45,69,60,.08);
+}
+
+/* More distinctive scoring cards */
+.rubric-card,.metric-card{
+  box-shadow:0 7px 16px rgba(45,69,60,.035);
+}
+.rubric-card:nth-child(3n+1),.metric-card:nth-child(3n+1){background:#edf5ef}
+.rubric-card:nth-child(3n+2),.metric-card:nth-child(3n+2){background:#fbf0e2}
+.rubric-card:nth-child(3n),.metric-card:nth-child(3n){background:#eef5f3}
+.comm-score-grid .rubric-card:nth-child(4){background:#f4efe9}
+.comm-score-grid .rubric-card:nth-child(5){background:#f0f2ea}
+
+@media(max-width:900px){
+  .app{margin:0 auto;border-radius:0}
+  .site-header{margin:0 -24px;padding:0 24px}
+  .hero-home{margin:0 -24px;padding-left:28px;padding-right:28px}
+  .feature-strip{margin:-14px 0 0;grid-template-columns:1fr}
+  #trainingChoices,#homepageProgress{margin-left:0;margin-right:0}
+}
+@media(max-width:600px){
+  .site-header{margin:0 -16px;padding:0 16px}
+  .hero-home{margin:0 -16px;padding-left:16px;padding-right:16px}
+  .feature-strip{gap:8px}
+  .feature-pill{min-height:64px}
+  #trainingChoices,#homepageProgress{padding:28px 16px 22px}
+  .mode-card{min-height:230px}
+}
+
 </style>
 </head>
 <body>
@@ -1046,7 +1422,7 @@ textarea{min-height:145px}
   <div id="mainHome">
     <section class="hero-home">
       <div class="hero-copy">
-        <div class="eyebrow">LANGKAH KECIL, PERUBAHAN NYATA</div>
+        <div class="eyebrow"><span></span> LANGKAH KECIL, PERUBAHAN NYATA</div>
         <h2>Semangat kecil hari ini,<br><em>jadi kemajuan besar nanti.</em></h2>
         <p>Yuk Bisa adalah ruang kecil untuk melatih ingatan, menyusun pikiran, dan menyampaikan sesuatu dengan lebih jelas. Sedikit setiap hari sudah cukup.</p>
         <div class="hero-actions">
@@ -1062,6 +1438,12 @@ textarea{min-height:145px}
         <div class="quote-dots" aria-hidden="true"><span></span><span></span><span></span></div>
       </aside>
     </section>
+
+    <div class="feature-strip" aria-label="Fokus latihan">
+      <div class="feature-pill"><span class="feature-dot memory-dot"></span><b>Ingat lebih tajam</b><small>detail & fokus</small></div>
+      <div class="feature-pill"><span class="feature-dot writing-dot"></span><b>Tulis lebih jelas</b><small>ringkas & tepat</small></div>
+      <div class="feature-pill"><span class="feature-dot comm-dot"></span><b>Bicara lebih efektif</b><small>inti & relevansi</small></div>
+    </div>
 
     <section class="home-section-block" id="trainingChoices">
       <div class="section-heading">
@@ -1079,6 +1461,7 @@ textarea{min-height:145px}
             </div>
             <div class="mode-number">01</div>
           </div>
+          <div class="mode-focus">Fokus · Ingatan & Ketelitian</div>
           <h3>Latihan Ingatan</h3>
           <p>Asah daya ingat, fokus, dan ketelitian lewat cerita dengan detail yang terus berubah.</p>
           <span class="mode-link">Mulai latihan →</span>
@@ -1090,6 +1473,7 @@ textarea{min-height:145px}
             </div>
             <div class="mode-number">02</div>
           </div>
+          <div class="mode-focus">Fokus · Menulis Jelas</div>
           <h3>Kalimat Efektif</h3>
           <p>Latih menyusun kalimat yang ringkas, jelas, terstruktur, dan tetap menjaga makna.</p>
           <span class="mode-link">Mulai latihan →</span>
@@ -1101,6 +1485,7 @@ textarea{min-height:145px}
             </div>
             <div class="mode-number">03</div>
           </div>
+          <div class="mode-focus">Fokus · Menyampaikan Inti</div>
           <h3>Komunikasi Efektif</h3>
           <p>Latih menangkap inti, memilih informasi penting, dan menyampaikan maksud dengan langsung.</p>
           <span class="mode-link">Mulai latihan →</span>
