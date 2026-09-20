@@ -430,6 +430,7 @@ function norm(s){
    .replace(/\brp\.?\s*/g,"")
    .replace(/(\d)\s*jt\b/g,"$1 juta")
    .replace(/(\d)\s*rb\b/g,"$1 ribu")
+   .replace(/[-–—_/]+/g," ")
    .trim()
    .replace(/[^\p{L}\p{N}\s.,:]/gu,"")
    .replace(/\s+/g," ");
@@ -466,7 +467,19 @@ function typo(a,b){
 }
 function tokens(s){
  return norm(s).split(" ").filter(function(t){
-   return t && !["yang","dan","di","ke","dari","buat","untuk","dengan","nya","sebuah","satu"].includes(t);
+   return t && !["yang","dan","di","ke","dari","buat","untuk","dengan","nya","sebuah","satu","mampir"].includes(t);
+ });
+}
+function sameCoreTokens(user,target){
+ if(hasNumberConflict(user,target))return false;
+ const u=tokens(user),t=tokens(target);
+ if(!u.length||!t.length||u.length!==t.length)return false;
+ const used=new Array(t.length).fill(false);
+ return u.every(function(word){
+   const idx=t.findIndex(function(candidate,i){return !used[i]&&(word===candidate||typo(word,candidate))});
+   if(idx<0)return false;
+   used[idx]=true;
+   return true;
  });
 }
 function numericParts(s){
@@ -490,6 +503,7 @@ function fullSoftMatch(user,target){
  if(hasNumberConflict(u,t))return false;
  if(t.length>=4&&u.includes(t))return true;
  if(typo(u,t))return true;
+ if(sameCoreTokens(u,t))return true;
  const ov=tokenOverlap(u,t);
  return ov.shared>=2 && ov.userCoverage>=0.8 && ov.targetCoverage>=0.66;
 }
