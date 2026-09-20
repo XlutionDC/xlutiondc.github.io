@@ -2510,6 +2510,81 @@ function newStory(){
  render();
  window.scrollTo({top:0,behavior:"smooth"});
 }
+const HOME_QUOTES=[
+ "Rajin sedikit setiap hari, hasilnya terasa nanti.",
+ "Tidak perlu sempurna. Yang penting tetap bergerak.",
+ "Sedikit lebih baik hari ini sudah cukup.",
+ "Belajar pelan-pelan tetap termasuk maju.",
+ "Konsisten lebih penting daripada terburu-buru.",
+ "Kalau masih mau mencoba, berarti masih berkembang.",
+ "Satu latihan hari ini tetap punya arti.",
+ "Tidak semua hari harus hebat. Yang penting tetap hadir.",
+ "Kemajuan sering terlihat kecil sebelum terasa besar.",
+ "Pikiran yang terlatih membuat banyak hal jadi lebih mudah.",
+ "Semakin sering dilatih, semakin ringan dilakukan.",
+ "Jelas lebih penting daripada panjang.",
+ "Ingat intinya. Susun pikirannya. Sampaikan dengan tenang.",
+ "Belajar itu bukan soal cepat, tapi soal terus.",
+ "Satu langkah kecil tetap mengubah arah.",
+ "Yang sulit hari ini bisa terasa biasa nanti.",
+ "Latihan kecil yang diulang akan jadi kemampuan.",
+ "Tidak apa-apa lambat, asal tidak berhenti.",
+ "Coba lagi dengan lebih sederhana.",
+ "Kamu tidak harus tahu semuanya untuk mulai.",
+ "Fokus pada satu hal yang bisa diperbaiki hari ini.",
+ "Biar sedikit, asal benar-benar dilakukan.",
+ "Semakin jelas pikiranmu, semakin jelas caramu bicara.",
+ "Kemampuan tumbuh dari hal yang sering dilakukan.",
+ "Hari ini cukup satu langkah.",
+ "Ulangi yang penting sampai terasa natural.",
+ "Belajar yang baik tidak harus terasa berat.",
+ "Jangan kejar sempurna. Kejar konsisten.",
+ "Pahami dulu, baru sampaikan.",
+ "Sedikit lebih terlatih berarti sedikit lebih siap.",
+ "Kalimat yang jelas dimulai dari pikiran yang jelas.",
+ "Yang kamu latih hari ini akan membantu kamu nanti.",
+ "Kemajuan tidak harus dramatis untuk tetap nyata.",
+ "Cukup datang, latihan, lalu ulangi besok.",
+ "Kamu tidak perlu buru-buru untuk jadi lebih baik.",
+ "Tetap sederhana. Tetap jelas. Tetap latihan.",
+ "Setiap kali mencoba, kamu sedang membangun kebiasaan.",
+ "Lebih baik satu latihan selesai daripada banyak rencana.",
+ "Hari ini tidak harus besar untuk tetap berarti.",
+ "Belajar menyampaikan dengan baik adalah latihan seumur hidup."
+];
+let homeQuoteOrder=[];
+let homeQuoteCursor=0;
+let homeQuoteTimer=null;
+function prepareHomeQuotes(){
+ homeQuoteOrder=HOME_QUOTES.map(function(_,i){return i});
+ for(let i=homeQuoteOrder.length-1;i>0;i--){
+   const j=Math.floor(Math.random()*(i+1));
+   const t=homeQuoteOrder[i];homeQuoteOrder[i]=homeQuoteOrder[j];homeQuoteOrder[j]=t;
+ }
+ homeQuoteCursor=0;
+}
+function rotateHomeQuote(immediate){
+ const card=document.getElementById("homeQuoteCard");
+ const textEl=document.getElementById("homeQuoteText");
+ if(!card||!textEl)return;
+ if(!homeQuoteOrder.length||homeQuoteCursor>=homeQuoteOrder.length)prepareHomeQuotes();
+ const show=function(){
+   const idx=homeQuoteOrder[homeQuoteCursor++];
+   textEl.textContent=HOME_QUOTES[idx];
+   card.classList.remove("quote-changing");
+ };
+ if(immediate){show();return}
+ card.classList.add("quote-changing");
+ setTimeout(show,280);
+}
+function startHomeQuoteRotation(){
+ if(homeQuoteTimer)clearInterval(homeQuoteTimer);
+ rotateHomeQuote(true);
+ homeQuoteTimer=setInterval(function(){
+   if(!document.getElementById("mainHome").classList.contains("hidden"))rotateHomeQuote(false);
+ },6500);
+}
+
 function allTrainingScores(){
  const a=[];
  progressHistory.forEach(function(x){if(typeof x.pct==="number")a.push(x.pct)});
@@ -2574,6 +2649,7 @@ function showHome(){
  updateStats();
  document.getElementById("typeStat").textContent="Mode: Home";
  updateHomepageJourney();
+ startHomeQuoteRotation();
  window.scrollTo({top:0,behavior:"smooth"});
 }
 showHome();
