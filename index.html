@@ -1919,6 +1919,20 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
   .vocab-option{min-height:64px}
 }
 
+
+/* Vocabulary difficulty refinement */
+#trainingChoices{margin-top:18px}
+.vocab-difficulty{margin-top:10px}
+.vocab-difficulty .level-btn{display:grid;gap:3px}
+.vocab-difficulty .level-btn small{font-size:10px;font-weight:650;opacity:.78}
+#vocab-easy{background:#eaf3ff!important;color:#4776a7!important;border-color:#cfdef0!important}
+#vocab-easy.active{background:#6597cc!important;color:#fff!important;border-color:#6597cc!important}
+#vocab-medium{background:#fff0df!important;color:#976126!important;border-color:#efd5b6!important}
+#vocab-medium.active{background:#d8944e!important;color:#fff!important;border-color:#d8944e!important}
+#vocab-hard{background:#f9e8ee!important;color:#a2556d!important;border-color:#ebcad5!important}
+#vocab-hard.active{background:#bb667f!important;color:#fff!important;border-color:#bb667f!important}
+.vocab-context{width:min(650px,100%);margin:5px auto 15px;padding:11px 14px;border-radius:12px;background:rgba(255,255,255,.7);border:1px solid #e4dfea;color:#676176;font-family:Georgia,"Times New Roman",serif;font-size:16px;font-style:italic;line-height:1.5}
+@media(max-width:650px){.vocab-difficulty{grid-template-columns:1fr 1fr 1fr!important}.vocab-difficulty .level-btn{padding:11px 7px!important}.vocab-difficulty .level-btn small{font-size:9px}}
 </style>
 </head>
 <body>
@@ -1954,13 +1968,6 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
         <div class="quote-dots" aria-hidden="true"><span></span><span></span><span></span></div>
       </aside>
     </section>
-
-    <div class="feature-strip" aria-label="Fokus latihan">
-      <div class="feature-pill"><span class="feature-dot memory-dot"></span><b>Ingat lebih tajam</b><small>detail & fokus</small></div>
-      <div class="feature-pill"><span class="feature-dot writing-dot"></span><b>Tulis lebih jelas</b><small>ringkas & tepat</small></div>
-      <div class="feature-pill"><span class="feature-dot comm-dot"></span><b>Bicara lebih efektif</b><small>inti & relevansi</small></div>
-      <div class="feature-pill"><span class="feature-dot vocab-dot"></span><b>Tambah vocabulary</b><small>arti & pemahaman</small></div>
-    </div>
 
     <section class="home-section-block" id="trainingChoices">
       <div class="section-heading">
@@ -2014,9 +2021,9 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
             </div>
             <div class="mode-number">04</div>
           </div>
-          <div class="mode-focus">Fokus · Kosakata Sehari-hari</div>
+          <div class="mode-focus">Fokus · Vocabulary yang Kepakai</div>
           <h3>Vocabulary Bahasa Inggris</h3>
-          <p>Latih arti kata bahasa Inggris yang sering dipakai sehari-hari lewat pilihan ganda yang menantang.</p>
+          <p>Dari vocabulary sehari-hari sampai kata yang sering muncul di buku dan artikel—tetap berguna, bukan sekadar terdengar sulit.</p>
           <span class="mode-link">Mulai latihan →</span>
         </div>
       </div>
@@ -2116,13 +2123,20 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
     <div class="home-card vocab-home-card">
       <div class="vocab-home-kicker">LATIHAN 04</div>
       <h2>Vocabulary Bahasa Inggris</h2>
-      <p>Tebak arti kata bahasa Inggris ke Bahasa Indonesia. Tidak perlu mengetik—cukup pilih jawaban yang paling tepat.</p>
-      <div class="home-tip"><b>Mode menantang:</b> pilihan pengecoh dibuat mirip dan masuk akal. Posisi jawaban benar diacak dan diseimbangkan setiap ronde.</div>
+      <p>Tebak arti vocabulary Inggris ke Bahasa Indonesia. Pilihannya dibuat dekat maknanya supaya kamu benar-benar perlu tahu arti katanya.</p>
+      <div class="home-tip"><b>Susah tapi fair:</b> hanya ada satu jawaban yang tepat. Level Susah memakai vocabulary yang sering muncul di buku, artikel, podcast, dan diskusi serius—bukan kata langka yang cuma terdengar mahal.</div>
     </div>
+    <div class="progress-title">Tingkat kesulitan</div>
+    <div class="difficulty vocab-difficulty">
+      <button class="level-btn" id="vocab-easy" onclick="setVocabularyDifficulty('easy')"><span>Mudah</span><small>Sehari-hari</small></button>
+      <button class="level-btn" id="vocab-medium" onclick="setVocabularyDifficulty('medium')"><span>Sedang</span><small>Lebih bernuansa</small></button>
+      <button class="level-btn" id="vocab-hard" onclick="setVocabularyDifficulty('hard')"><span>Susah</span><small>Buku & artikel</small></button>
+    </div>
+    <div class="level-desc" id="vocabularyLevelDesc"></div>
     <div class="vocab-overview-grid">
-      <div><strong>100</strong><span>vocabulary</span><small>kata sehari-hari yang berguna</small></div>
+      <div><strong>300</strong><span>vocabulary</span><small>100 kata di setiap level</small></div>
       <div><strong>10</strong><span>soal / ronde</span><small>acak tanpa cepat mengulang</small></div>
-      <div><strong>4</strong><span>pilihan</span><small>semua jawaban Bahasa Indonesia</small></div>
+      <div><strong>4</strong><span>pilihan</span><small>mirip, tetapi tidak ambigu</small></div>
     </div>
     <div class="actions">
       <button class="primary vocab-primary" onclick="beginVocabularySession()">Mulai Vocabulary</button>
@@ -2202,7 +2216,8 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
   <div class="vocab-question-card" id="vocabQuestionCard">
     <div class="prompt-label">Apa arti paling tepat dari kata ini?</div>
     <div id="vocabWord" class="vocab-word">Reliable</div>
-    <div class="vocab-question-note">Pilih satu jawaban. Semua pilihan sengaja dibuat cukup dekat agar tidak mudah ditebak.</div>
+    <div id="vocabContext" class="vocab-context hidden"></div>
+    <div class="vocab-question-note">Pilih arti yang paling tepat. Tiga pilihan lain sengaja dibuat dekat, tetapi bukan sinonim penuh.</div>
   </div>
   <div id="vocabOptions" class="vocab-options"></div>
   <div id="vocabFeedback" class="vocab-feedback hidden"></div>
@@ -2238,6 +2253,7 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
   </div>
 </div>
 </div>
+<script src="vocabulary-data.js"></script>
 <script>
 const D={
 places:["Grand Indonesia","Plaza Indonesia","Senayan City","Kota Kasablanka","Central Park","Pondok Indah Mall","Blok M","PIK"],
@@ -3793,325 +3809,151 @@ function newStory(){
  render();
  window.scrollTo({top:0,behavior:"smooth"});
 }
-const VOCAB_BANK=[
-{word:"reliable",meaning:"dapat diandalkan",wrong:["mudah tersedia","mudah berubah","sangat teliti"]},
-{word:"aware",meaning:"sadar / mengetahui",wrong:["bingung","yakin","terbiasa"]},
-{word:"hesitate",meaning:"ragu-ragu",wrong:["menolak","menunda","mengabaikan"]},
-{word:"improve",meaning:"meningkatkan / memperbaiki",wrong:["mempertahankan","mengurangi","mengganti"]},
-{word:"avoid",meaning:"menghindari",wrong:["menghadapi","menerima","mengikuti"]},
-{word:"suggest",meaning:"menyarankan",wrong:["memerintahkan","menolak","menjanjikan"]},
-{word:"likely",meaning:"kemungkinan besar",wrong:["hampir mustahil","sudah pasti","jarang terjadi"]},
-{word:"afford",meaning:"mampu membeli / membayar",wrong:["meminjam","menawarkan","menabung"]},
-{word:"remind",meaning:"mengingatkan",wrong:["meyakinkan","menjelaskan","memperingatkan"]},
-{word:"notice",meaning:"menyadari / memperhatikan",wrong:["mengingat","mengabaikan","memutuskan"]},
-{word:"behave",meaning:"berperilaku",wrong:["bereaksi","berbicara","berpura-pura"]},
-{word:"prefer",meaning:"lebih memilih",wrong:["menyetujui","membutuhkan","mengharapkan"]},
-{word:"require",meaning:"membutuhkan / mengharuskan",wrong:["menyarankan","mengizinkan","menawarkan"]},
-{word:"deserve",meaning:"pantas mendapatkan",wrong:["berusaha mendapatkan","berharap mendapatkan","gagal mendapatkan"]},
-{word:"manage",meaning:"berhasil menangani / mengelola",wrong:["menghindari","menunda","menyerahkan"]},
-{word:"available",meaning:"tersedia",wrong:["terjangkau","diperlukan","terbatas"]},
-{word:"awkward",meaning:"canggung",wrong:["santai","kasar","bingung"]},
-{word:"curious",meaning:"penasaran",wrong:["khawatir","yakin","bosan"]},
-{word:"grateful",meaning:"bersyukur",wrong:["bangga","lega","menyesal"]},
-{word:"convince",meaning:"meyakinkan",wrong:["mengingatkan","memaksa","menjelaskan"]},
-{word:"assume",meaning:"menganggap tanpa memastikan",wrong:["membuktikan","menyadari","mengakui"]},
-{word:"concern",meaning:"kekhawatiran / hal yang dikhawatirkan",wrong:["tujuan","keuntungan","kebiasaan"]},
-{word:"effort",meaning:"usaha",wrong:["hasil","kemampuan","kesempatan"]},
-{word:"habit",meaning:"kebiasaan",wrong:["pilihan","aturan","kebutuhan"]},
-{word:"opportunity",meaning:"kesempatan",wrong:["kemungkinan","keuntungan","keputusan"]},
-{word:"borrow",meaning:"meminjam dari orang lain",wrong:["meminjamkan kepada orang lain","membeli sementara","menyewa dari toko"]},
-{word:"lend",meaning:"meminjamkan kepada orang lain",wrong:["meminjam dari orang lain","menjual kepada orang lain","mengembalikan barang"]},
-{word:"refuse",meaning:"menolak",wrong:["menerima","menunda","membatalkan"]},
-{word:"accept",meaning:"menerima / menyetujui",wrong:["mengizinkan","mengakui","menawarkan"]},
-{word:"complain",meaning:"mengeluh",wrong:["menjelaskan","meminta","menyalahkan"]},
-{word:"apologize",meaning:"meminta maaf",wrong:["memaafkan","mengucapkan terima kasih","memberi alasan"]},
-{word:"promise",meaning:"berjanji",wrong:["berharap","memastikan","menyarankan"]},
-{word:"expect",meaning:"mengharapkan / memperkirakan",wrong:["menuntut","menjanjikan","menginginkan"]},
-{word:"realize",meaning:"menyadari",wrong:["membuktikan","memutuskan","mengakui"]},
-{word:"decide",meaning:"memutuskan",wrong:["mempertimbangkan","menyarankan","menyetujui"]},
-{word:"depend",meaning:"bergantung",wrong:["mempengaruhi","mengikuti","menentukan"]},
-{word:"allow",meaning:"mengizinkan",wrong:["meminta","mencegah","mengharuskan"]},
-{word:"prevent",meaning:"mencegah",wrong:["memungkinkan","menyebabkan","mengurangi"]},
-{word:"prepare",meaning:"mempersiapkan",wrong:["merencanakan","mengatur","menyelesaikan"]},
-{word:"mention",meaning:"menyebutkan",wrong:["menjelaskan","menanyakan","menekankan"]},
-{word:"reach",meaning:"mencapai",wrong:["melewati","mendekati","meninggalkan"]},
-{word:"offer",meaning:"menawarkan",wrong:["memesan","menerima","menyarankan"]},
-{word:"share",meaning:"berbagi",wrong:["menyimpan","mengumpulkan","mengambil"]},
-{word:"waste",meaning:"menyia-nyiakan / memboroskan",wrong:["menyimpan","menghemat","menggunakan"]},
-{word:"save",meaning:"menyimpan / menghemat",wrong:["membelanjakan","meminjam","membuang"]},
-{word:"attend",meaning:"menghadiri",wrong:["mengatur","mengundang","meninggalkan"]},
-{word:"cancel",meaning:"membatalkan",wrong:["menunda","mengubah","mengonfirmasi"]},
-{word:"delay",meaning:"menunda / memperlambat",wrong:["membatalkan","mempercepat","menjadwalkan"]},
-{word:"handle",meaning:"menangani",wrong:["menghindari","menyerahkan","memulai"]},
-{word:"solve",meaning:"menyelesaikan masalah",wrong:["menjelaskan masalah","membuat masalah","menghindari masalah"]},
-{word:"choose",meaning:"memilih",wrong:["membandingkan","mengubah","menilai"]},
-{word:"compare",meaning:"membandingkan",wrong:["menggabungkan","memisahkan","memilih"]},
-{word:"support",meaning:"mendukung",wrong:["menentang","mengabaikan","menggantikan"]},
-{word:"trust",meaning:"mempercayai",wrong:["meragukan","meyakinkan","mengharapkan"]},
-{word:"doubt",meaning:"meragukan",wrong:["menolak","mengkhawatirkan","mempertimbangkan"]},
-{word:"recognize",meaning:"mengenali",wrong:["mengingat","menyadari","memperkenalkan"]},
-{word:"explain",meaning:"menjelaskan",wrong:["menggambarkan","menyebutkan","menyimpulkan"]},
-{word:"describe",meaning:"menggambarkan / mendeskripsikan",wrong:["menjelaskan alasan","membandingkan","menyarankan"]},
-{word:"recommend",meaning:"merekomendasikan",wrong:["mewajibkan","menawarkan","mengingatkan"]},
-{word:"request",meaning:"meminta secara resmi",wrong:["menuntut","menyarankan","mengizinkan"]},
-{word:"reply",meaning:"membalas",wrong:["bertanya","menyampaikan","menghubungi"]},
-{word:"arrange",meaning:"mengatur / menyusun",wrong:["membatalkan","memperbaiki","memindahkan"]},
-{word:"schedule",meaning:"menjadwalkan",wrong:["mengonfirmasi","menunda","mengingatkan"]},
-{word:"deliver",meaning:"mengantarkan / mengirim",wrong:["menerima","mengambil","memesan"]},
-{word:"replace",meaning:"mengganti",wrong:["memperbaiki","memindahkan","mengembalikan"]},
-{word:"return",meaning:"mengembalikan / kembali",wrong:["menukar","menerima","menyimpan"]},
-{word:"receive",meaning:"menerima / mendapatkan",wrong:["mengirim","meminta","mengambil"]},
-{word:"spend",meaning:"membelanjakan / menghabiskan",wrong:["menghasilkan","menabung","meminjam"]},
-{word:"earn",meaning:"memperoleh / menghasilkan uang",wrong:["membelanjakan","meminjam","menyimpan"]},
-{word:"reduce",meaning:"mengurangi",wrong:["meningkatkan","mempertahankan","mengganti"]},
-{word:"increase",meaning:"meningkatkan / bertambah",wrong:["mengurangi","membatasi","mempertahankan"]},
-{word:"enough",meaning:"cukup",wrong:["terlalu banyak","kurang","sesuai"]},
-{word:"crowded",meaning:"ramai / padat",wrong:["sepi","luas","tertib"]},
-{word:"quiet",meaning:"tenang / sepi",wrong:["ramai","lambat","nyaman"]},
-{word:"convenient",meaning:"praktis / mudah digunakan",wrong:["murah","cepat","tersedia"]},
-{word:"nearby",meaning:"dekat / tidak jauh",wrong:["di dalam","di luar","jauh"]},
-{word:"usual",meaning:"biasa / lazim",wrong:["baru","langka","sementara"]},
-{word:"rare",meaning:"jarang / langka",wrong:["umum","biasa","sering"]},
-{word:"honest",meaning:"jujur",wrong:["sopan","tegas","ramah"]},
-{word:"patient",meaning:"sabar",wrong:["tenang","hati-hati","lambat"]},
-{word:"careful",meaning:"berhati-hati",wrong:["cemas","pelan","ragu-ragu"]},
-{word:"nervous",meaning:"gugup",wrong:["marah","lelah","malu"]},
-{word:"proud",meaning:"bangga",wrong:["puas","lega","yakin"]},
-{word:"upset",meaning:"kesal / sedih",wrong:["bersemangat","tenang","penasaran"]},
-{word:"disappointed",meaning:"kecewa",wrong:["kesal","khawatir","malu"]},
-{word:"excited",meaning:"bersemangat / antusias",wrong:["gugup","terkejut","penasaran"]},
-{word:"comfortable",meaning:"nyaman",wrong:["aman","santai","cocok"]},
-{word:"familiar",meaning:"terasa dikenal / tidak asing",wrong:["terkenal","serupa","jelas"]},
-{word:"responsible",meaning:"bertanggung jawab",wrong:["dapat diandalkan","berhati-hati","mandiri"]},
-{word:"possible",meaning:"mungkin / dapat terjadi",wrong:["pasti","sulit","perlu"]},
-{word:"necessary",meaning:"perlu / diperlukan",wrong:["mungkin","berguna","mendesak"]},
-{word:"simple",meaning:"sederhana",wrong:["biasa","kosong","ringan"]},
-{word:"useful",meaning:"berguna",wrong:["penting","praktis","diperlukan"]},
-{word:"harmful",meaning:"berbahaya / merugikan",wrong:["tidak nyaman","tidak berguna","berisiko"]},
-{word:"common",meaning:"umum / sering ditemukan",wrong:["langka","khusus","asing"]},
-{word:"receipt",meaning:"struk / bukti pembayaran",wrong:["tagihan","tiket","formulir"]},
-{word:"appointment",meaning:"janji pertemuan",wrong:["jadwal kerja","rapat dadakan","pesanan"]},
-{word:"deadline",meaning:"batas waktu",wrong:["waktu mulai","jadwal ulang","perkiraan waktu"]},
-{word:"refund",meaning:"pengembalian uang",wrong:["potongan harga","uang muka","biaya tambahan"]},
-{word:"discount",meaning:"potongan harga",wrong:["pajak","biaya layanan","uang kembalian"]}
-];
-
+let vocabularyDifficulty=localStorage.getItem("vocabularyDifficulty")||"medium";
 let vocabularyHistory=JSON.parse(localStorage.getItem("vocabularyProgressHistory")||"[]");
-let vocabRound=null;
-let vocabIndex=0;
-let vocabScore=0;
-let vocabAnswered=false;
-let vocabAnswers=[];
+let vocabRound=null,vocabIndex=0,vocabScore=0,vocabAnswered=false,vocabAnswers=[];
 
 function vocabShuffle(arr){
  const a=arr.slice();
- for(let i=a.length-1;i>0;i--){
-   const j=Math.floor(Math.random()*(i+1));
-   const t=a[i];a[i]=a[j];a[j]=t;
- }
+ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const t=a[i];a[i]=a[j];a[j]=t}
  return a;
 }
-
 function balancedVocabPositions(){
- const countPattern=vocabShuffle([3,3,2,2]);
- let pool=[];
- countPattern.forEach(function(count,pos){
-   for(let i=0;i<count;i++)pool.push(pos);
- });
- let attempt=0;
- while(attempt<300){
-   const a=vocabShuffle(pool);
-   let good=true;
-   for(let i=1;i<a.length;i++){
-     if(a[i]===a[i-1]){good=false;break}
-   }
-   if(good){
-     for(let i=0;i<=a.length-4;i++){
-       if(a[i]===a[i+2]&&a[i+1]===a[i+3]){good=false;break}
-     }
-   }
+ const counts=vocabShuffle([3,3,2,2]);let pool=[];
+ counts.forEach(function(n,pos){for(let i=0;i<n;i++)pool.push(pos)});
+ for(let attempt=0;attempt<500;attempt++){
+   const a=vocabShuffle(pool);let good=true;
+   for(let i=1;i<a.length;i++)if(a[i]===a[i-1]){good=false;break}
+   if(good)for(let i=0;i<=a.length-4;i++)if(a[i]===a[i+2]&&a[i+1]===a[i+3]){good=false;break}
    if(good)return a;
-   attempt++;
  }
  return [0,2,1,3,0,1,3,2,0,1];
 }
-
+function setVocabularyDifficulty(level){
+ vocabularyDifficulty=level;localStorage.setItem("vocabularyDifficulty",level);updateVocabularyHomeUI();
+}
+function updateVocabularyHomeUI(){
+ ["easy","medium","hard"].forEach(function(level){
+   const el=document.getElementById("vocab-"+level);
+   if(el)el.classList.toggle("active",level===vocabularyDifficulty);
+ });
+ const d=document.getElementById("vocabularyLevelDesc");
+ if(d)d.textContent=VOCAB_LEVELS[vocabularyDifficulty].desc;
+ const p=document.getElementById("vocabularyProgressPanel");
+ if(p&&!p.classList.contains("hidden"))renderVocabularyProgress();
+}
 function chooseVocabularyRound(){
- let recent=[];
- try{recent=JSON.parse(localStorage.getItem("vocabRecentWords")||"[]")}catch(e){recent=[]}
- let pool=VOCAB_BANK.filter(function(x){return !recent.includes(x.word)});
- if(pool.length<10)pool=VOCAB_BANK.slice();
+ const bank=VOCAB_BANK[vocabularyDifficulty];
+ const key="vocabRecentWords_"+vocabularyDifficulty;
+ let recent=[];try{recent=JSON.parse(localStorage.getItem(key)||"[]")}catch(e){}
+ let pool=bank.filter(function(x){return !recent.includes(x.word)});
+ if(pool.length<10)pool=bank.slice();
  const chosen=vocabShuffle(pool).slice(0,10);
- const nextRecent=recent.concat(chosen.map(function(x){return x.word})).slice(-40);
- localStorage.setItem("vocabRecentWords",JSON.stringify(nextRecent));
+ localStorage.setItem(key,JSON.stringify(recent.concat(chosen.map(function(x){return x.word})).slice(-45)));
  const positions=balancedVocabPositions();
  return chosen.map(function(item,i){
-   const wrong=vocabShuffle(item.wrong);
-   const options=wrong.slice(0,3);
+   const options=vocabShuffle(item.wrong).slice(0,3);
    options.splice(positions[i],0,item.meaning);
-   return {word:item.word,meaning:item.meaning,options:options,correctIndex:positions[i]};
+   return {word:item.word,meaning:item.meaning,context:item.context||"",options:options,correctIndex:positions[i]};
  });
 }
-
+function findVocabularyWord(word){
+ for(const level of ["easy","medium","hard"]){
+   const found=VOCAB_BANK[level].find(function(x){return x.word===word});
+   if(found)return found;
+ }
+ return null;
+}
 function openVocabularyHome(){
  const shell=document.getElementById("appShell");if(shell)shell.classList.remove("home-view");
  clearStoryTimer();
- ["storySection","quizSection","writingSection","communicationSection","vocabularySection"].forEach(function(id){
-   const el=document.getElementById(id);if(el)el.classList.add("hidden");
- });
+ ["storySection","quizSection","writingSection","communicationSection","vocabularySection"].forEach(function(id){const el=document.getElementById(id);if(el)el.classList.add("hidden")});
  document.getElementById("homeSection").classList.remove("hidden");
  ["mainHome","memoryHome","writingHome","communicationHome"].forEach(function(id){document.getElementById(id).classList.add("hidden")});
  document.getElementById("vocabularyHome").classList.remove("hidden");
  document.getElementById("typeStat").textContent="Mode: Vocabulary";
- window.scrollTo({top:0,behavior:"smooth"});
+ updateVocabularyHomeUI();window.scrollTo({top:0,behavior:"smooth"});
 }
-
 function beginVocabularySession(){
- vocabRound=chooseVocabularyRound();
- vocabIndex=0;
- vocabScore=0;
- vocabAnswers=[];
- vocabAnswered=false;
+ vocabRound=chooseVocabularyRound();vocabIndex=0;vocabScore=0;vocabAnswers=[];vocabAnswered=false;
  document.getElementById("vocabResult").classList.add("hidden");
  document.getElementById("vocabRestartBtn").classList.add("hidden");
  renderVocabularyQuestion();
 }
-
 function renderVocabularyQuestion(){
  const shell=document.getElementById("appShell");if(shell)shell.classList.remove("home-view");
  document.getElementById("homeSection").classList.add("hidden");
- ["storySection","quizSection","writingSection","communicationSection"].forEach(function(id){
-   document.getElementById(id).classList.add("hidden");
- });
+ ["storySection","quizSection","writingSection","communicationSection"].forEach(function(id){document.getElementById(id).classList.add("hidden")});
  document.getElementById("vocabularySection").classList.remove("hidden");
- const q=vocabRound[vocabIndex];
- vocabAnswered=false;
- document.getElementById("vocabProgressText").textContent="Soal "+(vocabIndex+1)+" dari 10";
+ const q=vocabRound[vocabIndex];vocabAnswered=false;
+ document.getElementById("vocabProgressText").textContent=VOCAB_LEVELS[vocabularyDifficulty].label+" · Soal "+(vocabIndex+1)+" dari 10";
  document.getElementById("vocabScoreText").textContent="Benar "+vocabScore;
- document.getElementById("vocabProgressBar").style.width=((vocabIndex)/10*100)+"%";
+ document.getElementById("vocabProgressBar").style.width=(vocabIndex*10)+"%";
  document.getElementById("vocabWord").textContent=q.word;
- const options=document.getElementById("vocabOptions");
- options.innerHTML="";
- const letters=["A","B","C","D"];
- q.options.forEach(function(choice,i){
-   const b=document.createElement("button");
-   b.className="vocab-option";
-   b.innerHTML='<span class="vocab-letter">'+letters[i]+'</span><span>'+esc(choice)+'</span>';
-   b.onclick=function(){chooseVocabularyAnswer(i)};
-   options.appendChild(b);
+ const ctx=document.getElementById("vocabContext");
+ if(q.context){ctx.textContent=q.context;ctx.classList.remove("hidden")}else{ctx.textContent="";ctx.classList.add("hidden")}
+ const options=document.getElementById("vocabOptions");options.innerHTML="";
+ ["A","B","C","D"].forEach(function(letter,i){
+   const btn=document.createElement("button");btn.className="vocab-option";
+   btn.innerHTML='<span class="vocab-letter">'+letter+'</span><span>'+esc(q.options[i])+'</span>';
+   btn.onclick=function(){chooseVocabularyAnswer(i)};options.appendChild(btn);
  });
  document.getElementById("vocabQuestionCard").classList.remove("hidden");
- options.classList.remove("hidden");
- document.getElementById("vocabFeedback").classList.add("hidden");
- document.getElementById("vocabResult").classList.add("hidden");
- document.getElementById("vocabNextBtn").classList.add("hidden");
+ options.classList.remove("hidden");document.getElementById("vocabFeedback").classList.add("hidden");
+ document.getElementById("vocabResult").classList.add("hidden");document.getElementById("vocabNextBtn").classList.add("hidden");
  document.getElementById("vocabRestartBtn").classList.add("hidden");
- document.getElementById("typeStat").textContent="Mode: Vocabulary";
+ document.getElementById("typeStat").textContent="Mode: Vocabulary · "+VOCAB_LEVELS[vocabularyDifficulty].label;
  window.scrollTo({top:0,behavior:"smooth"});
 }
-
 function chooseVocabularyAnswer(index){
- if(vocabAnswered)return;
- vocabAnswered=true;
- const q=vocabRound[vocabIndex];
- const correct=index===q.correctIndex;
- if(correct)vocabScore++;
+ if(vocabAnswered)return;vocabAnswered=true;
+ const q=vocabRound[vocabIndex],correct=index===q.correctIndex;if(correct)vocabScore++;
  vocabAnswers.push({word:q.word,selected:q.options[index],correct:q.meaning,isCorrect:correct});
- const buttons=document.querySelectorAll("#vocabOptions .vocab-option");
- buttons.forEach(function(b,i){
-   b.disabled=true;
-   if(i===q.correctIndex)b.classList.add("correct");
-   if(i===index&&!correct)b.classList.add("wrong");
+ document.querySelectorAll("#vocabOptions .vocab-option").forEach(function(btn,i){
+   btn.disabled=true;if(i===q.correctIndex)btn.classList.add("correct");if(i===index&&!correct)btn.classList.add("wrong");
  });
- const feedback=document.getElementById("vocabFeedback");
- feedback.className="vocab-feedback "+(correct?"correct":"wrong");
- feedback.innerHTML=correct
-   ?'<strong>Benar.</strong> <b>'+esc(q.word)+'</b> berarti <b>'+esc(q.meaning)+'</b>.'
-   :'<strong>Belum tepat.</strong> <b>'+esc(q.word)+'</b> berarti <b>'+esc(q.meaning)+'</b>.';
- feedback.classList.remove("hidden");
- document.getElementById("vocabScoreText").textContent="Benar "+vocabScore;
- document.getElementById("vocabProgressBar").style.width=((vocabIndex+1)/10*100)+"%";
- const next=document.getElementById("vocabNextBtn");
- next.textContent=vocabIndex===9?"Lihat Hasil":"Soal Berikutnya";
- next.classList.remove("hidden");
+ const feedback=document.getElementById("vocabFeedback");feedback.className="vocab-feedback "+(correct?"correct":"wrong");
+ feedback.innerHTML=correct?'<strong>Benar.</strong> <b>'+esc(q.word)+'</b> berarti <b>'+esc(q.meaning)+'</b>.':'<strong>Belum tepat.</strong> <b>'+esc(q.word)+'</b> berarti <b>'+esc(q.meaning)+'</b>.';
+ feedback.classList.remove("hidden");document.getElementById("vocabScoreText").textContent="Benar "+vocabScore;
+ document.getElementById("vocabProgressBar").style.width=((vocabIndex+1)*10)+"%";
+ const next=document.getElementById("vocabNextBtn");next.textContent=vocabIndex===9?"Lihat Hasil":"Soal Berikutnya";next.classList.remove("hidden");
 }
-
 function nextVocabularyQuestion(){
- if(!vocabAnswered)return;
- if(vocabIndex>=9){finishVocabularySession();return}
- vocabIndex++;
- renderVocabularyQuestion();
+ if(!vocabAnswered)return;if(vocabIndex>=9){finishVocabularySession();return}vocabIndex++;renderVocabularyQuestion();
 }
-
 function finishVocabularySession(){
- const pct=Math.round(vocabScore/10*100);
- const session={time:Date.now(),score:vocabScore,pct:pct,answers:vocabAnswers.slice()};
- vocabularyHistory.push(session);
- vocabularyHistory=vocabularyHistory.slice(-60);
+ const pct=vocabScore*10;
+ const session={time:Date.now(),difficulty:vocabularyDifficulty,score:vocabScore,pct:pct,answers:vocabAnswers.slice()};
+ vocabularyHistory.push(session);vocabularyHistory=vocabularyHistory.slice(-90);
  localStorage.setItem("vocabularyProgressHistory",JSON.stringify(vocabularyHistory));
- document.getElementById("vocabQuestionCard").classList.add("hidden");
- document.getElementById("vocabOptions").classList.add("hidden");
- document.getElementById("vocabFeedback").classList.add("hidden");
- document.getElementById("vocabNextBtn").classList.add("hidden");
+ document.getElementById("vocabQuestionCard").classList.add("hidden");document.getElementById("vocabOptions").classList.add("hidden");
+ document.getElementById("vocabFeedback").classList.add("hidden");document.getElementById("vocabNextBtn").classList.add("hidden");
  document.getElementById("vocabRestartBtn").classList.remove("hidden");
- const missed=vocabAnswers.filter(function(x){return !x.isCorrect});
- let review="";
- missed.forEach(function(x){
-   review+='<div class="vocab-review-row"><b>'+esc(x.word)+'</b><span>'+esc(x.correct)+'</span></div>';
- });
- const msg=pct>=90?"Vocabulary kamu kuat di ronde ini."
-   :pct>=70?"Bagus. Beberapa kata masih layak diulang."
-   :pct>=50?"Lumayan. Ulangi kata yang masih tertukar."
-   :"Fokus dulu pada kata yang salah sebelum mengejar skor.";
+ const missed=vocabAnswers.filter(function(x){return !x.isCorrect});let review="";
+ missed.forEach(function(x){review+='<div class="vocab-review-row"><b>'+esc(x.word)+'</b><span>'+esc(x.correct)+'</span></div>'});
+ const msg=pct>=90?"Kuat. Kamu benar-benar membedakan makna yang mirip.":pct>=70?"Bagus. Beberapa kata masih layak diulang.":pct>=50?"Lumayan. Fokus pada kata yang masih tertukar.":"Ulangi kata yang salah dulu sebelum mengejar skor.";
  const result=document.getElementById("vocabResult");
- result.innerHTML='<div class="score-big">'+vocabScore+'/10 · '+pct+'%</div><div class="result-note">'+msg+'</div>'+
-   (review?'<div class="progress-title">Kata yang perlu diingat</div>'+review:'<div class="memory-callout good">Semua jawaban benar. Nice.</div>');
- result.classList.remove("hidden");
- updateHomepageJourney();
- result.scrollIntoView({behavior:"smooth",block:"start"});
+ result.innerHTML='<div class="score-big">'+VOCAB_LEVELS[vocabularyDifficulty].label+' · '+vocabScore+'/10 · '+pct+'%</div><div class="result-note">'+msg+'</div>'+(review?'<div class="progress-title">Kata yang perlu diingat</div>'+review:'<div class="memory-callout good">Semua jawaban benar.</div>');
+ result.classList.remove("hidden");updateHomepageJourney();result.scrollIntoView({behavior:"smooth",block:"start"});
 }
-
-function vocabularySummary(){
- const recent=vocabularyHistory.slice(-10);
- const scores=recent.map(function(x){return x.pct});
- const avgScore=scores.length?Math.round(scores.reduce(function(a,b){return a+b},0)/scores.length):0;
- const best=vocabularyHistory.length?Math.max.apply(null,vocabularyHistory.map(function(x){return x.pct})):0;
- let misses={};
- vocabularyHistory.slice(-20).forEach(function(sess){
-   (sess.answers||[]).forEach(function(a){
-     if(!a.isCorrect)misses[a.word]=(misses[a.word]||0)+1;
-   });
- });
+function vocabularySummary(level){
+ const filtered=vocabularyHistory.filter(function(x){return (x.difficulty||"medium")===level});
+ const scores=filtered.slice(-10).map(function(x){return x.pct});
+ const avg=scores.length?Math.round(scores.reduce(function(a,b){return a+b},0)/scores.length):0;
+ const best=filtered.length?Math.max.apply(null,filtered.map(function(x){return x.pct})):0;
+ let misses={};filtered.slice(-20).forEach(function(sess){(sess.answers||[]).forEach(function(a){if(!a.isCorrect)misses[a.word]=(misses[a.word]||0)+1})});
  const weak=Object.keys(misses).sort(function(a,b){return misses[b]-misses[a]}).slice(0,5);
- return {avg:avgScore,best:best,count:vocabularyHistory.length,weak:weak};
+ return {avg:avg,best:best,count:filtered.length,weak:weak,history:filtered};
 }
-
 function renderVocabularyProgress(){
- const p=document.getElementById("vocabularyProgressPanel");
- const sum=vocabularySummary();
- let weakHtml=sum.weak.length?sum.weak.map(function(w){
-   const item=VOCAB_BANK.find(function(x){return x.word===w});
-   return '<span class="vocab-weak-chip">'+esc(w)+(item?' · '+esc(item.meaning):'')+'</span>';
- }).join(""):'<div class="empty-state">Belum ada kata yang sering salah. Selesaikan beberapa ronde dulu.</div>';
- let hist="";
- vocabularyHistory.slice(-8).reverse().forEach(function(x){
-   const d=new Date(x.time).toLocaleString("id-ID",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"});
-   hist+='<div class="history-row"><span class="history-score">'+x.pct+'%</span> · '+x.score+'/10 <span class="history-meta"> · '+d+'</span></div>';
- });
- p.innerHTML='<div class="progress-grid">'+
-   '<div class="progress-card"><span>Rata-rata 10 ronde</span><strong>'+(sum.count?sum.avg+'%':'-')+'</strong></div>'+
-   '<div class="progress-card"><span>Skor terbaik</span><strong>'+(sum.count?sum.best+'%':'-')+'</strong></div>'+
-   '<div class="progress-card"><span>Ronde selesai</span><strong>'+sum.count+'</strong></div>'+
-   '</div><div class="progress-title">Perlu lebih sering diulang</div><div class="vocab-weak-list">'+weakHtml+'</div>'+
-   '<div class="progress-title">Riwayat terbaru</div>'+(hist||'<div class="empty-state">Belum ada ronde yang selesai.</div>');
+ const p=document.getElementById("vocabularyProgressPanel"),sum=vocabularySummary(vocabularyDifficulty);
+ const weakHtml=sum.weak.length?sum.weak.map(function(word){const item=findVocabularyWord(word);return '<span class="vocab-weak-chip">'+esc(word)+(item?' · '+esc(item.meaning):'')+'</span>'}).join(""):'<div class="empty-state">Belum ada kata yang sering salah di level ini.</div>';
+ let hist="";sum.history.slice(-8).reverse().forEach(function(x){const d=new Date(x.time).toLocaleString("id-ID",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"});hist+='<div class="history-row"><span class="history-score">'+x.pct+'%</span> · '+x.score+'/10 <span class="history-meta"> · '+d+'</span></div>'});
+ p.innerHTML='<div class="progress-title">'+VOCAB_LEVELS[vocabularyDifficulty].label+'</div><div class="progress-grid"><div class="progress-card"><span>Rata-rata 10 ronde</span><strong>'+(sum.count?sum.avg+'%':'-')+'</strong></div><div class="progress-card"><span>Skor terbaik</span><strong>'+(sum.count?sum.best+'%':'-')+'</strong></div><div class="progress-card"><span>Ronde selesai</span><strong>'+sum.count+'</strong></div></div><div class="progress-title">Perlu lebih sering diulang</div><div class="vocab-weak-list">'+weakHtml+'</div><div class="progress-title">Riwayat terbaru</div>'+(hist||'<div class="empty-state">Belum ada ronde yang selesai di level ini.</div>');
 }
-
 function toggleVocabularyProgress(){
- const p=document.getElementById("vocabularyProgressPanel");
- p.classList.toggle("hidden");
- if(!p.classList.contains("hidden"))renderVocabularyProgress();
+ const p=document.getElementById("vocabularyProgressPanel");p.classList.toggle("hidden");if(!p.classList.contains("hidden"))renderVocabularyProgress();
 }
-
 
 const FAMOUS_QUOTES=[
 {text:"One can never consent to creep when one feels an impulse to soar.",author:"Helen Keller"},
