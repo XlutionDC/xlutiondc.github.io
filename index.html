@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Yuk Bisa - Latihan Ingatan & Komunikasi</title>
+<title>Yuk Bisa - Latihan Ingatan, Komunikasi & Bahasa Inggris</title>
 <style>
 :root{
   --ink:#24324a;
@@ -1664,6 +1664,261 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
   .quote-daily blockquote{font-size:24px}
 }
 
+
+/* Vocabulary mode */
+.feature-strip{grid-template-columns:repeat(4,1fr)}
+.vocab-dot{background:linear-gradient(145deg,#f4c9d9,#d98eac)}
+#trainingChoices .mode-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.mode-card.vocabulary{
+  background:linear-gradient(150deg,#fbeef3 0%,#f4dce7 100%);
+}
+.mode-card.vocabulary:before{background:linear-gradient(90deg,#bd6f91,#e2a0bb)}
+.mode-card.vocabulary .mode-icon-badge{color:#a8557c}
+.vocab-icon-badge svg{width:31px;height:31px}
+#vocabularyHome{
+  width:min(920px,100%);
+  margin:30px auto 0;
+}
+#vocabularyHome>.home-card{
+  position:relative;
+  overflow:hidden;
+  padding:28px 30px;
+  border-radius:22px;
+  background:linear-gradient(145deg,rgba(250,243,255,.98),rgba(255,241,235,.97));
+  border:1px solid #e7ddea;
+  border-top:4px solid #b96b91;
+  box-shadow:0 18px 38px rgba(76,59,94,.07);
+}
+#vocabularyHome>.home-card:after{
+  content:"";
+  position:absolute;right:-42px;top:-48px;
+  width:160px;height:160px;border-radius:50%;
+  background:rgba(188,105,145,.08);
+}
+.vocab-home-kicker{
+  margin-bottom:7px;
+  font-size:10px;font-weight:900;letter-spacing:1.8px;
+  color:#a15d7e;
+}
+.vocab-overview-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:11px;
+  margin:16px 0 4px;
+}
+.vocab-overview-grid>div{
+  padding:16px 17px;
+  border-radius:16px;
+  border:1px solid #e8e0e9;
+  background:linear-gradient(145deg,#fffdfa,#f8f4ff);
+  box-shadow:0 8px 20px rgba(67,57,91,.035);
+}
+.vocab-overview-grid strong{
+  display:block;
+  font-family:Georgia,serif;
+  font-size:27px;
+  font-weight:500;
+  color:#504989;
+}
+.vocab-overview-grid span{
+  display:block;
+  margin-top:2px;
+  font-size:13px;
+  font-weight:800;
+  color:#514c63;
+}
+.vocab-overview-grid small{
+  display:block;
+  margin-top:6px;
+  font-size:11px;
+  line-height:1.4;
+  color:#8a8494;
+}
+.vocab-primary{
+  background:linear-gradient(135deg,#9d5d82,#774c83)!important;
+}
+.vocab-shell{width:min(900px,100%)}
+.vocab-round-head{
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  gap:18px;
+  margin:18px 0 10px;
+}
+.vocab-round-head>div:first-child{display:grid;gap:3px}
+.vocab-round-label{
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1.8px;
+  color:#a36583;
+}
+#vocabProgressText{
+  font-family:Georgia,serif;
+  font-size:21px;
+  font-weight:500;
+  color:#35304c;
+}
+.vocab-live-score{
+  padding:8px 11px;
+  border-radius:999px;
+  background:#f1edff;
+  border:1px solid #ded8f1;
+  font-size:12px;
+  font-weight:800;
+  color:#625aa1;
+}
+.vocab-progress-track{
+  height:8px;
+  overflow:hidden;
+  border-radius:999px;
+  background:#ebe6ef;
+  margin-bottom:18px;
+}
+.vocab-progress-fill{
+  height:100%;
+  width:0;
+  border-radius:inherit;
+  background:linear-gradient(90deg,#7ba5d9,#8b79d5,#d689aa);
+  transition:width .28s ease;
+}
+.vocab-question-card{
+  position:relative;
+  overflow:hidden;
+  padding:34px 28px;
+  text-align:center;
+  border-radius:24px;
+  border:1px solid #e7dce7;
+  background:
+    radial-gradient(circle at 88% 12%,rgba(222,147,180,.12),transparent 25%),
+    linear-gradient(145deg,#fff9f4,#f5f1ff);
+  box-shadow:0 18px 40px rgba(65,57,91,.06);
+}
+.vocab-question-card:before{
+  content:"Aa";
+  position:absolute;
+  right:22px;bottom:-10px;
+  font-family:Georgia,serif;
+  font-size:88px;
+  color:rgba(105,91,155,.055);
+}
+.vocab-word{
+  margin:13px 0 8px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:52px;
+  line-height:1;
+  letter-spacing:-1px;
+  color:#342f50;
+}
+.vocab-question-note{
+  max-width:600px;
+  margin:0 auto;
+  color:#817b8a;
+  font-size:13px;
+  line-height:1.55;
+}
+.vocab-options{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:11px;
+  margin-top:16px;
+}
+.vocab-option{
+  min-height:72px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-align:left;
+  padding:13px 15px;
+  border-radius:16px;
+  border:1px solid #e1dce8;
+  background:#fffdfa;
+  color:#504b60;
+  box-shadow:0 8px 20px rgba(61,54,86,.035);
+  transition:transform .15s ease,border-color .15s ease,background .15s ease;
+}
+.vocab-option:hover:not(:disabled){
+  transform:translateY(-2px);
+  border-color:#bdb5dc;
+  background:#faf8ff;
+}
+.vocab-option:disabled{opacity:1;cursor:default}
+.vocab-letter{
+  flex:0 0 auto;
+  width:34px;height:34px;
+  display:grid;place-items:center;
+  border-radius:10px;
+  background:#f0edfa;
+  color:#6961a4;
+  font-size:12px;
+  font-weight:900;
+}
+.vocab-option.correct{
+  border-color:#83aad3;
+  background:#eaf3ff;
+  color:#365f89;
+}
+.vocab-option.correct .vocab-letter{
+  background:#6997c7;color:#fff;
+}
+.vocab-option.wrong{
+  border-color:#d89ab1;
+  background:#fae9ef;
+  color:#914f69;
+}
+.vocab-option.wrong .vocab-letter{
+  background:#be718f;color:#fff;
+}
+.vocab-feedback{
+  margin-top:13px;
+  padding:14px 16px;
+  border-radius:14px;
+  line-height:1.55;
+  font-size:14px;
+}
+.vocab-feedback.correct{
+  background:#edf4ff;
+  border:1px solid #d5e3f3;
+  color:#466b91;
+}
+.vocab-feedback.wrong{
+  background:#faeaf0;
+  border:1px solid #ecd0db;
+  color:#895168;
+}
+.vocab-review-row{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  padding:11px 0;
+  border-top:1px solid #e5e0e9;
+}
+.vocab-review-row:first-child{border-top:0}
+.vocab-review-row b{color:#4c4770}
+.vocab-review-row span{color:#777184;text-align:right}
+.vocab-weak-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+.vocab-weak-chip{
+  padding:7px 10px;
+  border-radius:999px;
+  background:#f4effa;
+  border:1px solid #e4daee;
+  color:#645c78;
+  font-size:12px;
+  font-weight:700;
+}
+@media(max-width:1050px){
+  #trainingChoices .mode-grid{grid-template-columns:1fr 1fr}
+  .feature-strip{grid-template-columns:1fr 1fr}
+}
+@media(max-width:650px){
+  #trainingChoices .mode-grid,.feature-strip,.vocab-overview-grid,.vocab-options{grid-template-columns:1fr}
+  .vocab-word{font-size:44px}
+  .vocab-option{min-height:64px}
+}
+
 </style>
 </head>
 <body>
@@ -1694,7 +1949,7 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
       </div>
       <aside class="hero-quote" id="homeQuoteCard" aria-label="Pesan hari ini">
         <div class="quote-mark">“</div>
-        <blockquote id="homeQuoteText">Hal besar tidak tercipta secara tiba-tiba.</blockquote>
+        <blockquote id="homeQuoteText">No great thing is created suddenly.</blockquote>
         <div class="quote-sign" id="homeQuoteSign">— Epictetus</div>
         <div class="quote-dots" aria-hidden="true"><span></span><span></span><span></span></div>
       </aside>
@@ -1704,6 +1959,7 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
       <div class="feature-pill"><span class="feature-dot memory-dot"></span><b>Ingat lebih tajam</b><small>detail & fokus</small></div>
       <div class="feature-pill"><span class="feature-dot writing-dot"></span><b>Tulis lebih jelas</b><small>ringkas & tepat</small></div>
       <div class="feature-pill"><span class="feature-dot comm-dot"></span><b>Bicara lebih efektif</b><small>inti & relevansi</small></div>
+      <div class="feature-pill"><span class="feature-dot vocab-dot"></span><b>Tambah vocabulary</b><small>arti & pemahaman</small></div>
     </div>
 
     <section class="home-section-block" id="trainingChoices">
@@ -1711,7 +1967,7 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
         <div>
           <span class="section-kicker">PILIH LATIHAN</span>
           <h2>Latihan untuk Versi Terbaik Kamu</h2>
-          <p>Tiga fokus sederhana untuk melatih cara mengingat, berpikir, dan menyampaikan.</p>
+          <p>Empat fokus sederhana untuk melatih cara mengingat, berpikir, menyampaikan, dan memperkaya kosakata.</p>
         </div>
       </div>
       <div class="mode-grid">
@@ -1751,6 +2007,18 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
           <p>Latih menangkap inti, memilih informasi penting, dan menyampaikan maksud dengan langsung.</p>
           <span class="mode-link">Mulai latihan →</span>
         </div>
+        <div class="mode-card vocabulary" onclick="openVocabularyHome()">
+          <div class="mode-card-top">
+            <div class="mode-icon-badge vocab-icon-badge" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 4.5h6.5A3.5 3.5 0 0 1 14 8v12a3.5 3.5 0 0 0-3.5-3.5H4z"/><path d="M20 4.5h-2.5A3.5 3.5 0 0 0 14 8v12a3.5 3.5 0 0 1 3.5-3.5H20z"/><path d="M7 9h4M7 12h3M17 9h1"/></svg>
+            </div>
+            <div class="mode-number">04</div>
+          </div>
+          <div class="mode-focus">Fokus · Kosakata Sehari-hari</div>
+          <h3>Vocabulary Bahasa Inggris</h3>
+          <p>Latih arti kata bahasa Inggris yang sering dipakai sehari-hari lewat pilihan ganda yang menantang.</p>
+          <span class="mode-link">Mulai latihan →</span>
+        </div>
       </div>
     </section>
 
@@ -1772,7 +2040,7 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
 
     <section class="daily-message quote-daily" id="dailyQuoteCard">
       <div class="message-label">KUTIPAN HARI INI</div>
-      <blockquote id="dailyQuoteText">Jadikan setiap hari sebagai mahakaryamu.</blockquote>
+      <blockquote id="dailyQuoteText">Make each day your masterpiece.</blockquote>
       <div class="message-sign" id="dailyQuoteAuthor">— John Wooden</div>
     </section>
   </div>
@@ -1842,6 +2110,26 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
     <div class="home-tip" id="communicationHint">Mode Campuran akan menggabungkan berbagai kemampuan komunikasi.</div>
     <div id="communicationProgressPanel" class="progress-panel hidden"></div>
   </div>
+
+  <div id="vocabularyHome" class="hidden">
+    <button class="back-link" onclick="showHome()">← Kembali ke pilihan latihan</button>
+    <div class="home-card vocab-home-card">
+      <div class="vocab-home-kicker">LATIHAN 04</div>
+      <h2>Vocabulary Bahasa Inggris</h2>
+      <p>Tebak arti kata bahasa Inggris ke Bahasa Indonesia. Tidak perlu mengetik—cukup pilih jawaban yang paling tepat.</p>
+      <div class="home-tip"><b>Mode menantang:</b> pilihan pengecoh dibuat mirip dan masuk akal. Posisi jawaban benar diacak dan diseimbangkan setiap ronde.</div>
+    </div>
+    <div class="vocab-overview-grid">
+      <div><strong>100</strong><span>vocabulary</span><small>kata sehari-hari yang berguna</small></div>
+      <div><strong>10</strong><span>soal / ronde</span><small>acak tanpa cepat mengulang</small></div>
+      <div><strong>4</strong><span>pilihan</span><small>semua jawaban Bahasa Indonesia</small></div>
+    </div>
+    <div class="actions">
+      <button class="primary vocab-primary" onclick="beginVocabularySession()">Mulai Vocabulary</button>
+      <button class="secondary" onclick="toggleVocabularyProgress()">Lihat Progress Vocabulary</button>
+    </div>
+    <div id="vocabularyProgressPanel" class="progress-panel hidden"></div>
+  </div>
 </div>
 
 <div id="writingSection" class="hidden writing-shell">
@@ -1898,6 +2186,31 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
     <button id="communicationCompressionBtn" class="primary hidden" onclick="nextCompressionStage()">Kompres Lagi</button>
     <button id="communicationNextBtn" class="primary hidden" onclick="nextCommunicationExercise()">Soal Berikutnya</button>
     <button id="communicationHomeBtn" class="secondary hidden" onclick="showHome()">Selesai & Kembali Home</button>
+  </div>
+</div>
+
+<div id="vocabularySection" class="hidden writing-shell vocab-shell">
+  <button class="back-link" onclick="openVocabularyHome()">← Kembali ke menu Vocabulary</button>
+  <div class="vocab-round-head">
+    <div>
+      <span class="vocab-round-label">VOCABULARY ROUND</span>
+      <strong id="vocabProgressText">Soal 1 dari 10</strong>
+    </div>
+    <div class="vocab-live-score" id="vocabScoreText">Benar 0</div>
+  </div>
+  <div class="vocab-progress-track"><div id="vocabProgressBar" class="vocab-progress-fill"></div></div>
+  <div class="vocab-question-card" id="vocabQuestionCard">
+    <div class="prompt-label">Apa arti paling tepat dari kata ini?</div>
+    <div id="vocabWord" class="vocab-word">Reliable</div>
+    <div class="vocab-question-note">Pilih satu jawaban. Semua pilihan sengaja dibuat cukup dekat agar tidak mudah ditebak.</div>
+  </div>
+  <div id="vocabOptions" class="vocab-options"></div>
+  <div id="vocabFeedback" class="vocab-feedback hidden"></div>
+  <div id="vocabResult" class="result hidden"></div>
+  <div class="actions vocab-actions">
+    <button id="vocabNextBtn" class="primary hidden" onclick="nextVocabularyQuestion()">Soal Berikutnya</button>
+    <button id="vocabRestartBtn" class="secondary hidden" onclick="beginVocabularySession()">Ronde Baru</button>
+    <button class="rest-btn" onclick="showHome()">Istirahat / Home</button>
   </div>
 </div>
 
@@ -3480,120 +3793,440 @@ function newStory(){
  render();
  window.scrollTo({top:0,behavior:"smooth"});
 }
-const FAMOUS_QUOTES=[
-{text:"Seseorang tak pernah rela merangkak ketika merasakan dorongan untuk terbang.",author:"Helen Keller"},
-{text:"Jangan pikirkan kegagalan hari ini; pikirkan keberhasilan yang mungkin datang besok.",author:"Helen Keller"},
-{text:"Tidak ada usaha untuk meraih sesuatu yang indah yang benar-benar hilang.",author:"Helen Keller"},
-{text:"Saat satu pintu kebahagiaan tertutup, pintu lain terbuka.",author:"Helen Keller"},
-{text:"Selama kita bisa meringankan rasa sakit orang lain, hidup tidak sia-sia.",author:"Helen Keller"},
-{text:"Kebahagiaan sejati datang dari kesetiaan pada tujuan yang layak.",author:"Helen Keller"},
-{text:"Karakter tidak dapat berkembang dalam kemudahan dan ketenangan.",author:"Helen Keller"},
-{text:"Hidup adalah petualangan yang berani, atau bukan apa-apa.",author:"Helen Keller"},
-{text:"Berpikir adalah hadiah tak ternilai sekaligus tanggung jawab besar.",author:"Helen Keller"},
-{text:"Tirani tidak dapat mengalahkan kekuatan gagasan.",author:"Helen Keller"},
-
-{text:"Kita harus memiliki ketekunan dan, terutama, keyakinan pada diri sendiri.",author:"Marie Curie"},
-{text:"Kita harus percaya bahwa kita berbakat untuk sesuatu.",author:"Marie Curie"},
-{text:"Pemandangan baru dari alam selalu membuatku bergembira seperti anak kecil.",author:"Marie Curie"},
-{text:"Dunia yang lebih baik dimulai dari individu yang memperbaiki dirinya.",author:"Marie Curie"},
-{text:"Sains memiliki keindahan yang besar.",author:"Marie Curie"},
-{text:"Semangat petualangan tampaknya tidak dapat dihancurkan.",author:"Marie Curie"},
-{text:"Jalan menuju kemajuan tidak cepat maupun mudah.",author:"Marie Curie"},
-{text:"Dalam hidup, tidak ada yang perlu ditakuti; semuanya perlu dipahami.",author:"Marie Curie"},
-
-{text:"Jenius adalah satu persen inspirasi dan sembilan puluh sembilan persen keringat.",author:"Thomas Edison"},
-{text:"Kesempatan sering terlewat karena ia terlihat seperti pekerjaan.",author:"Thomas Edison"},
-{text:"Ketidakpuasan adalah kebutuhan pertama bagi kemajuan.",author:"Thomas Edison"},
-{text:"Cari tahu apa yang dunia butuhkan, lalu ciptakan.",author:"Thomas Edison"},
-{text:"Tak ada aturan di sini; kita sedang berusaha mencapai sesuatu.",author:"Thomas Edison"},
-{text:"Sesuatu yang tidak berjalan sesuai rencana belum tentu tidak berguna.",author:"Thomas Edison"},
-{text:"Aku memulai dari tempat orang terakhir berhenti.",author:"Thomas Edison"},
-{text:"Semuanya datang kepada orang yang terus bekerja sambil menunggu.",author:"Thomas Edison"},
-
-{text:"Belajar dan mempraktikkan apa yang telah dipelajari adalah suatu kesenangan.",author:"Confucius"},
-{text:"Ketika berbuat salah, jangan takut memperbaikinya.",author:"Confucius"},
-{text:"Jika melihat yang benar tetapi tidak bertindak, kamu kekurangan keberanian.",author:"Confucius"},
-{text:"Refleksi adalah cara belajar yang paling mulia.",author:"Confucius"},
-{text:"Pengalaman adalah cara belajar yang paling pahit.",author:"Confucius"},
-{text:"Orang yang mencintai belajar rajin bekerja dan berhati-hati berbicara.",author:"Confucius"},
-{text:"Aku tidak terganggu karena tidak dipahami; aku terganggu ketika tidak memahami orang lain.",author:"Confucius"},
-{text:"Jadilah setia dan dapat dipercaya.",author:"Confucius"},
-{text:"Kata-kata indah jarang berjalan bersama kebajikan sejati.",author:"Confucius"},
-{text:"Belajar tanpa berpikir itu sia-sia; berpikir tanpa belajar itu berbahaya.",author:"Confucius"},
-
-{text:"Jangan meremehkan nilai sebuah fakta; kelak ia akan berbunga menjadi kebenaran.",author:"Henry David Thoreau"},
-{text:"Aku bersyukur atas siapa diriku dan apa yang kumiliki.",author:"Henry David Thoreau"},
-{text:"Sederhanakan, sederhanakan.",author:"Henry David Thoreau"},
-{text:"Aku tak pernah menemukan teman yang lebih bersahabat daripada kesendirian.",author:"Henry David Thoreau"},
-{text:"Hanya hari ketika kita terjaga yang sungguh-sungguh fajar.",author:"Henry David Thoreau"},
-{text:"Majulah dengan percaya diri ke arah hidup yang kau bayangkan.",author:"Henry David Thoreau"},
-{text:"Semakin sederhana hidupmu, semakin sederhana pula hukum semesta terlihat.",author:"Henry David Thoreau"},
-{text:"Seribu orang menebas cabang kejahatan; satu orang memukul akarnya.",author:"Henry David Thoreau"},
-
-{text:"Kesulitan menunjukkan siapa diri seseorang.",author:"Epictetus"},
-{text:"Pertama, katakan pada dirimu ingin menjadi apa; lalu lakukan yang harus dilakukan.",author:"Epictetus"},
-{text:"Hidup mungkin netral, tetapi cara kita menggunakannya tidak.",author:"Epictetus"},
-{text:"Yang membuat kita bertindak bukan kejadian, melainkan pendapat dan prinsip kita.",author:"Epictetus"},
-{text:"Akal tidak diukur dari panjangnya kata-kata, tetapi dari prinsip.",author:"Epictetus"},
-{text:"Hal besar tidak tercipta secara tiba-tiba.",author:"Epictetus"},
-{text:"Latih dirimu pada hal-hal kecil, lalu lanjutkan ke hal yang lebih besar.",author:"Epictetus"},
-{text:"Mustahil mempelajari sesuatu yang kita pikir sudah kita ketahui.",author:"Epictetus"},
-{text:"Hanya mereka yang terdidik yang benar-benar bebas.",author:"Epictetus"},
-{text:"Dalam teori mudah mengikuti pelajaran; dalam hidup banyak hal menarik kita menjauh.",author:"Epictetus"},
-
-{text:"Belajarlah seolah kamu akan hidup selamanya.",author:"John Wooden"},
-{text:"Anak muda membutuhkan teladan, bukan kritikus.",author:"John Wooden"},
-{text:"Bakat adalah pemberian Tuhan; tetaplah rendah hati.",author:"John Wooden"},
-{text:"Kegagalan tidak fatal, tetapi gagal berubah bisa menjadi fatal.",author:"John Wooden"},
-{text:"Jadikan setiap hari sebagai mahakaryamu.",author:"John Wooden"},
-{text:"Jangan pernah berhenti belajar dari orang lain.",author:"John Wooden"},
-{text:"Jangan mengalahkan dirimu sendiri.",author:"John Wooden"},
-{text:"Pengulangan yang terus-menerus akhirnya menjadi kebiasaan.",author:"John Wooden"},
-
-{text:"Semakin banyak kita melakukan, melihat, dan merasakan, semakin banyak yang mampu kita lakukan.",author:"Amelia Earhart"},
-{text:"Memulai sesuatu jauh lebih mudah daripada menyelesaikannya.",author:"Amelia Earhart"},
-{text:"Waktu untuk khawatir adalah sebelum mengambil keputusan, bukan sesudahnya.",author:"Amelia Earhart"},
-{text:"Hal tersulit adalah keputusan untuk bertindak; sisanya adalah ketekunan.",author:"Amelia Earhart"},
-{text:"Ketakutan sering kali hanyalah harimau kertas.",author:"Amelia Earhart"},
-{text:"Persiapan adalah dua pertiga dari sebuah usaha.",author:"Amelia Earhart"},
-{text:"Kegagalan harus menjadi tantangan bagi orang lain.",author:"Amelia Earhart"},
-{text:"Setiap pilihan menuntut keberanian.",author:"Amelia Earhart"},
-
-{text:"Karakter, bukan keadaan, yang membentuk seseorang.",author:"Booker T. Washington"},
-{text:"Kemajuan adalah hukum alam.",author:"Booker T. Washington"},
-{text:"Cara terbaik mengangkat diri sendiri adalah membantu orang lain.",author:"Booker T. Washington"},
-{text:"Tak ada kekuatan yang dapat meniadakan pengaruh hidup yang murni dan berguna.",author:"Booker T. Washington"},
-{text:"Dunia lebih peduli pada apa yang kita lakukan daripada apa yang kita ketahui.",author:"Booker T. Washington"},
-{text:"Ada dua cara memakai kekuatan: mendorong ke bawah atau menarik ke atas.",author:"Booker T. Washington"},
-{text:"Kamu tak bisa menahan seseorang tetap di bawah tanpa ikut tinggal di bawah.",author:"Booker T. Washington"},
-
-{text:"Aku tetap percaya, terlepas dari semuanya, bahwa manusia pada dasarnya baik.",author:"Anne Frank"},
-{text:"Pergilah keluar dan temukan kembali kebahagiaan dalam dirimu.",author:"Anne Frank"},
-{text:"Selalu ada keindahan yang tersisa.",author:"Anne Frank"},
-{text:"Orang yang bahagia akan membuat orang lain bahagia.",author:"Anne Frank"},
-{text:"Di mana ada harapan, di situ ada kehidupan.",author:"Anne Frank"},
-
-{text:"Tanpa keberanian, kita tidak dapat menjalankan kebajikan lain dengan konsisten.",author:"Maya Angelou"},
-{text:"Kita mungkin mengalami banyak kekalahan, tetapi kita tidak boleh dikalahkan.",author:"Maya Angelou"},
-{text:"Ketika kamu belajar, ajarlah; ketika kamu mendapat, berilah.",author:"Maya Angelou"},
-{text:"Kamu mungkin tidak mengendalikan semua kejadian, tetapi kamu dapat memilih untuk tidak diperkecil olehnya.",author:"Maya Angelou"},
-{text:"Beranilah mencoba, bahkan ketika gemetar.",author:"Maya Angelou"},
-{text:"Jadilah pelangi di awan seseorang.",author:"Maya Angelou"},
-{text:"Jika tidak bisa mengubah keadaan, ubahlah cara berpikirmu.",author:"Maya Angelou"},
-
-{text:"Pendidikan adalah mesin besar bagi perkembangan pribadi.",author:"Nelson Mandela"},
-{text:"Kepala yang baik dan hati yang baik selalu menjadi kombinasi yang kuat.",author:"Nelson Mandela"},
-{text:"Keberanian bukanlah tidak adanya rasa takut, tetapi kemenangan atas rasa takut.",author:"Nelson Mandela"},
-{text:"Pengalaman adalah warisan terbaik yang dapat dimiliki seseorang.",author:"Nelson Mandela"},
-{text:"Aku bekerja lebih baik dan berpikir lebih jernih ketika tubuhku bugar.",author:"Nelson Mandela"},
-{text:"Pendidikan adalah senjata paling kuat yang dapat kita gunakan.",author:"Nelson Mandela"},
-{text:"Kita harus belajar dari pengalaman yang menyenangkan maupun tidak menyenangkan.",author:"Nelson Mandela"},
-
-{text:"Semua jenis pengetahuan pada akhirnya berarti pengetahuan tentang diri sendiri.",author:"Bruce Lee"},
-{text:"Selalu jadilah dirimu sendiri, ekspresikan dirimu, dan percayai dirimu.",author:"Bruce Lee"},
-{text:"Gunakan hanya yang bekerja, dari mana pun kamu menemukannya.",author:"Bruce Lee"},
-{text:"Yang penting bukan seberapa banyak kamu belajar, tetapi seberapa banyak yang kamu serap.",author:"Bruce Lee"}
+const VOCAB_BANK=[
+{word:"reliable",meaning:"dapat diandalkan",wrong:["mudah tersedia","mudah berubah","sangat teliti"]},
+{word:"aware",meaning:"sadar / mengetahui",wrong:["bingung","yakin","terbiasa"]},
+{word:"hesitate",meaning:"ragu-ragu",wrong:["menolak","menunda","mengabaikan"]},
+{word:"improve",meaning:"meningkatkan / memperbaiki",wrong:["mempertahankan","mengurangi","mengganti"]},
+{word:"avoid",meaning:"menghindari",wrong:["menghadapi","menerima","mengikuti"]},
+{word:"suggest",meaning:"menyarankan",wrong:["memerintahkan","menolak","menjanjikan"]},
+{word:"likely",meaning:"kemungkinan besar",wrong:["hampir mustahil","sudah pasti","jarang terjadi"]},
+{word:"afford",meaning:"mampu membeli / membayar",wrong:["meminjam","menawarkan","menabung"]},
+{word:"remind",meaning:"mengingatkan",wrong:["meyakinkan","menjelaskan","memperingatkan"]},
+{word:"notice",meaning:"menyadari / memperhatikan",wrong:["mengingat","mengabaikan","memutuskan"]},
+{word:"behave",meaning:"berperilaku",wrong:["bereaksi","berbicara","berpura-pura"]},
+{word:"prefer",meaning:"lebih memilih",wrong:["menyetujui","membutuhkan","mengharapkan"]},
+{word:"require",meaning:"membutuhkan / mengharuskan",wrong:["menyarankan","mengizinkan","menawarkan"]},
+{word:"deserve",meaning:"pantas mendapatkan",wrong:["berusaha mendapatkan","berharap mendapatkan","gagal mendapatkan"]},
+{word:"manage",meaning:"berhasil menangani / mengelola",wrong:["menghindari","menunda","menyerahkan"]},
+{word:"available",meaning:"tersedia",wrong:["terjangkau","diperlukan","terbatas"]},
+{word:"awkward",meaning:"canggung",wrong:["santai","kasar","bingung"]},
+{word:"curious",meaning:"penasaran",wrong:["khawatir","yakin","bosan"]},
+{word:"grateful",meaning:"bersyukur",wrong:["bangga","lega","menyesal"]},
+{word:"convince",meaning:"meyakinkan",wrong:["mengingatkan","memaksa","menjelaskan"]},
+{word:"assume",meaning:"menganggap tanpa memastikan",wrong:["membuktikan","menyadari","mengakui"]},
+{word:"concern",meaning:"kekhawatiran / hal yang dikhawatirkan",wrong:["tujuan","keuntungan","kebiasaan"]},
+{word:"effort",meaning:"usaha",wrong:["hasil","kemampuan","kesempatan"]},
+{word:"habit",meaning:"kebiasaan",wrong:["pilihan","aturan","kebutuhan"]},
+{word:"opportunity",meaning:"kesempatan",wrong:["kemungkinan","keuntungan","keputusan"]},
+{word:"borrow",meaning:"meminjam dari orang lain",wrong:["meminjamkan kepada orang lain","membeli sementara","menyewa dari toko"]},
+{word:"lend",meaning:"meminjamkan kepada orang lain",wrong:["meminjam dari orang lain","menjual kepada orang lain","mengembalikan barang"]},
+{word:"refuse",meaning:"menolak",wrong:["menerima","menunda","membatalkan"]},
+{word:"accept",meaning:"menerima / menyetujui",wrong:["mengizinkan","mengakui","menawarkan"]},
+{word:"complain",meaning:"mengeluh",wrong:["menjelaskan","meminta","menyalahkan"]},
+{word:"apologize",meaning:"meminta maaf",wrong:["memaafkan","mengucapkan terima kasih","memberi alasan"]},
+{word:"promise",meaning:"berjanji",wrong:["berharap","memastikan","menyarankan"]},
+{word:"expect",meaning:"mengharapkan / memperkirakan",wrong:["menuntut","menjanjikan","menginginkan"]},
+{word:"realize",meaning:"menyadari",wrong:["membuktikan","memutuskan","mengakui"]},
+{word:"decide",meaning:"memutuskan",wrong:["mempertimbangkan","menyarankan","menyetujui"]},
+{word:"depend",meaning:"bergantung",wrong:["mempengaruhi","mengikuti","menentukan"]},
+{word:"allow",meaning:"mengizinkan",wrong:["meminta","mencegah","mengharuskan"]},
+{word:"prevent",meaning:"mencegah",wrong:["memungkinkan","menyebabkan","mengurangi"]},
+{word:"prepare",meaning:"mempersiapkan",wrong:["merencanakan","mengatur","menyelesaikan"]},
+{word:"mention",meaning:"menyebutkan",wrong:["menjelaskan","menanyakan","menekankan"]},
+{word:"reach",meaning:"mencapai",wrong:["melewati","mendekati","meninggalkan"]},
+{word:"offer",meaning:"menawarkan",wrong:["memesan","menerima","menyarankan"]},
+{word:"share",meaning:"berbagi",wrong:["menyimpan","mengumpulkan","mengambil"]},
+{word:"waste",meaning:"menyia-nyiakan / memboroskan",wrong:["menyimpan","menghemat","menggunakan"]},
+{word:"save",meaning:"menyimpan / menghemat",wrong:["membelanjakan","meminjam","membuang"]},
+{word:"attend",meaning:"menghadiri",wrong:["mengatur","mengundang","meninggalkan"]},
+{word:"cancel",meaning:"membatalkan",wrong:["menunda","mengubah","mengonfirmasi"]},
+{word:"delay",meaning:"menunda / memperlambat",wrong:["membatalkan","mempercepat","menjadwalkan"]},
+{word:"handle",meaning:"menangani",wrong:["menghindari","menyerahkan","memulai"]},
+{word:"solve",meaning:"menyelesaikan masalah",wrong:["menjelaskan masalah","membuat masalah","menghindari masalah"]},
+{word:"choose",meaning:"memilih",wrong:["membandingkan","mengubah","menilai"]},
+{word:"compare",meaning:"membandingkan",wrong:["menggabungkan","memisahkan","memilih"]},
+{word:"support",meaning:"mendukung",wrong:["menentang","mengabaikan","menggantikan"]},
+{word:"trust",meaning:"mempercayai",wrong:["meragukan","meyakinkan","mengharapkan"]},
+{word:"doubt",meaning:"meragukan",wrong:["menolak","mengkhawatirkan","mempertimbangkan"]},
+{word:"recognize",meaning:"mengenali",wrong:["mengingat","menyadari","memperkenalkan"]},
+{word:"explain",meaning:"menjelaskan",wrong:["menggambarkan","menyebutkan","menyimpulkan"]},
+{word:"describe",meaning:"menggambarkan / mendeskripsikan",wrong:["menjelaskan alasan","membandingkan","menyarankan"]},
+{word:"recommend",meaning:"merekomendasikan",wrong:["mewajibkan","menawarkan","mengingatkan"]},
+{word:"request",meaning:"meminta secara resmi",wrong:["menuntut","menyarankan","mengizinkan"]},
+{word:"reply",meaning:"membalas",wrong:["bertanya","menyampaikan","menghubungi"]},
+{word:"arrange",meaning:"mengatur / menyusun",wrong:["membatalkan","memperbaiki","memindahkan"]},
+{word:"schedule",meaning:"menjadwalkan",wrong:["mengonfirmasi","menunda","mengingatkan"]},
+{word:"deliver",meaning:"mengantarkan / mengirim",wrong:["menerima","mengambil","memesan"]},
+{word:"replace",meaning:"mengganti",wrong:["memperbaiki","memindahkan","mengembalikan"]},
+{word:"return",meaning:"mengembalikan / kembali",wrong:["menukar","menerima","menyimpan"]},
+{word:"receive",meaning:"menerima / mendapatkan",wrong:["mengirim","meminta","mengambil"]},
+{word:"spend",meaning:"membelanjakan / menghabiskan",wrong:["menghasilkan","menabung","meminjam"]},
+{word:"earn",meaning:"memperoleh / menghasilkan uang",wrong:["membelanjakan","meminjam","menyimpan"]},
+{word:"reduce",meaning:"mengurangi",wrong:["meningkatkan","mempertahankan","mengganti"]},
+{word:"increase",meaning:"meningkatkan / bertambah",wrong:["mengurangi","membatasi","mempertahankan"]},
+{word:"enough",meaning:"cukup",wrong:["terlalu banyak","kurang","sesuai"]},
+{word:"crowded",meaning:"ramai / padat",wrong:["sepi","luas","tertib"]},
+{word:"quiet",meaning:"tenang / sepi",wrong:["ramai","lambat","nyaman"]},
+{word:"convenient",meaning:"praktis / mudah digunakan",wrong:["murah","cepat","tersedia"]},
+{word:"nearby",meaning:"dekat / tidak jauh",wrong:["di dalam","di luar","jauh"]},
+{word:"usual",meaning:"biasa / lazim",wrong:["baru","langka","sementara"]},
+{word:"rare",meaning:"jarang / langka",wrong:["umum","biasa","sering"]},
+{word:"honest",meaning:"jujur",wrong:["sopan","tegas","ramah"]},
+{word:"patient",meaning:"sabar",wrong:["tenang","hati-hati","lambat"]},
+{word:"careful",meaning:"berhati-hati",wrong:["cemas","pelan","ragu-ragu"]},
+{word:"nervous",meaning:"gugup",wrong:["marah","lelah","malu"]},
+{word:"proud",meaning:"bangga",wrong:["puas","lega","yakin"]},
+{word:"upset",meaning:"kesal / sedih",wrong:["bersemangat","tenang","penasaran"]},
+{word:"disappointed",meaning:"kecewa",wrong:["kesal","khawatir","malu"]},
+{word:"excited",meaning:"bersemangat / antusias",wrong:["gugup","terkejut","penasaran"]},
+{word:"comfortable",meaning:"nyaman",wrong:["aman","santai","cocok"]},
+{word:"familiar",meaning:"terasa dikenal / tidak asing",wrong:["terkenal","serupa","jelas"]},
+{word:"responsible",meaning:"bertanggung jawab",wrong:["dapat diandalkan","berhati-hati","mandiri"]},
+{word:"possible",meaning:"mungkin / dapat terjadi",wrong:["pasti","sulit","perlu"]},
+{word:"necessary",meaning:"perlu / diperlukan",wrong:["mungkin","berguna","mendesak"]},
+{word:"simple",meaning:"sederhana",wrong:["biasa","kosong","ringan"]},
+{word:"useful",meaning:"berguna",wrong:["penting","praktis","diperlukan"]},
+{word:"harmful",meaning:"berbahaya / merugikan",wrong:["tidak nyaman","tidak berguna","berisiko"]},
+{word:"common",meaning:"umum / sering ditemukan",wrong:["langka","khusus","asing"]},
+{word:"receipt",meaning:"struk / bukti pembayaran",wrong:["tagihan","tiket","formulir"]},
+{word:"appointment",meaning:"janji pertemuan",wrong:["jadwal kerja","rapat dadakan","pesanan"]},
+{word:"deadline",meaning:"batas waktu",wrong:["waktu mulai","jadwal ulang","perkiraan waktu"]},
+{word:"refund",meaning:"pengembalian uang",wrong:["potongan harga","uang muka","biaya tambahan"]},
+{word:"discount",meaning:"potongan harga",wrong:["pajak","biaya layanan","uang kembalian"]}
 ];
+
+let vocabularyHistory=JSON.parse(localStorage.getItem("vocabularyProgressHistory")||"[]");
+let vocabRound=null;
+let vocabIndex=0;
+let vocabScore=0;
+let vocabAnswered=false;
+let vocabAnswers=[];
+
+function vocabShuffle(arr){
+ const a=arr.slice();
+ for(let i=a.length-1;i>0;i--){
+   const j=Math.floor(Math.random()*(i+1));
+   const t=a[i];a[i]=a[j];a[j]=t;
+ }
+ return a;
+}
+
+function balancedVocabPositions(){
+ const countPattern=vocabShuffle([3,3,2,2]);
+ let pool=[];
+ countPattern.forEach(function(count,pos){
+   for(let i=0;i<count;i++)pool.push(pos);
+ });
+ let attempt=0;
+ while(attempt<300){
+   const a=vocabShuffle(pool);
+   let good=true;
+   for(let i=1;i<a.length;i++){
+     if(a[i]===a[i-1]){good=false;break}
+   }
+   if(good){
+     for(let i=0;i<=a.length-4;i++){
+       if(a[i]===a[i+2]&&a[i+1]===a[i+3]){good=false;break}
+     }
+   }
+   if(good)return a;
+   attempt++;
+ }
+ return [0,2,1,3,0,1,3,2,0,1];
+}
+
+function chooseVocabularyRound(){
+ let recent=[];
+ try{recent=JSON.parse(localStorage.getItem("vocabRecentWords")||"[]")}catch(e){recent=[]}
+ let pool=VOCAB_BANK.filter(function(x){return !recent.includes(x.word)});
+ if(pool.length<10)pool=VOCAB_BANK.slice();
+ const chosen=vocabShuffle(pool).slice(0,10);
+ const nextRecent=recent.concat(chosen.map(function(x){return x.word})).slice(-40);
+ localStorage.setItem("vocabRecentWords",JSON.stringify(nextRecent));
+ const positions=balancedVocabPositions();
+ return chosen.map(function(item,i){
+   const wrong=vocabShuffle(item.wrong);
+   const options=wrong.slice(0,3);
+   options.splice(positions[i],0,item.meaning);
+   return {word:item.word,meaning:item.meaning,options:options,correctIndex:positions[i]};
+ });
+}
+
+function openVocabularyHome(){
+ const shell=document.getElementById("appShell");if(shell)shell.classList.remove("home-view");
+ clearStoryTimer();
+ ["storySection","quizSection","writingSection","communicationSection","vocabularySection"].forEach(function(id){
+   const el=document.getElementById(id);if(el)el.classList.add("hidden");
+ });
+ document.getElementById("homeSection").classList.remove("hidden");
+ ["mainHome","memoryHome","writingHome","communicationHome"].forEach(function(id){document.getElementById(id).classList.add("hidden")});
+ document.getElementById("vocabularyHome").classList.remove("hidden");
+ document.getElementById("typeStat").textContent="Mode: Vocabulary";
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function beginVocabularySession(){
+ vocabRound=chooseVocabularyRound();
+ vocabIndex=0;
+ vocabScore=0;
+ vocabAnswers=[];
+ vocabAnswered=false;
+ document.getElementById("vocabResult").classList.add("hidden");
+ document.getElementById("vocabRestartBtn").classList.add("hidden");
+ renderVocabularyQuestion();
+}
+
+function renderVocabularyQuestion(){
+ const shell=document.getElementById("appShell");if(shell)shell.classList.remove("home-view");
+ document.getElementById("homeSection").classList.add("hidden");
+ ["storySection","quizSection","writingSection","communicationSection"].forEach(function(id){
+   document.getElementById(id).classList.add("hidden");
+ });
+ document.getElementById("vocabularySection").classList.remove("hidden");
+ const q=vocabRound[vocabIndex];
+ vocabAnswered=false;
+ document.getElementById("vocabProgressText").textContent="Soal "+(vocabIndex+1)+" dari 10";
+ document.getElementById("vocabScoreText").textContent="Benar "+vocabScore;
+ document.getElementById("vocabProgressBar").style.width=((vocabIndex)/10*100)+"%";
+ document.getElementById("vocabWord").textContent=q.word;
+ const options=document.getElementById("vocabOptions");
+ options.innerHTML="";
+ const letters=["A","B","C","D"];
+ q.options.forEach(function(choice,i){
+   const b=document.createElement("button");
+   b.className="vocab-option";
+   b.innerHTML='<span class="vocab-letter">'+letters[i]+'</span><span>'+esc(choice)+'</span>';
+   b.onclick=function(){chooseVocabularyAnswer(i)};
+   options.appendChild(b);
+ });
+ document.getElementById("vocabQuestionCard").classList.remove("hidden");
+ options.classList.remove("hidden");
+ document.getElementById("vocabFeedback").classList.add("hidden");
+ document.getElementById("vocabResult").classList.add("hidden");
+ document.getElementById("vocabNextBtn").classList.add("hidden");
+ document.getElementById("vocabRestartBtn").classList.add("hidden");
+ document.getElementById("typeStat").textContent="Mode: Vocabulary";
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function chooseVocabularyAnswer(index){
+ if(vocabAnswered)return;
+ vocabAnswered=true;
+ const q=vocabRound[vocabIndex];
+ const correct=index===q.correctIndex;
+ if(correct)vocabScore++;
+ vocabAnswers.push({word:q.word,selected:q.options[index],correct:q.meaning,isCorrect:correct});
+ const buttons=document.querySelectorAll("#vocabOptions .vocab-option");
+ buttons.forEach(function(b,i){
+   b.disabled=true;
+   if(i===q.correctIndex)b.classList.add("correct");
+   if(i===index&&!correct)b.classList.add("wrong");
+ });
+ const feedback=document.getElementById("vocabFeedback");
+ feedback.className="vocab-feedback "+(correct?"correct":"wrong");
+ feedback.innerHTML=correct
+   ?'<strong>Benar.</strong> <b>'+esc(q.word)+'</b> berarti <b>'+esc(q.meaning)+'</b>.'
+   :'<strong>Belum tepat.</strong> <b>'+esc(q.word)+'</b> berarti <b>'+esc(q.meaning)+'</b>.';
+ feedback.classList.remove("hidden");
+ document.getElementById("vocabScoreText").textContent="Benar "+vocabScore;
+ document.getElementById("vocabProgressBar").style.width=((vocabIndex+1)/10*100)+"%";
+ const next=document.getElementById("vocabNextBtn");
+ next.textContent=vocabIndex===9?"Lihat Hasil":"Soal Berikutnya";
+ next.classList.remove("hidden");
+}
+
+function nextVocabularyQuestion(){
+ if(!vocabAnswered)return;
+ if(vocabIndex>=9){finishVocabularySession();return}
+ vocabIndex++;
+ renderVocabularyQuestion();
+}
+
+function finishVocabularySession(){
+ const pct=Math.round(vocabScore/10*100);
+ const session={time:Date.now(),score:vocabScore,pct:pct,answers:vocabAnswers.slice()};
+ vocabularyHistory.push(session);
+ vocabularyHistory=vocabularyHistory.slice(-60);
+ localStorage.setItem("vocabularyProgressHistory",JSON.stringify(vocabularyHistory));
+ document.getElementById("vocabQuestionCard").classList.add("hidden");
+ document.getElementById("vocabOptions").classList.add("hidden");
+ document.getElementById("vocabFeedback").classList.add("hidden");
+ document.getElementById("vocabNextBtn").classList.add("hidden");
+ document.getElementById("vocabRestartBtn").classList.remove("hidden");
+ const missed=vocabAnswers.filter(function(x){return !x.isCorrect});
+ let review="";
+ missed.forEach(function(x){
+   review+='<div class="vocab-review-row"><b>'+esc(x.word)+'</b><span>'+esc(x.correct)+'</span></div>';
+ });
+ const msg=pct>=90?"Vocabulary kamu kuat di ronde ini."
+   :pct>=70?"Bagus. Beberapa kata masih layak diulang."
+   :pct>=50?"Lumayan. Ulangi kata yang masih tertukar."
+   :"Fokus dulu pada kata yang salah sebelum mengejar skor.";
+ const result=document.getElementById("vocabResult");
+ result.innerHTML='<div class="score-big">'+vocabScore+'/10 · '+pct+'%</div><div class="result-note">'+msg+'</div>'+
+   (review?'<div class="progress-title">Kata yang perlu diingat</div>'+review:'<div class="memory-callout good">Semua jawaban benar. Nice.</div>');
+ result.classList.remove("hidden");
+ updateHomepageJourney();
+ result.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function vocabularySummary(){
+ const recent=vocabularyHistory.slice(-10);
+ const scores=recent.map(function(x){return x.pct});
+ const avgScore=scores.length?Math.round(scores.reduce(function(a,b){return a+b},0)/scores.length):0;
+ const best=vocabularyHistory.length?Math.max.apply(null,vocabularyHistory.map(function(x){return x.pct})):0;
+ let misses={};
+ vocabularyHistory.slice(-20).forEach(function(sess){
+   (sess.answers||[]).forEach(function(a){
+     if(!a.isCorrect)misses[a.word]=(misses[a.word]||0)+1;
+   });
+ });
+ const weak=Object.keys(misses).sort(function(a,b){return misses[b]-misses[a]}).slice(0,5);
+ return {avg:avgScore,best:best,count:vocabularyHistory.length,weak:weak};
+}
+
+function renderVocabularyProgress(){
+ const p=document.getElementById("vocabularyProgressPanel");
+ const sum=vocabularySummary();
+ let weakHtml=sum.weak.length?sum.weak.map(function(w){
+   const item=VOCAB_BANK.find(function(x){return x.word===w});
+   return '<span class="vocab-weak-chip">'+esc(w)+(item?' · '+esc(item.meaning):'')+'</span>';
+ }).join(""):'<div class="empty-state">Belum ada kata yang sering salah. Selesaikan beberapa ronde dulu.</div>';
+ let hist="";
+ vocabularyHistory.slice(-8).reverse().forEach(function(x){
+   const d=new Date(x.time).toLocaleString("id-ID",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"});
+   hist+='<div class="history-row"><span class="history-score">'+x.pct+'%</span> · '+x.score+'/10 <span class="history-meta"> · '+d+'</span></div>';
+ });
+ p.innerHTML='<div class="progress-grid">'+
+   '<div class="progress-card"><span>Rata-rata 10 ronde</span><strong>'+(sum.count?sum.avg+'%':'-')+'</strong></div>'+
+   '<div class="progress-card"><span>Skor terbaik</span><strong>'+(sum.count?sum.best+'%':'-')+'</strong></div>'+
+   '<div class="progress-card"><span>Ronde selesai</span><strong>'+sum.count+'</strong></div>'+
+   '</div><div class="progress-title">Perlu lebih sering diulang</div><div class="vocab-weak-list">'+weakHtml+'</div>'+
+   '<div class="progress-title">Riwayat terbaru</div>'+(hist||'<div class="empty-state">Belum ada ronde yang selesai.</div>');
+}
+
+function toggleVocabularyProgress(){
+ const p=document.getElementById("vocabularyProgressPanel");
+ p.classList.toggle("hidden");
+ if(!p.classList.contains("hidden"))renderVocabularyProgress();
+}
+
+
+const FAMOUS_QUOTES=[
+{text:"One can never consent to creep when one feels an impulse to soar.",author:"Helen Keller"},
+{text:"Do not think of today's failures, but of the success that may come tomorrow.",author:"Helen Keller"},
+{text:"No effort that we make to attain something beautiful is ever lost.",author:"Helen Keller"},
+{text:"When one door of happiness closes, another opens.",author:"Helen Keller"},
+{text:"Life is not in vain as long as we can ease another's pain.",author:"Helen Keller"},
+{text:"True happiness comes from fidelity to a worthy purpose.",author:"Helen Keller"},
+{text:"Character cannot be developed in ease and quiet.",author:"Helen Keller"},
+{text:"Life is either a daring adventure or nothing.",author:"Helen Keller"},
+{text:"Thought is a priceless gift and a tremendous responsibility.",author:"Helen Keller"},
+{text:"Tyranny cannot defeat the power of ideas.",author:"Helen Keller"},
+
+{text:"We must have perseverance and above all confidence in ourselves.",author:"Marie Curie"},
+{text:"We must believe that we are gifted for something.",author:"Marie Curie"},
+{text:"A new sight of nature made me rejoice like a child.",author:"Marie Curie"},
+{text:"A better world begins with individuals becoming better.",author:"Marie Curie"},
+{text:"Science has great beauty.",author:"Marie Curie"},
+{text:"The spirit of adventure seems impossible to destroy.",author:"Marie Curie"},
+{text:"The way of progress is neither swift nor easy.",author:"Marie Curie"},
+{text:"Nothing in life is to be feared; it is only to be understood.",author:"Marie Curie"},
+
+{text:"Genius is one percent inspiration and ninety-nine percent perspiration.",author:"Thomas Edison"},
+{text:"Opportunity is missed by most people because it is dressed in overalls and looks like work.",author:"Thomas Edison"},
+{text:"Discontent is the first necessity of progress.",author:"Thomas Edison"},
+{text:"Find out what the world needs and proceed to invent it.",author:"Thomas Edison"},
+{text:"There are no rules here; we're trying to accomplish something.",author:"Thomas Edison"},
+{text:"Just because something doesn't do what you planned doesn't mean it's useless.",author:"Thomas Edison"},
+{text:"I start where the last man left off.",author:"Thomas Edison"},
+{text:"Everything comes to him who hustles while he waits.",author:"Thomas Edison"},
+
+{text:"To learn and practice what is learned is a pleasure.",author:"Confucius"},
+{text:"When you make a mistake, do not be afraid to correct it.",author:"Confucius"},
+{text:"To see what is right and not do it is a lack of courage.",author:"Confucius"},
+{text:"Reflection is the noblest way to learn.",author:"Confucius"},
+{text:"Experience is the bitterest way to learn.",author:"Confucius"},
+{text:"Those who love learning are diligent in action and careful in speech.",author:"Confucius"},
+{text:"I am not troubled by being misunderstood; I am troubled by not understanding others.",author:"Confucius"},
+{text:"Be faithful and trustworthy.",author:"Confucius"},
+{text:"Fine words rarely go together with true virtue.",author:"Confucius"},
+{text:"Learning without thought is labor lost; thought without learning is perilous.",author:"Confucius"},
+
+{text:"Do not underestimate the value of a fact; it may one day flower into truth.",author:"Henry David Thoreau"},
+{text:"I am grateful for what I am and have.",author:"Henry David Thoreau"},
+{text:"Simplify, simplify.",author:"Henry David Thoreau"},
+{text:"I never found a companion that was so companionable as solitude.",author:"Henry David Thoreau"},
+{text:"Only that day dawns to which we are awake.",author:"Henry David Thoreau"},
+{text:"Go confidently in the direction of your dreams.",author:"Henry David Thoreau"},
+{text:"As you simplify your life, the laws of the universe will be simpler.",author:"Henry David Thoreau"},
+{text:"There are a thousand hacking at the branches of evil to one striking at the root.",author:"Henry David Thoreau"},
+
+{text:"Difficulties show what men are.",author:"Epictetus"},
+{text:"First say to yourself what you would be; and then do what you have to do.",author:"Epictetus"},
+{text:"Life itself is indifferent, but the use we make of it is not.",author:"Epictetus"},
+{text:"What disturbs us is not events, but our judgments about them.",author:"Epictetus"},
+{text:"Reason is not measured by length of words, but by principles.",author:"Epictetus"},
+{text:"No great thing is created suddenly.",author:"Epictetus"},
+{text:"Practice yourself in little things, and then proceed to greater.",author:"Epictetus"},
+{text:"It is impossible to learn that which one thinks one already knows.",author:"Epictetus"},
+{text:"Only the educated are free.",author:"Epictetus"},
+{text:"In theory there is nothing to hinder us from following what we are taught.",author:"Epictetus"},
+
+{text:"Make each day your masterpiece.",author:"John Wooden"},
+{text:"Do not let what you cannot do interfere with what you can do.",author:"John Wooden"},
+{text:"Never mistake activity for achievement.",author:"John Wooden"},
+{text:"Be more concerned with your character than your reputation.",author:"John Wooden"},
+{text:"If you're not making mistakes, then you're not doing anything.",author:"John Wooden"},
+{text:"It's what you learn after you know it all that counts.",author:"John Wooden"},
+{text:"Things turn out best for the people who make the best of the way things turn out.",author:"John Wooden"},
+{text:"Success comes from knowing that you did your best to become the best that you are capable of becoming.",author:"John Wooden"},
+
+{text:"The more one does and sees and feels, the more one is able to do.",author:"Amelia Earhart"},
+{text:"The most difficult thing is the decision to act; the rest is merely tenacity.",author:"Amelia Earhart"},
+{text:"The time to worry is before a decision, not after.",author:"Amelia Earhart"},
+{text:"Preparation is rightly two-thirds of any venture.",author:"Amelia Earhart"},
+{text:"Fears are paper tigers.",author:"Amelia Earhart"},
+{text:"Courage is the price that life exacts for granting peace.",author:"Amelia Earhart"},
+{text:"Adventure is worthwhile in itself.",author:"Amelia Earhart"},
+{text:"Worry retards reaction and makes clear-cut decisions impossible.",author:"Amelia Earhart"},
+
+{text:"Character, not circumstances, makes the man.",author:"Booker T. Washington"},
+{text:"Progress is a law of nature.",author:"Booker T. Washington"},
+{text:"The best way to lift oneself up is to help someone else.",author:"Booker T. Washington"},
+{text:"No power can neutralize the influence of a high, simple, useful life.",author:"Booker T. Washington"},
+{text:"The world cares very little about what a person knows; it is what a person can do that counts.",author:"Booker T. Washington"},
+{text:"There are two ways of exerting strength: pushing down or pulling up.",author:"Booker T. Washington"},
+{text:"You cannot hold a man down without staying down with him.",author:"Booker T. Washington"},
+
+{text:"In spite of everything, I still believe that people are really good at heart.",author:"Anne Frank"},
+{text:"Go outside and try to recapture the happiness within yourself.",author:"Anne Frank"},
+{text:"There is always some beauty left.",author:"Anne Frank"},
+{text:"Whoever is happy will make others happy too.",author:"Anne Frank"},
+{text:"Where there's hope, there's life.",author:"Anne Frank"},
+
+{text:"Without courage, we cannot practice any other virtue with consistency.",author:"Maya Angelou"},
+{text:"We may encounter many defeats, but we must not be defeated.",author:"Maya Angelou"},
+{text:"When you learn, teach. When you get, give.",author:"Maya Angelou"},
+{text:"You may not control all the events that happen to you, but you can decide not to be reduced by them.",author:"Maya Angelou"},
+{text:"Have enough courage to trust love one more time and always one more time.",author:"Maya Angelou"},
+{text:"Try to be a rainbow in someone's cloud.",author:"Maya Angelou"},
+{text:"If you don't like something, change it. If you can't change it, change your attitude.",author:"Maya Angelou"},
+
+{text:"Education is the great engine of personal development.",author:"Nelson Mandela"},
+{text:"A good head and a good heart are always a formidable combination.",author:"Nelson Mandela"},
+{text:"Courage is not the absence of fear, but the triumph over it.",author:"Nelson Mandela"},
+{text:"Experience is the finest inheritance one can have.",author:"Nelson Mandela"},
+{text:"I work better and think more clearly when I am in good physical condition.",author:"Nelson Mandela"},
+{text:"Education is the most powerful weapon which you can use to change the world.",author:"Nelson Mandela"},
+{text:"We must use time wisely and forever realize that the time is always ripe to do right.",author:"Nelson Mandela"},
+
+{text:"All knowledge ultimately means self-knowledge.",author:"Bruce Lee"},
+{text:"Always be yourself, express yourself, have faith in yourself.",author:"Bruce Lee"},
+{text:"Use only that which works, and take it from any place you can find it.",author:"Bruce Lee"},
+{text:"It is not how much you have learned, but how much you have absorbed.",author:"Bruce Lee"}
+]
 
 let famousQuoteOrder=[];
 let famousQuoteCursor=0;
@@ -3668,10 +4301,11 @@ function allTrainingScores(){
  progressHistory.forEach(function(x){if(typeof x.pct==="number")a.push(x.pct)});
  writingHistory.forEach(function(x){if(typeof x.score==="number")a.push(x.score)});
  communicationHistory.forEach(function(x){if(typeof x.score==="number")a.push(x.score)});
+ vocabularyHistory.forEach(function(x){if(typeof x.pct==="number")a.push(x.pct)});
  return a;
 }
 function updateHomepageJourney(){
- const total=progressHistory.length+writingHistory.length+communicationHistory.length;
+ const total=progressHistory.length+writingHistory.length+communicationHistory.length+vocabularyHistory.length;
  const scores=allTrainingScores();
  const avgScore=scores.length?Math.round(scores.reduce(function(a,b){return a+b},0)/scores.length):null;
  const best=scores.length?Math.max.apply(null,scores):null;
@@ -3685,7 +4319,8 @@ function updateHomepageJourney(){
  const note=document.getElementById("homeFocusNote");
  const weakW=typeof weakestWritingSkill==="function"?weakestWritingSkill():null;
  if(focus&&note){
-   if(communicationHistory.length<3){focus.textContent="Komunikasi";note.textContent="Coba satu latihan komunikasi efektif hari ini.";}
+   if(vocabularyHistory.length<2){focus.textContent="Vocabulary";note.textContent="Coba satu ronde vocabulary: 10 kata, 4 pilihan tiap soal.";}
+   else if(communicationHistory.length<3){focus.textContent="Komunikasi";note.textContent="Coba satu latihan komunikasi efektif hari ini.";}
    else if(weakW){focus.textContent=WRITING_SKILLS[weakW];note.textContent="Area ini bisa jadi fokus latihan berikutnya.";}
    else{focus.textContent="Lanjut";note.textContent="Pilih latihan yang paling ingin kamu perkuat.";}
  }
@@ -3716,11 +4351,13 @@ function showHome(){
  document.getElementById("storySection").classList.add("hidden");
  document.getElementById("quizSection").classList.add("hidden");
  document.getElementById("writingSection").classList.add("hidden");
+ document.getElementById("vocabularySection").classList.add("hidden");
  document.getElementById("homeSection").classList.remove("hidden");
  document.getElementById("mainHome").classList.remove("hidden");
  document.getElementById("memoryHome").classList.add("hidden");
  document.getElementById("writingHome").classList.add("hidden");
  document.getElementById("communicationHome").classList.add("hidden");
+ document.getElementById("vocabularyHome").classList.add("hidden");
  document.getElementById("result").classList.add("hidden");
  document.getElementById("nextBtn").classList.add("hidden");
  document.getElementById("homeAfterBtn").classList.add("hidden");
