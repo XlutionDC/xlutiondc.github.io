@@ -454,7 +454,16 @@ function memoryCategory(text){
  return "detail";
 }
 function lev(a,b){const m=a.length,n=b.length,d=Array.from({length:m+1},()=>Array(n+1).fill(0));for(let i=0;i<=m;i++)d[i][0]=i;for(let j=0;j<=n;j++)d[0][j]=j;for(let i=1;i<=m;i++)for(let j=1;j<=n;j++){const c=a[i-1]===b[j-1]?0:1;d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+c)}return d[m][n]}
-function typo(a,b){a=norm(a);b=norm(b);if(!a||!b)return false;if(a===b)return true;if(Math.min(a.length,b.length)<=3)return false;const sim=1-lev(a,b)/Math.max(a.length,b.length);return sim>=(Math.max(a.length,b.length)>=12?.82:Math.max(a.length,b.length)>=7?.86:.9)}
+function typo(a,b){
+ a=norm(a);b=norm(b);
+ if(!a||!b)return false;
+ if(a===b)return true;
+ if(Math.min(a.length,b.length)<=3)return false;
+ const dist=lev(a,b),maxLen=Math.max(a.length,b.length);
+ if(maxLen<=8&&dist===1)return true;
+ const sim=1-dist/maxLen;
+ return sim>=(maxLen>=12?.82:maxLen>=7?.85:.89);
+}
 function tokens(s){
  return norm(s).split(" ").filter(function(t){
    return t && !["yang","dan","di","ke","dari","buat","untuk","dengan","nya","sebuah","satu"].includes(t);
@@ -491,12 +500,26 @@ function partialSoftMatch(user,target){
  if(ov.shared>=1 && ov.userCoverage>=0.8 && ov.targetCoverage>=0.45)return true;
  return false;
 }
-function match(u,list){return(list||[]).some(function(v){return fullSoftMatch(u,v)})}
-function partialMatch(u,list){return(list||[]).some(function(v){return fullSoftMatch(u,v)||partialSoftMatch(u,v)})}
+function contextualTarget(target,question){
+ const qn=norm(question),parts=norm(target).split(" ").filter(Boolean);
+ const descriptors=["baris","film","hotel","terminal","gate","lantai","jam","pukul","warna","tiket","porsi","ruang","room","meeting","maskapai","kota","taman"];
+ const kept=parts.filter(function(t){
+   return !(descriptors.includes(t)&&qn.includes(t));
+ });
+ return kept.join(" ");
+}
+function contextualFullMatch(user,target,question){
+ if(fullSoftMatch(user,target))return true;
+ const reduced=contextualTarget(target,question);
+ if(!reduced||reduced===norm(target))return false;
+ return fullSoftMatch(user,reduced);
+}
+function match(u,list,question){return(list||[]).some(function(v){return contextualFullMatch(u,v,question)})}
+function partialMatch(u,list,question){return(list||[]).some(function(v){return contextualFullMatch(u,v,question)||partialSoftMatch(u,v)})}
 function grade(u,x){
  if(!norm(u))return{score:0,label:"Salah"};
- if(match(u,x.correct))return{score:1,label:"Benar"};
- if(partialMatch(u,x.partial))return{score:.5,label:"Hampir benar"};
+ if(match(u,x.correct,x.q))return{score:1,label:"Benar"};
+ if(partialMatch(u,x.partial,x.q))return{score:.5,label:"Hampir benar"};
  if((x.correct||[]).some(function(v){return partialSoftMatch(u,v)}))return{score:.5,label:"Hampir benar"};
  return{score:0,label:"Salah"};
 }
