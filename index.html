@@ -306,7 +306,7 @@ input:focus{
 .writing-instruction{margin:12px 0 0;color:#6a7284;line-height:1.55}
 textarea{width:100%;min-height:130px;resize:vertical;padding:14px;border:1px solid #ccd5e4;border-radius:12px;font:inherit;font-size:16px;line-height:1.55;color:var(--ink);outline:none;background:#fff}
 textarea:focus{border-color:#8176ed;box-shadow:0 0 0 4px rgba(111,99,232,.11)}
-.rubric-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:14px 0}
+.rubric-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:14px 0}
 .rubric-card{padding:11px;border-radius:12px;background:#fff;border:1px solid #e2e7ef;text-align:center}
 .rubric-card span{display:block;font-size:11px;color:#6d7689}
 .rubric-card strong{display:block;font-size:18px;margin-top:4px;color:#46516e}
@@ -316,7 +316,25 @@ textarea:focus{border-color:#8176ed;box-shadow:0 0 0 4px rgba(111,99,232,.11)}
 .feedback-box.focus{background:var(--amber-soft);border:1px solid #f0dfba;color:#805e22}
 .model-answer{padding:13px;border-radius:12px;background:#f7f7ff;border:1px solid #e2e2f6;line-height:1.55}
 .writing-progress{margin-top:16px;padding:16px;border-radius:14px;background:#fbfcff;border:1px solid #e4e8f1}
-@media(max-width:700px){.mode-grid{grid-template-columns:1fr}.rubric-grid{grid-template-columns:1fr 1fr}}
+.challenge-box{margin:10px 0 14px;padding:12px 14px;border-radius:12px;background:linear-gradient(90deg,#f0edff,#eef8ff);border:1px solid #dfdef3;color:#515b75;font-size:14px;font-weight:700}
+.exercise-format{display:inline-block;padding:4px 8px;border-radius:999px;background:#fff0dc;color:#93621f;font-size:11px;font-weight:800;margin-left:6px}
+.revision-strip{margin:12px 0;padding:11px 13px;border-radius:12px;background:#f6f7ff;border:1px solid #e2e3f7;color:#545d76;font-size:14px}
+.option-grid{display:grid;gap:9px;margin-top:12px}
+.option-btn{width:100%;text-align:left;background:#fff;border:1px solid #dfe4ef;color:#46516c}
+.option-btn.selected{background:#efedff;border-color:#7d73ea;color:#4e43b6}
+.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
+.metric-card{padding:10px;border-radius:11px;background:#fff;border:1px solid #e3e7ef;text-align:center}
+.metric-card span{display:block;font-size:11px;color:#778094}
+.metric-card strong{display:block;font-size:17px;margin-top:4px;color:#46516e}
+.issue-box{padding:12px 14px;border-radius:12px;background:#fff7e8;border:1px solid #f0deb8;margin:10px 0;line-height:1.55}
+.issue-box mark{background:#ffe0a6;padding:1px 3px;border-radius:4px}
+.skill-bars{margin-top:12px}
+.skill-bar-row{margin:10px 0}
+.skill-bar-head{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:#596278;margin-bottom:5px}
+.small-note{font-size:12px;color:#7a8293;margin-top:6px}
+.diagnostic-card{padding:14px;border-radius:12px;background:#f2f8ff;border:1px solid #dcebf8;margin:12px 0}
+
+@media(max-width:700px){.mode-grid{grid-template-columns:1fr}.rubric-grid,.metric-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:700px){
   .progress-grid{grid-template-columns:1fr}
 }
@@ -384,7 +402,7 @@ textarea:focus{border-color:#8176ed;box-shadow:0 0 0 4px rgba(111,99,232,.11)}
     <div class="home-card">
       <h2>Kalimat Efektif</h2>
       <p>Buat kalimat lebih singkat dan jelas tanpa kehilangan atau mengubah informasi penting.</p>
-      <div class="home-tip"><b>Penilaian:</b> Makna 40 · Kehematan 20 · Kejelasan 15 · Struktur 15 · Diksi 10.</div>
+      <div class="home-tip"><b>Rubric 100 poin:</b> Makna & kelogisan 30 · Struktur 20 · Kehematan 15 · Kejelasan & kepaduan 15 · Diksi 10 · Ejaan & tanda baca 10.</div>
     </div>
     <div class="difficulty">
       <button class="level-btn" id="write-easy" onclick="setWritingDifficulty('easy')">Mudah</button>
@@ -395,9 +413,11 @@ textarea:focus{border-color:#8176ed;box-shadow:0 0 0 4px rgba(111,99,232,.11)}
     <div class="progress-title">Jenis latihan</div>
     <div id="writingCategories" class="category-grid"></div>
     <div class="actions">
-      <button class="primary" onclick="beginWritingSession()">Mulai Kalimat Efektif</button>
+      <button class="primary" onclick="beginWritingSession()">Mulai Latihan</button>
+      <button class="secondary" id="diagnosticBtn" onclick="startWritingDiagnostic()">Tes Kemampuan Awal</button>
       <button class="secondary" onclick="toggleWritingProgress()">Lihat Progress Menulis</button>
     </div>
+    <div class="home-tip" id="adaptiveHint">Mode Mixed akan menyesuaikan latihan dengan kelemahan terbaru setelah data kamu cukup.</div>
     <div id="writingProgressPanel" class="progress-panel hidden"></div>
   </div>
 </div>
@@ -405,17 +425,21 @@ textarea:focus{border-color:#8176ed;box-shadow:0 0 0 4px rgba(111,99,232,.11)}
 <div id="writingSection" class="hidden writing-shell">
   <button class="back-link" onclick="openWritingHome()">← Kembali ke menu Kalimat Efektif</button>
   <div id="writingMeta" class="meta"></div>
+  <div id="writingChallenge" class="challenge-box"></div>
   <div class="prompt-card">
-    <div class="prompt-label">Kalimat awal</div>
+    <div class="prompt-label" id="writingPromptLabel">Kalimat awal</div>
     <div id="writingPrompt" class="prompt-text"></div>
     <div id="writingInstruction" class="writing-instruction"></div>
   </div>
-  <div class="question">
-    <label><strong>Tulis versi yang lebih efektif:</strong></label>
+  <div id="writingInputArea" class="question">
+    <label><strong id="writingInputLabel">Tulis versi yang lebih efektif:</strong></label>
     <textarea id="writingAnswer" placeholder="Tulis jawabanmu di sini..."></textarea>
+    <div id="writingOptions" class="option-grid hidden"></div>
   </div>
+  <div id="revisionStrip" class="revision-strip hidden"></div>
   <div class="actions">
     <button class="primary" id="writingCheckBtn" onclick="checkWritingAnswer()">Nilai Jawaban</button>
+    <button class="secondary hidden" id="reviseBtn" onclick="reviseWritingAnswer()">Perbaiki Jawaban</button>
     <button class="secondary" onclick="nextWritingExercise()">Ganti Soal</button>
     <button class="rest-btn" onclick="showHome()">Istirahat / Home</button>
   </div>
