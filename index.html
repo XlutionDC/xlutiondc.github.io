@@ -287,11 +287,12 @@ input:focus{
 .home-tip{margin-top:12px;padding:11px 13px;border-radius:12px;background:#fff;border:1px solid #e5e8f1;color:#687188;font-size:14px}
 .home-start{margin-top:18px}
 .rest-btn{background:#f7f8fb;color:#586176;border:1px solid #dfe4ed}
-.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0}
+.mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
 .mode-card{padding:20px;border-radius:17px;border:1px solid #e2e6f0;background:#fff;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease,border .15s ease}
 .mode-card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(57,67,105,.1)}
 .mode-card.memory{background:linear-gradient(145deg,#f5f4ff,#edf7ff);border-color:#dddafa}
 .mode-card.writing{background:linear-gradient(145deg,#fff8ec,#f3fbf7);border-color:#f0dfc2}
+.mode-card.communication{background:linear-gradient(145deg,#eef9ff,#f3f0ff);border-color:#d8e7f4}
 .mode-icon{font-size:28px;margin-bottom:8px}
 .mode-card h3{margin:0 0 6px;font-size:19px;color:#3f4862}
 .mode-card p{margin:0;color:#697386;font-size:14px;line-height:1.5}
@@ -333,8 +334,16 @@ textarea:focus{border-color:#8176ed;box-shadow:0 0 0 4px rgba(111,99,232,.11)}
 .skill-bar-head{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:#596278;margin-bottom:5px}
 .small-note{font-size:12px;color:#7a8293;margin-top:6px}
 .diagnostic-card{padding:14px;border-radius:12px;background:#f2f8ff;border:1px solid #dcebf8;margin:12px 0}
+.comm-facts{display:grid;gap:8px;margin-top:12px}
+.comm-fact{padding:10px 12px;border-radius:10px;background:#fff;border:1px solid #e3e7ef;color:#566176}
+.comm-question{margin-top:14px;padding:14px;border-radius:12px;background:#f4f2ff;border:1px solid #dfdcfa;color:#454e68;font-weight:800;line-height:1.5}
+.comm-audience{display:inline-block;margin-top:10px;padding:6px 10px;border-radius:999px;background:#edf7ff;color:#2f6f9f;font-size:12px;font-weight:800}
+.comm-score-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:14px 0}
+.comm-signal{margin:12px 0;padding:14px;border-radius:12px;background:#f5fbf8;border:1px solid #dcefe6}
+.mic-live{background:var(--coral-soft)!important;color:#b84e59!important;border:1px solid #f4cfd4!important}
 
-@media(max-width:700px){.mode-grid{grid-template-columns:1fr}.rubric-grid,.metric-grid{grid-template-columns:1fr 1fr}}
+
+@media(max-width:700px){.mode-grid{grid-template-columns:1fr}.rubric-grid,.metric-grid,.comm-score-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:700px){
   .progress-grid{grid-template-columns:1fr}
 }
@@ -372,6 +381,11 @@ textarea:focus{border-color:#8176ed;box-shadow:0 0 0 4px rgba(111,99,232,.11)}
         <div class="mode-icon">✍️</div>
         <h3>Kalimat Efektif</h3>
         <p>Latih menulis lebih ringkas, jelas, terstruktur, dan tepat tanpa mengubah makna.</p>
+      </div>
+      <div class="mode-card communication" onclick="openCommunicationHome()">
+        <div class="mode-icon">🗣️</div>
+        <h3>Komunikasi Efektif</h3>
+        <p>Latih menangkap inti, menjawab langsung, memilih informasi penting, dan berbicara lebih efisien.</p>
       </div>
     </div>
     <div class="actions"><button class="secondary" onclick="toggleProgress()">Lihat Progress Ingatan</button></div>
@@ -420,6 +434,29 @@ textarea:focus{border-color:#8176ed;box-shadow:0 0 0 4px rgba(111,99,232,.11)}
     <div class="home-tip" id="adaptiveHint">Mode Mixed akan menyesuaikan latihan dengan kelemahan terbaru setelah data kamu cukup.</div>
     <div id="writingProgressPanel" class="progress-panel hidden"></div>
   </div>
+
+  <div id="communicationHome" class="hidden">
+    <button class="back-link" onclick="showHome()">← Kembali ke pilihan latihan</button>
+    <div class="home-card">
+      <h2>Komunikasi Efektif</h2>
+      <p>Latih kemampuan menemukan inti pesan, menjawab langsung, memilih informasi relevan, dan menyampaikan maksud dengan efisien.</p>
+      <div class="home-tip"><b>Penilaian:</b> Makna 40 · Point First 20 · Relevansi 15 · Struktur 15 · Efisiensi 10.</div>
+    </div>
+    <div class="difficulty">
+      <button class="level-btn" id="comm-easy" onclick="setCommunicationDifficulty('easy')">Mudah</button>
+      <button class="level-btn" id="comm-medium" onclick="setCommunicationDifficulty('medium')">Sedang</button>
+      <button class="level-btn" id="comm-hard" onclick="setCommunicationDifficulty('hard')">Susah</button>
+    </div>
+    <div class="level-desc" id="communicationLevelDesc"></div>
+    <div class="progress-title">Jenis latihan</div>
+    <div id="communicationCategories" class="category-grid"></div>
+    <div class="actions">
+      <button class="primary" onclick="beginCommunicationSession()">Mulai Latihan</button>
+      <button class="secondary" onclick="toggleCommunicationProgress()">Lihat Progress Komunikasi</button>
+    </div>
+    <div class="home-tip" id="communicationHint">Mode Mixed akan menggabungkan berbagai kemampuan komunikasi.</div>
+    <div id="communicationProgressPanel" class="progress-panel hidden"></div>
+  </div>
 </div>
 
 <div id="writingSection" class="hidden writing-shell">
@@ -447,6 +484,35 @@ textarea:focus{border-color:#8176ed;box-shadow:0 0 0 4px rgba(111,99,232,.11)}
   <div class="actions">
     <button id="writingNextBtn" class="primary hidden" onclick="nextWritingExercise()">Soal Berikutnya</button>
     <button id="writingHomeBtn" class="secondary hidden" onclick="showHome()">Selesai & Kembali Home</button>
+  </div>
+</div>
+
+<div id="communicationSection" class="hidden writing-shell">
+  <button class="back-link" onclick="openCommunicationHome()">← Kembali ke menu Komunikasi Efektif</button>
+  <div id="communicationMeta" class="meta"></div>
+  <div id="communicationChallenge" class="challenge-box"></div>
+  <div class="prompt-card">
+    <div class="prompt-label">Situasi</div>
+    <div id="communicationScenario" class="prompt-text"></div>
+    <div id="communicationAudience" class="comm-audience"></div>
+    <div id="communicationFacts" class="comm-facts"></div>
+    <div id="communicationQuestion" class="comm-question"></div>
+  </div>
+  <div class="question">
+    <label><strong>Sampaikan jawabanmu:</strong></label>
+    <textarea id="communicationAnswer" placeholder="Jawab seolah kamu sedang berbicara langsung..."></textarea>
+  </div>
+  <div class="actions">
+    <button class="primary" id="communicationCheckBtn" onclick="checkCommunicationAnswer()">Nilai Jawaban</button>
+    <button class="secondary" id="commMicBtn" onclick="toggleCommunicationMic()">🎙️ Bicara</button>
+    <button class="secondary" onclick="nextCommunicationExercise()">Ganti Soal</button>
+    <button class="rest-btn" onclick="showHome()">Istirahat / Home</button>
+  </div>
+  <div id="communicationResult" class="result hidden"></div>
+  <div class="actions">
+    <button id="communicationCompressionBtn" class="primary hidden" onclick="nextCompressionStage()">Kompres Lagi</button>
+    <button id="communicationNextBtn" class="primary hidden" onclick="nextCommunicationExercise()">Soal Berikutnya</button>
+    <button id="communicationHomeBtn" class="secondary hidden" onclick="showHome()">Selesai & Kembali Home</button>
   </div>
 </div>
 
