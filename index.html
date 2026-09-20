@@ -765,6 +765,31 @@ let bestScores=JSON.parse(localStorage.getItem("bestMemoryScores")||'{"easy":0,"
 let recentTypes=JSON.parse(localStorage.getItem("recentTypes")||"[]");
 let storyTimer=null,timerRemaining=0,peekUsed=false;
 let progressHistory=JSON.parse(localStorage.getItem("memoryProgressHistory")||"[]");
+function regradeProgressHistory(){
+ let changed=false;
+ progressHistory.forEach(function(sess){
+   let total=0,correct=0,partial=0,wrong=0;
+   (sess.answers||[]).forEach(function(a){
+     const gr=grade(a.user,{q:a.question,correct:[a.correct],partial:[]});
+     if(a.score!==gr.score||a.label!==gr.label)changed=true;
+     a.score=gr.score;
+     a.label=gr.label;
+     a.category=a.category||memoryCategory(a.question);
+     total+=gr.score;
+     if(gr.score===1)correct++;else if(gr.score===0.5)partial++;else wrong++;
+   });
+   if((sess.answers||[]).length){
+     sess.score=total;
+     sess.max=sess.answers.length;
+     sess.pct=Math.round(total/sess.max*100);
+     sess.correct=correct;
+     sess.partial=partial;
+     sess.wrong=wrong;
+   }
+ });
+ if(changed)localStorage.setItem("memoryProgressHistory",JSON.stringify(progressHistory));
+}
+regradeProgressHistory();
 
 function generate(){
  let options=builders.filter(b=>!recentTypes.includes(b.name));
