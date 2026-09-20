@@ -870,6 +870,240 @@ function errand(){
  return {type:"Rangkaian urusan",story,questions:choose(pool)};
 }
 
+const WRITING_CATEGORIES={
+ mixed:"Mixed",
+ concise:"Ringkas",
+ clear:"Jelas",
+ structure:"Struktur",
+ diction:"Pemilihan Kata",
+ professional:"Profesional",
+ combine:"Gabungkan Kalimat"
+};
+const WRITING_LEVELS={
+ easy:{label:"Mudah",desc:"Kalimat pendek dengan 1 masalah utama: kata mubazir, pengulangan, atau struktur sederhana."},
+ medium:{label:"Sedang",desc:"Kalimat lebih panjang dengan beberapa informasi penting yang harus tetap dipertahankan."},
+ hard:{label:"Susah",desc:"Kalimat atau paragraf pendek dengan banyak detail. Ringkas tanpa mengubah fakta, urutan, atau konteks."}
+};
+let writingDifficulty=localStorage.getItem("writingDifficulty")||"medium";
+let writingCategory=localStorage.getItem("writingCategory")||"mixed";
+let writingHistory=JSON.parse(localStorage.getItem("writingProgressHistory")||"[]");
+let currentWriting=null;
+
+const WRITING_EXERCISES=[
+ {level:"easy",category:"concise",original:"Para siswa-siswa sedang belajar bersama-sama di dalam kelas.",required:[["siswa"],["belajar"],["kelas"]],waste:["para siswa-siswa","bersama-sama","di dalam"],idealMin:4,idealMax:7,model:"Para siswa sedang belajar di kelas.",note:"Hilangkan pengulangan dan kata yang tidak menambah makna."},
+ {level:"easy",category:"concise",original:"Pada saat sekarang ini saya sedang berada di kantor untuk melakukan pekerjaan.",required:[["sekarang"],["saya"],["bekerja","pekerjaan"],["kantor"]],waste:["pada saat sekarang ini","sedang berada","melakukan pekerjaan"],idealMin:4,idealMax:7,model:"Sekarang saya bekerja di kantor.",note:"Pertahankan waktu, subjek, aktivitas, dan lokasi."},
+ {level:"easy",category:"clear",original:"Rina memberikan buku itu kepada Siska karena dia membutuhkannya.",required:[["rina"],["siska"],["buku"]],waste:[],idealMin:6,idealMax:11,model:"Rina memberikan buku itu kepada Siska karena Siska membutuhkannya.",note:"Hilangkan kata ganti yang ambigu."},
+ {level:"easy",category:"structure",original:"Karena hujan deras sehingga pertandingan dibatalkan.",required:[["hujan"],["pertandingan"],["dibatalkan","batal"]],waste:["karena","sehingga"],idealMin:4,idealMax:7,model:"Pertandingan dibatalkan karena hujan deras.",note:"Perbaiki hubungan sebab-akibat agar struktur kalimat utuh."},
+ {level:"easy",category:"diction",original:"Dia melakukan pembelian tiket secara online.",required:[["dia"],["tiket"],["online"]],waste:["melakukan pembelian"],idealMin:4,idealMax:6,model:"Dia membeli tiket secara online.",note:"Gunakan verba yang lebih langsung."},
+ {level:"easy",category:"professional",original:"Aku mau ngasih tahu kalau meeting besok digeser jadi jam 3.",required:[["meeting","rapat"],["besok"],["jam 3","pukul 3"],["digeser","dipindah","diubah"]],waste:["aku mau ngasih tahu kalau"],idealMin:5,idealMax:9,model:"Meeting besok dipindahkan ke pukul 3.",note:"Buat lebih profesional tanpa mengubah informasi."},
+
+ {level:"medium",category:"concise",original:"Saya ingin memberitahukan kepada Anda bahwa meeting besok akan dilakukan perubahan waktu menjadi jam 3.",required:[["meeting","rapat"],["besok"],["jam 3","pukul 3"],["perubahan","dipindah","diubah"]],waste:["saya ingin memberitahukan kepada anda bahwa","akan dilakukan perubahan waktu menjadi"],idealMin:5,idealMax:10,model:"Meeting besok dipindahkan ke pukul 3.",note:"Semua fakta penting harus tetap ada."},
+ {level:"medium",category:"clear",original:"Setelah Andi berbicara dengan Dimas, dia memutuskan untuk mengubah jadwal.",required:[["andi"],["dimas"],["jadwal"],["mengubah","ubah"]],waste:[],idealMin:7,idealMax:12,model:"Setelah berbicara dengan Dimas, Andi memutuskan untuk mengubah jadwal.",note:"Pastikan jelas siapa yang mengambil keputusan."},
+ {level:"medium",category:"structure",original:"Untuk meningkatkan penjualan maka tim marketing akan melakukan promosi baru.",required:[["meningkatkan","naik"],["penjualan"],["tim marketing","marketing"],["promosi"]],waste:["maka","melakukan promosi"],idealMin:6,idealMax:10,model:"Tim marketing akan membuat promosi baru untuk meningkatkan penjualan.",note:"Rapikan susunan tujuan dan tindakan."},
+ {level:"medium",category:"diction",original:"Perusahaan memberikan keputusan untuk melakukan penundaan peluncuran produk.",required:[["perusahaan"],["menunda","penundaan"],["peluncuran"],["produk"]],waste:["memberikan keputusan","melakukan penundaan"],idealMin:5,idealMax:8,model:"Perusahaan memutuskan menunda peluncuran produk.",note:"Ganti frasa nominal yang panjang dengan verba yang tepat."},
+ {level:"medium",category:"professional",original:"Kayaknya file yang kemarin itu masih ada salah sedikit jadi tolong dicek lagi ya sebelum dikirim.",required:[["file"],["salah","kesalahan"],["cek","periksa"],["sebelum"],["dikirim","kirim"]],waste:["kayaknya","yang kemarin itu","sedikit","ya"],idealMin:7,idealMax:12,model:"File masih memiliki kesalahan. Tolong periksa kembali sebelum dikirim.",note:"Buat lebih profesional, tetap sopan, dan jelas."},
+ {level:"medium",category:"combine",original:"Rapat dimulai pukul 10. Rapat berlangsung di Meeting Room A.",required:[["rapat"],["pukul 10","jam 10"],["meeting room a"]],waste:[],idealMin:6,idealMax:10,model:"Rapat dimulai pukul 10 di Meeting Room A.",note:"Gabungkan menjadi satu kalimat tanpa kehilangan fakta."},
+
+ {level:"hard",category:"concise",original:"Berdasarkan hasil diskusi yang telah dilakukan oleh seluruh anggota tim, pada akhirnya diputuskan bahwa peluncuran produk yang sebelumnya direncanakan pada hari Senin akan ditunda hingga hari Kamis.",required:[["tim"],["peluncuran"],["produk"],["senin"],["kamis"],["ditunda","mundur"]],waste:["berdasarkan hasil diskusi yang telah dilakukan oleh seluruh anggota tim","pada akhirnya diputuskan bahwa","yang sebelumnya direncanakan pada hari"],idealMin:9,idealMax:15,model:"Tim memutuskan menunda peluncuran produk dari Senin ke Kamis.",note:"Pertahankan siapa, apa, dan perubahan jadwal."},
+ {level:"hard",category:"clear",original:"Maya memberi tahu Siska bahwa Rina akan menjemput adiknya setelah dia selesai bekerja.",required:[["maya"],["siska"],["rina"],["menjemput"],["adik"],["bekerja"]],waste:[],idealMin:10,idealMax:16,model:"Maya memberi tahu Siska bahwa Rina akan menjemput adik Rina setelah Rina selesai bekerja.",note:"Hilangkan ambiguitas pada 'adiknya' dan 'dia'."},
+ {level:"hard",category:"structure",original:"Walaupun penjualan bulan ini meningkat, tetapi karena biaya iklan juga naik, sehingga laba bersih perusahaan tetap sama.",required:[["penjualan"],["meningkat","naik"],["biaya iklan"],["naik"],["laba bersih"],["tetap sama"]],waste:["walaupun","tetapi","karena","sehingga"],idealMin:10,idealMax:16,model:"Walaupun penjualan bulan ini meningkat, laba bersih tetap sama karena biaya iklan juga naik.",note:"Gunakan konjungsi secara efisien dan logis."},
+ {level:"hard",category:"professional",original:"Kami mau kasih info kalau karena ada beberapa hal yang belum selesai, jadi acara besok mungkin bakal mulai agak telat sekitar 30 menit.",required:[["acara"],["besok"],["terlambat","telat","mundur"],["30 menit"],["belum selesai","kendala"]],waste:["kami mau kasih info kalau","ada beberapa hal","jadi","mungkin bakal","agak"],idealMin:9,idealMax:15,model:"Acara besok diperkirakan mundur 30 menit karena beberapa persiapan belum selesai.",note:"Buat profesional dan tetap jujur terhadap tingkat kepastian."},
+ {level:"hard",category:"combine",original:"Tim desain menyelesaikan revisi pada Selasa. Tim produksi mulai mencetak pada Rabu. Pesanan dikirim pada Jumat.",required:[["tim desain","desain"],["selasa"],["produksi"],["rabu"],["dikirim","kirim"],["jumat"]],waste:[],idealMin:12,idealMax:20,model:"Tim desain menyelesaikan revisi Selasa, produksi mulai mencetak Rabu, dan pesanan dikirim Jumat.",note:"Gabungkan tiga fakta dengan urutan waktu tetap jelas."},
+ {level:"hard",category:"diction",original:"Manajer memberikan arahan kepada tim agar dapat melakukan peningkatan terhadap kualitas pelayanan pelanggan.",required:[["manajer"],["tim"],["meningkatkan","peningkatan"],["kualitas"],["pelayanan","layanan"],["pelanggan"]],waste:["memberikan arahan kepada","agar dapat melakukan peningkatan terhadap"],idealMin:7,idealMax:12,model:"Manajer mengarahkan tim untuk meningkatkan kualitas layanan pelanggan.",note:"Pilih verba yang langsung dan hindari nominalisasi berlebihan."}
+];
+
+function setWritingDifficulty(x){
+ writingDifficulty=x;
+ localStorage.setItem("writingDifficulty",x);
+ updateWritingHomeUI();
+}
+function setWritingCategory(x){
+ writingCategory=x;
+ localStorage.setItem("writingCategory",x);
+ updateWritingHomeUI();
+}
+function renderWritingCategories(){
+ const c=document.getElementById("writingCategories");
+ if(!c)return;
+ c.innerHTML="";
+ Object.keys(WRITING_CATEGORIES).forEach(function(k){
+   const b=document.createElement("button");
+   b.className="category-btn"+(writingCategory===k?" active":"");
+   b.textContent=WRITING_CATEGORIES[k];
+   b.onclick=function(){setWritingCategory(k)};
+   c.appendChild(b);
+ });
+}
+function updateWritingHomeUI(){
+ ["easy","medium","hard"].forEach(function(x){
+   const el=document.getElementById("write-"+x);
+   if(el)el.classList.toggle("active",x===writingDifficulty);
+ });
+ const d=document.getElementById("writingLevelDesc");
+ if(d)d.textContent=WRITING_LEVELS[writingDifficulty].desc;
+ renderWritingCategories();
+}
+function openMemoryHome(){
+ document.getElementById("mainHome").classList.add("hidden");
+ document.getElementById("writingHome").classList.add("hidden");
+ document.getElementById("memoryHome").classList.remove("hidden");
+ updateStats();
+}
+function openWritingHome(){
+ clearStoryTimer();
+ document.getElementById("storySection").classList.add("hidden");
+ document.getElementById("quizSection").classList.add("hidden");
+ document.getElementById("writingSection").classList.add("hidden");
+ document.getElementById("homeSection").classList.remove("hidden");
+ document.getElementById("mainHome").classList.add("hidden");
+ document.getElementById("memoryHome").classList.add("hidden");
+ document.getElementById("writingHome").classList.remove("hidden");
+ updateWritingHomeUI();
+ document.getElementById("typeStat").textContent="Mode: Kalimat Efektif";
+}
+function chooseWritingExercise(){
+ let pool=WRITING_EXERCISES.filter(function(x){
+   return x.level===writingDifficulty&&(writingCategory==="mixed"||x.category===writingCategory);
+ });
+ if(!pool.length)pool=WRITING_EXERCISES.filter(function(x){return x.level===writingDifficulty});
+ return pick(pool);
+}
+function beginWritingSession(){
+ currentWriting=chooseWritingExercise();
+ renderWritingExercise();
+}
+function nextWritingExercise(){
+ currentWriting=chooseWritingExercise();
+ renderWritingExercise();
+}
+function renderWritingExercise(){
+ document.getElementById("homeSection").classList.add("hidden");
+ document.getElementById("storySection").classList.add("hidden");
+ document.getElementById("quizSection").classList.add("hidden");
+ document.getElementById("writingSection").classList.remove("hidden");
+ document.getElementById("writingMeta").textContent=WRITING_LEVELS[writingDifficulty].label+" · "+WRITING_CATEGORIES[currentWriting.category];
+ document.getElementById("writingPrompt").textContent=currentWriting.original;
+ document.getElementById("writingInstruction").textContent=currentWriting.note;
+ document.getElementById("writingAnswer").value="";
+ document.getElementById("writingResult").classList.add("hidden");
+ document.getElementById("writingNextBtn").classList.add("hidden");
+ document.getElementById("writingHomeBtn").classList.add("hidden");
+ document.getElementById("writingCheckBtn").disabled=false;
+ document.getElementById("typeStat").textContent="Mode: Kalimat Efektif";
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function wordCount(s){return norm(s).split(" ").filter(Boolean).length}
+function containsConcept(answer,group){
+ return group.some(function(term){
+   const a=norm(answer),t=norm(term);
+   return a.includes(t)||typo(a,t);
+ });
+}
+function scoreWriting(answer,ex){
+ const text=norm(answer),original=norm(ex.original);
+ if(!text)return {total:0,meaning:0,concise:0,clarity:0,structure:0,diction:0,missing:ex.required.length,feedback:["Jawaban masih kosong."]};
+
+ let hit=0;
+ ex.required.forEach(function(group){if(containsConcept(text,group))hit++});
+ let meaning=Math.round(40*hit/ex.required.length);
+
+ const originalWords=wordCount(original),answerWords=wordCount(text);
+ let concise=20;
+ if(answerWords>ex.idealMax)concise=Math.max(4,20-(answerWords-ex.idealMax)*3);
+ if(answerWords<ex.idealMin)concise=Math.max(5,20-(ex.idealMin-answerWords)*4);
+ if(answerWords>=originalWords)concise=Math.min(concise,10);
+
+ let wasteFound=0;
+ (ex.waste||[]).forEach(function(w){if(text.includes(norm(w)))wasteFound++});
+ concise=Math.max(0,concise-wasteFound*3);
+
+ let clarity=15;
+ if(answerWords<3)clarity=5;
+ if(/[?]{2,}|\.\.\./.test(answer))clarity-=2;
+ clarity=Math.max(0,clarity);
+
+ let structure=15;
+ if(!/[a-zA-ZÀ-ÿ]/.test(answer))structure=0;
+ if(answerWords<4)structure=Math.min(structure,8);
+ if((answer.match(/\b(karena|sehingga|tetapi|maka)\b/gi)||[]).length>=3)structure=Math.max(6,structure-5);
+
+ let diction=10;
+ const filler=["pada saat sekarang ini","melakukan","memberikan keputusan","dapat melakukan","mau kasih","kayaknya"];
+ filler.forEach(function(w){if(text.includes(norm(w)))diction-=2});
+ diction=Math.max(0,diction);
+
+ let total=meaning+concise+clarity+structure+diction;
+ if(meaning<30)total=Math.min(total,74);
+ if(meaning<20)total=Math.min(total,59);
+
+ const feedback=[];
+ if(meaning===40)feedback.push("Semua informasi penting tetap terjaga.");
+ else feedback.push("Ada informasi penting yang hilang atau belum cukup jelas.");
+ if(concise>=17)feedback.push("Kalimat sudah hemat kata.");
+ else feedback.push("Masih ada bagian yang bisa dipangkas.");
+ if(clarity>=13)feedback.push("Maksud kalimat mudah dipahami.");
+ if(structure<12)feedback.push("Susunan kalimat masih bisa dirapikan.");
+ if(diction<8)feedback.push("Coba gunakan kata kerja yang lebih langsung.");
+
+ return {total:Math.round(total),meaning:meaning,concise:concise,clarity:clarity,structure:structure,diction:diction,missing:ex.required.length-hit,feedback:feedback};
+}
+function writingLabel(score){
+ if(score>=90)return"Sangat Efektif";
+ if(score>=75)return"Efektif";
+ if(score>=60)return"Cukup Efektif";
+ return"Perlu Diperbaiki";
+}
+function saveWritingProgress(score,answer){
+ writingHistory.push({
+   time:Date.now(),difficulty:writingDifficulty,category:currentWriting.category,
+   score:score.total,meaning:score.meaning,concise:score.concise,clarity:score.clarity,
+   structure:score.structure,diction:score.diction,original:currentWriting.original,
+   answer:answer,model:currentWriting.model
+ });
+ writingHistory=writingHistory.slice(-60);
+ localStorage.setItem("writingProgressHistory",JSON.stringify(writingHistory));
+}
+function checkWritingAnswer(){
+ const answer=document.getElementById("writingAnswer").value;
+ const sc=scoreWriting(answer,currentWriting);
+ saveWritingProgress(sc,answer);
+ const r=document.getElementById("writingResult");
+ r.classList.remove("hidden");
+ const good=sc.total>=75;
+ r.innerHTML='<div class="score-big">'+sc.total+'/100 · '+writingLabel(sc.total)+'</div>'+
+ '<div class="rubric-grid">'+
+ '<div class="rubric-card"><span>Makna</span><strong>'+sc.meaning+'/40</strong></div>'+
+ '<div class="rubric-card"><span>Kehematan</span><strong>'+sc.concise+'/20</strong></div>'+
+ '<div class="rubric-card"><span>Kejelasan</span><strong>'+sc.clarity+'/15</strong></div>'+
+ '<div class="rubric-card"><span>Struktur</span><strong>'+sc.structure+'/15</strong></div>'+
+ '<div class="rubric-card"><span>Diksi</span><strong>'+sc.diction+'/10</strong></div></div>'+
+ '<div class="feedback-box '+(good?"good":"focus")+'">'+sc.feedback.join(" ")+'</div>'+
+ '<div class="model-answer"><b>Contoh jawaban efektif:</b><br>'+esc(currentWriting.model)+'</div>';
+ document.getElementById("writingNextBtn").classList.remove("hidden");
+ document.getElementById("writingHomeBtn").classList.remove("hidden");
+ document.getElementById("writingCheckBtn").disabled=true;
+ r.scrollIntoView({behavior:"smooth",block:"start"});
+}
+function writingSummary(){
+ if(!writingHistory.length)return {count:0,avg:0,best:0};
+ const last=writingHistory.slice(-10),scores=last.map(function(x){return x.score});
+ return {count:writingHistory.length,avg:avg(scores),best:Math.max.apply(null,writingHistory.map(function(x){return x.score}))};
+}
+function toggleWritingProgress(){
+ const p=document.getElementById("writingProgressPanel");
+ p.classList.toggle("hidden");
+ if(p.classList.contains("hidden"))return;
+ const sum=writingSummary();
+ if(!sum.count){p.innerHTML='<div class="empty-state">Belum ada latihan menulis yang selesai.</div>';return}
+ const recent=writingHistory.slice(-8).reverse();
+ let hist="";
+ recent.forEach(function(x){
+   const d=new Date(x.time).toLocaleString("id-ID",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"});
+   hist+='<details class="history-row"><summary><span class="history-score">'+x.score+'/100</span> · '+WRITING_LEVELS[x.difficulty].label+' · '+WRITING_CATEGORIES[x.category]+'</summary><div class="history-meta">'+d+'</div><div class="answer-review"><b>Kalimat awal:</b><br>'+esc(x.original)+'<br><br><b>Jawaban kamu:</b><br>'+esc(x.answer||"(kosong)")+'<br><br><b>Contoh:</b><br>'+esc(x.model)+'</div></details>';
+ });
+ p.innerHTML='<div class="progress-grid"><div class="progress-card"><span>Rata-rata 10 sesi</span><strong>'+sum.avg+'/100</strong></div><div class="progress-card"><span>Best</span><strong>'+sum.best+'/100</strong></div><div class="progress-card"><span>Selesai</span><strong>'+sum.count+'</strong></div></div><div class="progress-title">Riwayat Terbaru</div>'+hist;
+}
+
 const builders=[shopping,cinema,airport,study,eventStory,office,roadtrip,birthday,restaurant,park,errand];
 let currentStory=null;
 let storyNumber=Number(localStorage.getItem("storyNumber")||0);
@@ -1172,13 +1406,19 @@ function showHome(){
  const timer=document.getElementById("timerStat");
  timer.classList.add("hidden");
  currentStory=null;
+ currentWriting=null;
  document.getElementById("storySection").classList.add("hidden");
  document.getElementById("quizSection").classList.add("hidden");
+ document.getElementById("writingSection").classList.add("hidden");
  document.getElementById("homeSection").classList.remove("hidden");
+ document.getElementById("mainHome").classList.remove("hidden");
+ document.getElementById("memoryHome").classList.add("hidden");
+ document.getElementById("writingHome").classList.add("hidden");
  document.getElementById("result").classList.add("hidden");
  document.getElementById("nextBtn").classList.add("hidden");
  document.getElementById("homeAfterBtn").classList.add("hidden");
  updateStats();
+ document.getElementById("typeStat").textContent="Mode: Home";
  window.scrollTo({top:0,behavior:"smooth"});
 }
 showHome();
