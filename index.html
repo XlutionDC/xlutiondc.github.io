@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Latihan Memori</title>
+<title>AyoKingat - Latihan Otak & Komunikasi</title>
 <style>
 :root{
   --ink:#24324a;
@@ -287,6 +287,36 @@ input:focus{
 .home-tip{margin-top:12px;padding:11px 13px;border-radius:12px;background:#fff;border:1px solid #e5e8f1;color:#687188;font-size:14px}
 .home-start{margin-top:18px}
 .rest-btn{background:#f7f8fb;color:#586176;border:1px solid #dfe4ed}
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0}
+.mode-card{padding:20px;border-radius:17px;border:1px solid #e2e6f0;background:#fff;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease,border .15s ease}
+.mode-card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(57,67,105,.1)}
+.mode-card.memory{background:linear-gradient(145deg,#f5f4ff,#edf7ff);border-color:#dddafa}
+.mode-card.writing{background:linear-gradient(145deg,#fff8ec,#f3fbf7);border-color:#f0dfc2}
+.mode-icon{font-size:28px;margin-bottom:8px}
+.mode-card h3{margin:0 0 6px;font-size:19px;color:#3f4862}
+.mode-card p{margin:0;color:#697386;font-size:14px;line-height:1.5}
+.back-link{background:transparent;color:#5d6477;padding:8px 0;box-shadow:none}
+.writing-shell{margin-top:16px}
+.category-grid{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.category-btn{background:#fff;border:1px solid #dfe4ef;color:#566176;padding:9px 12px;font-size:13px}
+.category-btn.active{background:#5f55d9;color:#fff;border-color:#5f55d9}
+.prompt-card{padding:20px;border-radius:16px;background:linear-gradient(180deg,#fffef9,#fff9ed);border:1px solid #f0e0c1;border-left:5px solid var(--amber)}
+.prompt-label{font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:#9a742d;font-weight:800;margin-bottom:8px}
+.prompt-text{font-size:18px;line-height:1.65;font-weight:700;color:#35405a}
+.writing-instruction{margin:12px 0 0;color:#6a7284;line-height:1.55}
+textarea{width:100%;min-height:130px;resize:vertical;padding:14px;border:1px solid #ccd5e4;border-radius:12px;font:inherit;font-size:16px;line-height:1.55;color:var(--ink);outline:none;background:#fff}
+textarea:focus{border-color:#8176ed;box-shadow:0 0 0 4px rgba(111,99,232,.11)}
+.rubric-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:14px 0}
+.rubric-card{padding:11px;border-radius:12px;background:#fff;border:1px solid #e2e7ef;text-align:center}
+.rubric-card span{display:block;font-size:11px;color:#6d7689}
+.rubric-card strong{display:block;font-size:18px;margin-top:4px;color:#46516e}
+.writing-feedback{margin-top:14px}
+.feedback-box{padding:12px 14px;border-radius:12px;margin:9px 0;line-height:1.5}
+.feedback-box.good{background:var(--mint-soft);border:1px solid #d4eee3;color:#276c57}
+.feedback-box.focus{background:var(--amber-soft);border:1px solid #f0dfba;color:#805e22}
+.model-answer{padding:13px;border-radius:12px;background:#f7f7ff;border:1px solid #e2e2f6;line-height:1.55}
+.writing-progress{margin-top:16px;padding:16px;border-radius:14px;background:#fbfcff;border:1px solid #e4e8f1}
+@media(max-width:700px){.mode-grid{grid-template-columns:1fr}.rubric-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:700px){
   .progress-grid{grid-template-columns:1fr}
 }
@@ -304,27 +334,96 @@ input:focus{
 </head>
 <body>
 <div class="app">
-<h1>Latihan Memori</h1>
-<p class="sub">Latih perhatian dan ingatan melalui cerita singkat dengan detail yang terus berubah.</p>
+<h1>AyoKingat</h1>
+<p class="sub">Latih ingatan dan kemampuan menyampaikan informasi dengan lebih jelas, ringkas, dan tepat.</p>
 <div class="stats"><span class="stat" id="playedStat">Selesai: 0</span><span class="stat" id="bestStat">Best: -</span><span class="stat" id="typeStat">Mode: Home</span><span class="stat hidden" id="timerStat"></span></div>
 
 <div id="homeSection">
-  <div class="home-card">
-    <h2>Siap latihan?</h2>
-    <p>Pilih tingkat kesulitan, lalu mulai satu ronde saat kamu siap. Tidak ada ronde yang berjalan sebelum kamu menekan tombol mulai.</p>
-    <div class="home-tip">Kamu bisa kembali ke Home kapan saja untuk istirahat. Pada level Susah, kembali ke Home akan langsung menghentikan timer.</div>
+  <div id="mainHome">
+    <div class="home-card">
+      <h2>Mau latihan apa hari ini?</h2>
+      <p>Pilih satu latihan. Kamu bisa berhenti dan kembali ke Home kapan saja.</p>
+    </div>
+    <div class="mode-grid">
+      <div class="mode-card memory" onclick="openMemoryHome()">
+        <div class="mode-icon">🧠</div>
+        <h3>Latihan Ingatan</h3>
+        <p>Ingat detail, perubahan rencana, angka, urutan, orang, dan kepemilikan.</p>
+      </div>
+      <div class="mode-card writing" onclick="openWritingHome()">
+        <div class="mode-icon">✍️</div>
+        <h3>Kalimat Efektif</h3>
+        <p>Latih menulis lebih ringkas, jelas, terstruktur, dan tepat tanpa mengubah makna.</p>
+      </div>
+    </div>
+    <div class="actions"><button class="secondary" onclick="toggleProgress()">Lihat Progress Ingatan</button></div>
+    <div id="progressPanel" class="progress-panel hidden"></div>
   </div>
-  <div class="difficulty">
-    <button class="level-btn" id="level-easy" onclick="setDifficulty('easy')">Mudah</button>
-    <button class="level-btn" id="level-medium" onclick="setDifficulty('medium')">Sedang</button>
-    <button class="level-btn" id="level-hard" onclick="setDifficulty('hard')">Susah</button>
+
+  <div id="memoryHome" class="hidden">
+    <button class="back-link" onclick="showHome()">← Kembali ke pilihan latihan</button>
+    <div class="home-card">
+      <h2>Latihan Ingatan</h2>
+      <p>Pilih tingkat kesulitan, lalu mulai satu ronde saat kamu siap.</p>
+      <div class="home-tip">Pada level Susah, timer baru mulai setelah tombol Mulai Latihan ditekan.</div>
+    </div>
+    <div class="difficulty">
+      <button class="level-btn" id="level-easy" onclick="setDifficulty('easy')">Mudah</button>
+      <button class="level-btn" id="level-medium" onclick="setDifficulty('medium')">Sedang</button>
+      <button class="level-btn" id="level-hard" onclick="setDifficulty('hard')">Susah</button>
+    </div>
+    <div class="level-desc" id="levelDesc"></div>
+    <div class="actions home-start">
+      <button class="primary" onclick="beginSession()">Mulai Latihan Ingatan</button>
+      <button class="secondary" onclick="toggleProgress()">Lihat Progress Saya</button>
+    </div>
   </div>
-  <div class="level-desc" id="levelDesc"></div>
-  <div class="actions home-start">
-    <button class="primary" onclick="beginSession()">Mulai Latihan</button>
-    <button class="secondary" onclick="toggleProgress()">Lihat Progress Saya</button>
+
+  <div id="writingHome" class="hidden">
+    <button class="back-link" onclick="showHome()">← Kembali ke pilihan latihan</button>
+    <div class="home-card">
+      <h2>Kalimat Efektif</h2>
+      <p>Buat kalimat lebih singkat dan jelas tanpa kehilangan atau mengubah informasi penting.</p>
+      <div class="home-tip"><b>Penilaian:</b> Makna 40 · Kehematan 20 · Kejelasan 15 · Struktur 15 · Diksi 10.</div>
+    </div>
+    <div class="difficulty">
+      <button class="level-btn" id="write-easy" onclick="setWritingDifficulty('easy')">Mudah</button>
+      <button class="level-btn" id="write-medium" onclick="setWritingDifficulty('medium')">Sedang</button>
+      <button class="level-btn" id="write-hard" onclick="setWritingDifficulty('hard')">Susah</button>
+    </div>
+    <div class="level-desc" id="writingLevelDesc"></div>
+    <div class="progress-title">Jenis latihan</div>
+    <div id="writingCategories" class="category-grid"></div>
+    <div class="actions">
+      <button class="primary" onclick="beginWritingSession()">Mulai Kalimat Efektif</button>
+      <button class="secondary" onclick="toggleWritingProgress()">Lihat Progress Menulis</button>
+    </div>
+    <div id="writingProgressPanel" class="progress-panel hidden"></div>
   </div>
-  <div id="progressPanel" class="progress-panel hidden"></div>
+</div>
+
+<div id="writingSection" class="hidden writing-shell">
+  <button class="back-link" onclick="openWritingHome()">← Kembali ke menu Kalimat Efektif</button>
+  <div id="writingMeta" class="meta"></div>
+  <div class="prompt-card">
+    <div class="prompt-label">Kalimat awal</div>
+    <div id="writingPrompt" class="prompt-text"></div>
+    <div id="writingInstruction" class="writing-instruction"></div>
+  </div>
+  <div class="question">
+    <label><strong>Tulis versi yang lebih efektif:</strong></label>
+    <textarea id="writingAnswer" placeholder="Tulis jawabanmu di sini..."></textarea>
+  </div>
+  <div class="actions">
+    <button class="primary" id="writingCheckBtn" onclick="checkWritingAnswer()">Nilai Jawaban</button>
+    <button class="secondary" onclick="nextWritingExercise()">Ganti Soal</button>
+    <button class="rest-btn" onclick="showHome()">Istirahat / Home</button>
+  </div>
+  <div id="writingResult" class="result hidden"></div>
+  <div class="actions">
+    <button id="writingNextBtn" class="primary hidden" onclick="nextWritingExercise()">Soal Berikutnya</button>
+    <button id="writingHomeBtn" class="secondary hidden" onclick="showHome()">Selesai & Kembali Home</button>
+  </div>
 </div>
 
 <div id="storySection" class="hidden">
