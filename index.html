@@ -1400,14 +1400,277 @@ textarea,input{
   .mode-card{min-height:230px}
 }
 
+
+/* Yuk Bisa — blue / lavender / peach direction */
+:root{
+  --ink:#29263d;
+  --muted:#706d80;
+  --primary:#5b5bd6;
+  --primary-dark:#4747b8;
+  --lavender:#ecebff;
+  --blue-soft-2:#eaf3ff;
+  --peach:#f7d2b7;
+  --peach-soft:#fff0e5;
+  --rose-soft:#f8e7ed;
+  --cream-2:#fffaf3;
+}
+body{
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 8% 10%,rgba(110,122,220,.13),transparent 28%),
+    radial-gradient(circle at 92% 14%,rgba(242,178,137,.15),transparent 27%),
+    radial-gradient(circle at 76% 88%,rgba(168,155,224,.12),transparent 28%),
+    linear-gradient(180deg,#f4f3fa 0%,#faf6f1 46%,#f1eff8 100%);
+}
+body:before{
+  background-image:radial-gradient(rgba(74,70,118,.065) .7px,transparent .7px);
+}
+.app{
+  background:
+    linear-gradient(rgba(255,252,247,.97),rgba(255,252,247,.97)),
+    radial-gradient(circle at top right,rgba(153,157,226,.11),transparent 25%);
+  border-color:rgba(89,86,155,.08);
+  box-shadow:0 28px 80px rgba(62,58,92,.11);
+}
+.site-header{
+  background:rgba(255,252,247,.82);
+  border-color:rgba(83,79,135,.09);
+  box-shadow:0 1px 0 rgba(84,78,132,.06);
+}
+.brand-lockup{display:block}
+.brand-wordmark{
+  display:block;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:26px;
+  line-height:1;
+  letter-spacing:-.65px;
+  font-weight:600;
+  color:#302d50;
+}
+.site-nav button{color:#646078}
+.site-nav button:first-child{color:#4e4db4;border-bottom-color:#7777db}
+.header-cta,.primary{
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  color:#fff;
+}
+.header-cta{box-shadow:0 8px 20px rgba(80,80,190,.17)}
+.primary:hover:not(:disabled){background:#4d4dc4}
+.hero-home{
+  min-height:390px;
+  background:
+    linear-gradient(120deg,rgba(239,241,255,.94),rgba(255,248,241,.96) 52%,rgba(244,238,255,.92));
+}
+.hero-home:before{
+  border-color:rgba(93,91,183,.10);
+  box-shadow:34px -18px 0 -18px rgba(239,167,117,.16),66px 10px 0 -26px rgba(136,132,213,.14);
+}
+.hero-home:after{
+  background:
+    radial-gradient(circle at 30% 30%,rgba(132,139,220,.22),transparent 35%),
+    radial-gradient(circle at 76% 67%,rgba(239,175,128,.20),transparent 40%),
+    radial-gradient(circle at 55% 45%,rgba(255,255,255,.52),transparent 28%);
+}
+.hero-copy h2{color:#29263f;font-size:58px}
+.hero-copy h2 em{color:#6262c9}
+.hero-copy p{
+  color:#716d7d;
+  font-size:15px;
+  line-height:1.5;
+  max-width:390px;
+}
+.hero-actions{margin-top:22px}
+.hero-actions .secondary{
+  background:rgba(255,255,255,.55);
+  border-color:#c8c5d7;
+  color:#55516a;
+}
+.hero-quote{
+  min-height:255px;
+  border-color:rgba(99,96,172,.14);
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.88),rgba(244,241,255,.80)),
+    radial-gradient(circle at 85% 15%,rgba(241,176,128,.15),transparent 28%);
+  box-shadow:0 20px 45px rgba(65,61,108,.09),inset 0 1px 0 rgba(255,255,255,.7);
+}
+.hero-quote:before{border-color:rgba(105,101,186,.19)}
+.hero-quote:after{background:linear-gradient(90deg,#7474d6,#efa974)}
+.quote-mark{color:#7b79d1}
+.hero-quote blockquote{
+  color:#373351;
+  font-size:28px;
+  font-style:normal;
+  max-width:430px;
+  min-height:76px;
+}
+.quote-sign{color:#807b91}
+.quote-dots span{background:#b9b6d3}
+.quote-dots span:first-child{background:#7775c9}
+
+.feature-pill{
+  background:rgba(255,252,248,.95);
+  border-color:rgba(91,86,147,.10);
+  box-shadow:0 12px 30px rgba(65,61,99,.07);
+}
+.feature-pill b{color:#3c3856}
+.feature-pill small{color:#898597}
+.memory-dot{background:linear-gradient(145deg,#c9def8,#8eb8e7)}
+.writing-dot{background:linear-gradient(145deg,#f7d5ba,#e9a875)}
+.comm-dot{background:linear-gradient(145deg,#d9d2fa,#9f93df)}
+
+#trainingChoices{
+  background:linear-gradient(150deg,#f3f1ff,#fff7ef 55%,#eef4ff);
+  border-color:#e2deef;
+}
+#homepageProgress{
+  background:linear-gradient(145deg,#fff7ef,#f1f1fb);
+  border-color:#e8e0e6;
+}
+.section-heading:before{background:linear-gradient(#6c6cd0,#eda36f)}
+.section-kicker{color:#817d9a}
+
+.mode-card.memory{background:linear-gradient(150deg,#edf5ff 0%,#dcecff 100%)}
+.mode-card.writing{background:linear-gradient(150deg,#fff1e6 0%,#f8ddc8 100%)}
+.mode-card.communication{background:linear-gradient(150deg,#f2edff 0%,#e4dcfb 100%)}
+.mode-card.memory:before{background:linear-gradient(90deg,#6b9ed6,#a9c9ee)}
+.mode-card.writing:before{background:linear-gradient(90deg,#d78a55,#efbc92)}
+.mode-card.communication:before{background:linear-gradient(90deg,#7568c9,#afa5e7)}
+.mode-card h3{color:#302d4a}
+.mode-card p{color:#686476}
+.mode-card.memory .mode-icon-badge{color:#497eb8}
+.mode-card.writing .mode-icon-badge{color:#b86d3d}
+.mode-card.communication .mode-icon-badge{color:#685ab8}
+.mode-focus{color:#6e687e}
+.mode-link{color:#504da6}
+
+.journey-card{
+  background:linear-gradient(110deg,#eef4ff 0%,#fff5eb 52%,#f1edff 100%);
+  border-color:#dddbea;
+  box-shadow:0 18px 38px rgba(65,61,100,.07);
+}
+.journey-stat:before{background:#79a6d5}
+.journey-stat:nth-child(2):before{background:#e2a16e}
+.journey-stat:nth-child(3):before{background:#8b7fd1}
+.journey-stat:nth-child(4):before{background:#d48fa4}
+.journey-stat strong{color:#33304e}
+
+.daily-message{
+  background:linear-gradient(120deg,#fff0e4,#fff9f3 48%,#eeecff);
+  border-color:#eadedc;
+  box-shadow:0 18px 40px rgba(79,67,92,.07);
+  padding:34px 38px;
+}
+.daily-message:before{background:linear-gradient(#e7a16f,#7770cc)}
+.daily-message:after{color:rgba(100,91,177,.09)}
+.quote-daily blockquote{
+  margin:10px 0 14px;
+  max-width:840px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:29px;
+  line-height:1.35;
+  color:#34304d;
+  transition:opacity .28s ease,transform .28s ease;
+}
+.quote-daily.quote-changing blockquote,.quote-daily.quote-changing .message-sign{
+  opacity:0;
+  transform:translateY(5px);
+}
+.quote-daily .message-sign{transition:opacity .28s ease,transform .28s ease}
+.message-label{color:#a16f53}
+.message-sign{color:#7b768b}
+
+/* no green on training screens */
+#memoryHome>.home-card,#writingHome>.home-card,#communicationHome>.home-card{
+  background:linear-gradient(145deg,rgba(246,245,255,.98),rgba(255,247,239,.97));
+  box-shadow:0 18px 38px rgba(65,61,99,.07);
+}
+#memoryHome>.home-card{border-top-color:#72a4d8}
+#writingHome>.home-card{border-top-color:#df965f}
+#communicationHome>.home-card{border-top-color:#8073cf}
+.home-card h2{color:#35314f}
+.home-tip{color:#716d7d}
+.category-btn.active{
+  background:#5b5bd6!important;
+  border-color:#5b5bd6!important;
+}
+.challenge-box{
+  background:#efefff;
+  border-color:#dedcff;
+  border-left-color:#7673cc;
+  color:#595473;
+}
+.prompt-card,.story{
+  background:#fff9f2;
+  border-color:#ecddcf;
+  border-left-color:#7974cf;
+}
+.prompt-label{color:#9b6c4b}
+.prompt-text{color:#343149}
+.question{
+  background:linear-gradient(180deg,#fffdfa,#faf8ff)!important;
+  border-color:#e4e0eb!important;
+}
+.question:focus-within{border-color:#c8c3e2!important;box-shadow:0 12px 28px rgba(73,68,121,.07)}
+input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,214,.10)}
+.result{
+  background:
+    radial-gradient(circle at 90% 10%,rgba(126,119,207,.10),transparent 22%),
+    linear-gradient(145deg,#f0f2ff,#fff5eb);
+  border-color:#dfdeef;
+  box-shadow:0 20px 45px rgba(69,64,112,.08);
+}
+.result:before{background:linear-gradient(90deg,#7772cc,#e5a06d)}
+.score-big,.history-score{color:#5350ad}
+.badge,.skill-tag{background:#eeecff;color:#5e57b5}
+.feedback-box.good,.memory-callout.good{background:#eef4ff;border-color:#d8e6f5;color:#466d96}
+.feedback-box.focus,.memory-callout.focus,.issue-box{background:#fff0e4;border-color:#efd7c4;color:#8f6042}
+.model-answer,.revision-strip,.progress-panel,.memory-profile{background:#f7f5ff;border-color:#e4e0f0}
+.memory-bar{background:#e6e2ef}
+.memory-bar-fill{background:linear-gradient(90deg,#769fda,#7c70cd,#e3a16f)}
+.comm-question{background:#f0edff;border-color:#ded8f5;color:#4d476d}
+.comm-audience{background:#eaf3ff;color:#4f78a5}
+.comm-signal{background:#f3f1ff;border-color:#e1ddf4}
+.stat{background:#fff!important;color:#716d80!important;border-color:#e4e0e8}
+#timerStat{background:#f8e7ed!important;color:#a65770!important}
+
+/* level colors without green */
+#level-easy,#write-easy,#comm-easy{
+  background:#e9f3ff!important;color:#4776a7!important;border-color:#cfdef0!important;
+}
+#level-easy.active,#write-easy.active,#comm-easy.active{
+  background:#6597cc!important;color:#fff!important;border-color:#6597cc!important;
+  box-shadow:0 9px 22px rgba(101,151,204,.19)!important;
+}
+#level-medium,#write-medium,#comm-medium{
+  background:#fff0df!important;color:#976126!important;border-color:#efd5b6!important;
+}
+#level-medium.active,#write-medium.active,#comm-medium.active{
+  background:#d8944e!important;color:#fff!important;border-color:#d8944e!important;
+  box-shadow:0 9px 22px rgba(216,148,78,.18)!important;
+}
+#level-hard,#write-hard,#comm-hard{
+  background:#f9e8ee!important;color:#a2556d!important;border-color:#ebcad5!important;
+}
+#level-hard.active,#write-hard.active,#comm-hard.active{
+  background:#bb667f!important;color:#fff!important;border-color:#bb667f!important;
+  box-shadow:0 9px 22px rgba(187,102,127,.18)!important;
+}
+.level-desc:before{background:#eceafd;color:#625db5}
+
+@media(max-width:600px){
+  .brand-wordmark{font-size:23px}
+  .hero-copy h2{font-size:43px}
+  .hero-copy p{font-size:14px}
+  .hero-quote blockquote{font-size:24px}
+  .quote-daily blockquote{font-size:24px}
+}
+
 </style>
 </head>
 <body>
 <div class="app" id="appShell">
 <header class="site-header">
   <button class="brand-lockup" onclick="showHome()" aria-label="Kembali ke Beranda">
-    <span class="brand-mark">Y</span>
-    <span class="brand-copy"><strong>Yuk Bisa</strong><small>Latih hari ini, versi lebih baik dari diri sendiri.</small></span>
+    <strong class="brand-wordmark">Yuk Bisa</strong>
   </button>
   <nav class="site-nav">
     <button onclick="showHome()">Beranda</button>
@@ -1422,19 +1685,17 @@ textarea,input{
   <div id="mainHome">
     <section class="hero-home">
       <div class="hero-copy">
-        <div class="eyebrow"><span></span> LANGKAH KECIL, PERUBAHAN NYATA</div>
-        <h2>Semangat kecil hari ini,<br><em>jadi kemajuan besar nanti.</em></h2>
-        <p>Yuk Bisa adalah ruang kecil untuk melatih ingatan, menyusun pikiran, dan menyampaikan sesuatu dengan lebih jelas. Sedikit setiap hari sudah cukup.</p>
+        <h2>Latihan sedikit.<br><em>Jadi lebih tajam.</em></h2>
+        <p>Pilih satu latihan. Kerjakan satu ronde.</p>
         <div class="hero-actions">
           <button class="primary" onclick="goToTraining()">Mulai Latihan <span>→</span></button>
           <button class="secondary" onclick="goToProgress()">Lihat Perkembangan</button>
         </div>
-        <div class="hero-note">Kamu bisa. Mulai sedikit, ulangi besok.</div>
       </div>
       <aside class="hero-quote" id="homeQuoteCard" aria-label="Pesan hari ini">
         <div class="quote-mark">“</div>
-        <blockquote id="homeQuoteText">Rajin sedikit setiap hari, hasilnya terasa nanti.</blockquote>
-        <div class="quote-sign" id="homeQuoteSign">— Yuk Bisa</div>
+        <blockquote id="homeQuoteText">Hal besar tidak tercipta secara tiba-tiba.</blockquote>
+        <div class="quote-sign" id="homeQuoteSign">— Epictetus</div>
         <div class="quote-dots" aria-hidden="true"><span></span><span></span><span></span></div>
       </aside>
     </section>
@@ -1509,11 +1770,10 @@ textarea,input{
       </div>
     </section>
 
-    <section class="daily-message">
-      <div class="message-label">PESAN HARI INI</div>
-      <h3>Kamu tidak harus sempurna untuk tetap berkembang.</h3>
-      <p>Yang penting kamu hadir, mencoba, dan mau memperbaiki sedikit demi sedikit.</p>
-      <div class="message-sign">Versi terbaik dibentuk dari hal kecil yang diulang.</div>
+    <section class="daily-message quote-daily" id="dailyQuoteCard">
+      <div class="message-label">KUTIPAN HARI INI</div>
+      <blockquote id="dailyQuoteText">Jadikan setiap hari sebagai mahakaryamu.</blockquote>
+      <div class="message-sign" id="dailyQuoteAuthor">— John Wooden</div>
     </section>
   </div>
 
@@ -1556,7 +1816,7 @@ textarea,input{
       <button class="secondary" id="diagnosticBtn" onclick="startWritingDiagnostic()">Tes Kemampuan Awal</button>
       <button class="secondary" onclick="toggleWritingProgress()">Lihat Progress Menulis</button>
     </div>
-    <div class="home-tip" id="adaptiveHint">Mode Mixed akan menyesuaikan latihan dengan kelemahan terbaru setelah data kamu cukup.</div>
+    <div class="home-tip" id="adaptiveHint">Mode Campuran akan menyesuaikan latihan dengan kelemahan terbaru setelah data kamu cukup.</div>
     <div id="writingProgressPanel" class="progress-panel hidden"></div>
   </div>
 
@@ -1565,7 +1825,7 @@ textarea,input{
     <div class="home-card">
       <h2>Komunikasi Efektif</h2>
       <p>Latih kemampuan menemukan inti pesan, menjawab langsung, memilih informasi relevan, dan menyampaikan maksud dengan efisien.</p>
-      <div class="home-tip"><b>Penilaian:</b> Makna 40 · Point First 20 · Relevansi 15 · Struktur 15 · Efisiensi 10.</div>
+      <div class="home-tip"><b>Penilaian:</b> Makna 40 · Jawab Langsung 20 · Relevansi 15 · Struktur 15 · Efisiensi 10.</div>
     </div>
     <div class="difficulty">
       <button class="level-btn" id="comm-easy" onclick="setCommunicationDifficulty('easy')"><span>Mudah</span><small>Situasi sederhana</small></button>
@@ -1579,7 +1839,7 @@ textarea,input{
       <button class="primary" onclick="beginCommunicationSession()">Mulai Latihan</button>
       <button class="secondary" onclick="toggleCommunicationProgress()">Lihat Progress Komunikasi</button>
     </div>
-    <div class="home-tip" id="communicationHint">Mode Mixed akan menggabungkan berbagai kemampuan komunikasi.</div>
+    <div class="home-tip" id="communicationHint">Mode Campuran akan menggabungkan berbagai kemampuan komunikasi.</div>
     <div id="communicationProgressPanel" class="progress-panel hidden"></div>
   </div>
 </div>
@@ -2249,7 +2509,7 @@ function updateWritingHomeUI(){
  renderWritingCategories();
  const weak=weakestWritingSkill();
  const hint=document.getElementById("adaptiveHint");
- if(hint){const count=WRITING_EXERCISES.filter(function(x){return x.level===writingDifficulty}).length;hint.innerHTML=(weak&&writingCategory==="mixed"?"<b>Adaptive aktif:</b> Mixed akan lebih sering melatih "+WRITING_SKILLS[weak]+". ":"Mode Mixed akan menyesuaikan latihan dengan kelemahan terbaru setelah data kamu cukup. ")+"<b>Bank level ini:</b> "+count+" latihan.";}
+ if(hint){const count=WRITING_EXERCISES.filter(function(x){return x.level===writingDifficulty}).length;hint.innerHTML=(weak&&writingCategory==="mixed"?"<b>Adaptive aktif:</b> Mixed akan lebih sering melatih "+WRITING_SKILLS[weak]+". ":"Mode Campuran akan menyesuaikan latihan dengan kelemahan terbaru setelah data kamu cukup. ")+"<b>Bank level ini:</b> "+count+" latihan.";}
  const db=document.getElementById("diagnosticBtn");
  if(db&&localStorage.getItem("writingDiagnosticDone")==="1")db.textContent="Ulangi Tes Kemampuan";
 }
@@ -2611,7 +2871,7 @@ function renderWritingProgress(){
  });
  p.innerHTML='<div class="progress-grid"><div class="progress-card"><span>Rata-rata 10 latihan</span><strong>'+sum.avg+'/100</strong></div><div class="progress-card"><span>Best</span><strong>'+sum.best+'/100</strong></div><div class="progress-card"><span>Latihan selesai</span><strong>'+sum.count+'</strong></div></div>'+
  '<div class="progress-title">Profil Kemampuan</div>'+writingSkillBarsHtml()+
- (weak?'<div class="memory-callout focus"><b>Fokus latihan berikutnya:</b> '+WRITING_SKILLS[weak]+'. Mode Mixed akan lebih sering memilih soal yang melatih area ini.</div>':"")+
+ (weak?'<div class="memory-callout focus"><b>Fokus latihan berikutnya:</b> '+WRITING_SKILLS[weak]+'. Mode Campuran akan lebih sering memilih soal yang melatih area ini.</div>':"")+
  '<div class="progress-title">Riwayat Terbaru</div>'+hist;
 }
 function toggleWritingProgress(){
@@ -3220,79 +3480,187 @@ function newStory(){
  render();
  window.scrollTo({top:0,behavior:"smooth"});
 }
-const HOME_QUOTES=[
- "Rajin sedikit setiap hari, hasilnya terasa nanti.",
- "Tidak perlu sempurna. Yang penting tetap bergerak.",
- "Sedikit lebih baik hari ini sudah cukup.",
- "Belajar pelan-pelan tetap termasuk maju.",
- "Konsisten lebih penting daripada terburu-buru.",
- "Kalau masih mau mencoba, berarti masih berkembang.",
- "Satu latihan hari ini tetap punya arti.",
- "Tidak semua hari harus hebat. Yang penting tetap hadir.",
- "Kemajuan sering terlihat kecil sebelum terasa besar.",
- "Pikiran yang terlatih membuat banyak hal jadi lebih mudah.",
- "Semakin sering dilatih, semakin ringan dilakukan.",
- "Jelas lebih penting daripada panjang.",
- "Ingat intinya. Susun pikirannya. Sampaikan dengan tenang.",
- "Belajar itu bukan soal cepat, tapi soal terus.",
- "Satu langkah kecil tetap mengubah arah.",
- "Yang sulit hari ini bisa terasa biasa nanti.",
- "Latihan kecil yang diulang akan jadi kemampuan.",
- "Tidak apa-apa lambat, asal tidak berhenti.",
- "Coba lagi dengan lebih sederhana.",
- "Kamu tidak harus tahu semuanya untuk mulai.",
- "Fokus pada satu hal yang bisa diperbaiki hari ini.",
- "Biar sedikit, asal benar-benar dilakukan.",
- "Semakin jelas pikiranmu, semakin jelas caramu bicara.",
- "Kemampuan tumbuh dari hal yang sering dilakukan.",
- "Hari ini cukup satu langkah.",
- "Ulangi yang penting sampai terasa natural.",
- "Belajar yang baik tidak harus terasa berat.",
- "Jangan kejar sempurna. Kejar konsisten.",
- "Pahami dulu, baru sampaikan.",
- "Sedikit lebih terlatih berarti sedikit lebih siap.",
- "Kalimat yang jelas dimulai dari pikiran yang jelas.",
- "Yang kamu latih hari ini akan membantu kamu nanti.",
- "Kemajuan tidak harus dramatis untuk tetap nyata.",
- "Cukup datang, latihan, lalu ulangi besok.",
- "Kamu tidak perlu buru-buru untuk jadi lebih baik.",
- "Tetap sederhana. Tetap jelas. Tetap latihan.",
- "Setiap kali mencoba, kamu sedang membangun kebiasaan.",
- "Lebih baik satu latihan selesai daripada banyak rencana.",
- "Hari ini tidak harus besar untuk tetap berarti.",
- "Belajar menyampaikan dengan baik adalah latihan seumur hidup."
+const FAMOUS_QUOTES=[
+{text:"Seseorang tak pernah rela merangkak ketika merasakan dorongan untuk terbang.",author:"Helen Keller"},
+{text:"Jangan pikirkan kegagalan hari ini; pikirkan keberhasilan yang mungkin datang besok.",author:"Helen Keller"},
+{text:"Tidak ada usaha untuk meraih sesuatu yang indah yang benar-benar hilang.",author:"Helen Keller"},
+{text:"Saat satu pintu kebahagiaan tertutup, pintu lain terbuka.",author:"Helen Keller"},
+{text:"Selama kita bisa meringankan rasa sakit orang lain, hidup tidak sia-sia.",author:"Helen Keller"},
+{text:"Kebahagiaan sejati datang dari kesetiaan pada tujuan yang layak.",author:"Helen Keller"},
+{text:"Karakter tidak dapat berkembang dalam kemudahan dan ketenangan.",author:"Helen Keller"},
+{text:"Hidup adalah petualangan yang berani, atau bukan apa-apa.",author:"Helen Keller"},
+{text:"Berpikir adalah hadiah tak ternilai sekaligus tanggung jawab besar.",author:"Helen Keller"},
+{text:"Tirani tidak dapat mengalahkan kekuatan gagasan.",author:"Helen Keller"},
+
+{text:"Kita harus memiliki ketekunan dan, terutama, keyakinan pada diri sendiri.",author:"Marie Curie"},
+{text:"Kita harus percaya bahwa kita berbakat untuk sesuatu.",author:"Marie Curie"},
+{text:"Pemandangan baru dari alam selalu membuatku bergembira seperti anak kecil.",author:"Marie Curie"},
+{text:"Dunia yang lebih baik dimulai dari individu yang memperbaiki dirinya.",author:"Marie Curie"},
+{text:"Sains memiliki keindahan yang besar.",author:"Marie Curie"},
+{text:"Semangat petualangan tampaknya tidak dapat dihancurkan.",author:"Marie Curie"},
+{text:"Jalan menuju kemajuan tidak cepat maupun mudah.",author:"Marie Curie"},
+{text:"Dalam hidup, tidak ada yang perlu ditakuti; semuanya perlu dipahami.",author:"Marie Curie"},
+
+{text:"Jenius adalah satu persen inspirasi dan sembilan puluh sembilan persen keringat.",author:"Thomas Edison"},
+{text:"Kesempatan sering terlewat karena ia terlihat seperti pekerjaan.",author:"Thomas Edison"},
+{text:"Ketidakpuasan adalah kebutuhan pertama bagi kemajuan.",author:"Thomas Edison"},
+{text:"Cari tahu apa yang dunia butuhkan, lalu ciptakan.",author:"Thomas Edison"},
+{text:"Tak ada aturan di sini; kita sedang berusaha mencapai sesuatu.",author:"Thomas Edison"},
+{text:"Sesuatu yang tidak berjalan sesuai rencana belum tentu tidak berguna.",author:"Thomas Edison"},
+{text:"Aku memulai dari tempat orang terakhir berhenti.",author:"Thomas Edison"},
+{text:"Semuanya datang kepada orang yang terus bekerja sambil menunggu.",author:"Thomas Edison"},
+
+{text:"Belajar dan mempraktikkan apa yang telah dipelajari adalah suatu kesenangan.",author:"Confucius"},
+{text:"Ketika berbuat salah, jangan takut memperbaikinya.",author:"Confucius"},
+{text:"Jika melihat yang benar tetapi tidak bertindak, kamu kekurangan keberanian.",author:"Confucius"},
+{text:"Refleksi adalah cara belajar yang paling mulia.",author:"Confucius"},
+{text:"Pengalaman adalah cara belajar yang paling pahit.",author:"Confucius"},
+{text:"Orang yang mencintai belajar rajin bekerja dan berhati-hati berbicara.",author:"Confucius"},
+{text:"Aku tidak terganggu karena tidak dipahami; aku terganggu ketika tidak memahami orang lain.",author:"Confucius"},
+{text:"Jadilah setia dan dapat dipercaya.",author:"Confucius"},
+{text:"Kata-kata indah jarang berjalan bersama kebajikan sejati.",author:"Confucius"},
+{text:"Belajar tanpa berpikir itu sia-sia; berpikir tanpa belajar itu berbahaya.",author:"Confucius"},
+
+{text:"Jangan meremehkan nilai sebuah fakta; kelak ia akan berbunga menjadi kebenaran.",author:"Henry David Thoreau"},
+{text:"Aku bersyukur atas siapa diriku dan apa yang kumiliki.",author:"Henry David Thoreau"},
+{text:"Sederhanakan, sederhanakan.",author:"Henry David Thoreau"},
+{text:"Aku tak pernah menemukan teman yang lebih bersahabat daripada kesendirian.",author:"Henry David Thoreau"},
+{text:"Hanya hari ketika kita terjaga yang sungguh-sungguh fajar.",author:"Henry David Thoreau"},
+{text:"Majulah dengan percaya diri ke arah hidup yang kau bayangkan.",author:"Henry David Thoreau"},
+{text:"Semakin sederhana hidupmu, semakin sederhana pula hukum semesta terlihat.",author:"Henry David Thoreau"},
+{text:"Seribu orang menebas cabang kejahatan; satu orang memukul akarnya.",author:"Henry David Thoreau"},
+
+{text:"Kesulitan menunjukkan siapa diri seseorang.",author:"Epictetus"},
+{text:"Pertama, katakan pada dirimu ingin menjadi apa; lalu lakukan yang harus dilakukan.",author:"Epictetus"},
+{text:"Hidup mungkin netral, tetapi cara kita menggunakannya tidak.",author:"Epictetus"},
+{text:"Yang membuat kita bertindak bukan kejadian, melainkan pendapat dan prinsip kita.",author:"Epictetus"},
+{text:"Akal tidak diukur dari panjangnya kata-kata, tetapi dari prinsip.",author:"Epictetus"},
+{text:"Hal besar tidak tercipta secara tiba-tiba.",author:"Epictetus"},
+{text:"Latih dirimu pada hal-hal kecil, lalu lanjutkan ke hal yang lebih besar.",author:"Epictetus"},
+{text:"Mustahil mempelajari sesuatu yang kita pikir sudah kita ketahui.",author:"Epictetus"},
+{text:"Hanya mereka yang terdidik yang benar-benar bebas.",author:"Epictetus"},
+{text:"Dalam teori mudah mengikuti pelajaran; dalam hidup banyak hal menarik kita menjauh.",author:"Epictetus"},
+
+{text:"Belajarlah seolah kamu akan hidup selamanya.",author:"John Wooden"},
+{text:"Anak muda membutuhkan teladan, bukan kritikus.",author:"John Wooden"},
+{text:"Bakat adalah pemberian Tuhan; tetaplah rendah hati.",author:"John Wooden"},
+{text:"Kegagalan tidak fatal, tetapi gagal berubah bisa menjadi fatal.",author:"John Wooden"},
+{text:"Jadikan setiap hari sebagai mahakaryamu.",author:"John Wooden"},
+{text:"Jangan pernah berhenti belajar dari orang lain.",author:"John Wooden"},
+{text:"Jangan mengalahkan dirimu sendiri.",author:"John Wooden"},
+{text:"Pengulangan yang terus-menerus akhirnya menjadi kebiasaan.",author:"John Wooden"},
+
+{text:"Semakin banyak kita melakukan, melihat, dan merasakan, semakin banyak yang mampu kita lakukan.",author:"Amelia Earhart"},
+{text:"Memulai sesuatu jauh lebih mudah daripada menyelesaikannya.",author:"Amelia Earhart"},
+{text:"Waktu untuk khawatir adalah sebelum mengambil keputusan, bukan sesudahnya.",author:"Amelia Earhart"},
+{text:"Hal tersulit adalah keputusan untuk bertindak; sisanya adalah ketekunan.",author:"Amelia Earhart"},
+{text:"Ketakutan sering kali hanyalah harimau kertas.",author:"Amelia Earhart"},
+{text:"Persiapan adalah dua pertiga dari sebuah usaha.",author:"Amelia Earhart"},
+{text:"Kegagalan harus menjadi tantangan bagi orang lain.",author:"Amelia Earhart"},
+{text:"Setiap pilihan menuntut keberanian.",author:"Amelia Earhart"},
+
+{text:"Karakter, bukan keadaan, yang membentuk seseorang.",author:"Booker T. Washington"},
+{text:"Kemajuan adalah hukum alam.",author:"Booker T. Washington"},
+{text:"Cara terbaik mengangkat diri sendiri adalah membantu orang lain.",author:"Booker T. Washington"},
+{text:"Tak ada kekuatan yang dapat meniadakan pengaruh hidup yang murni dan berguna.",author:"Booker T. Washington"},
+{text:"Dunia lebih peduli pada apa yang kita lakukan daripada apa yang kita ketahui.",author:"Booker T. Washington"},
+{text:"Ada dua cara memakai kekuatan: mendorong ke bawah atau menarik ke atas.",author:"Booker T. Washington"},
+{text:"Kamu tak bisa menahan seseorang tetap di bawah tanpa ikut tinggal di bawah.",author:"Booker T. Washington"},
+
+{text:"Aku tetap percaya, terlepas dari semuanya, bahwa manusia pada dasarnya baik.",author:"Anne Frank"},
+{text:"Pergilah keluar dan temukan kembali kebahagiaan dalam dirimu.",author:"Anne Frank"},
+{text:"Selalu ada keindahan yang tersisa.",author:"Anne Frank"},
+{text:"Orang yang bahagia akan membuat orang lain bahagia.",author:"Anne Frank"},
+{text:"Di mana ada harapan, di situ ada kehidupan.",author:"Anne Frank"},
+
+{text:"Tanpa keberanian, kita tidak dapat menjalankan kebajikan lain dengan konsisten.",author:"Maya Angelou"},
+{text:"Kita mungkin mengalami banyak kekalahan, tetapi kita tidak boleh dikalahkan.",author:"Maya Angelou"},
+{text:"Ketika kamu belajar, ajarlah; ketika kamu mendapat, berilah.",author:"Maya Angelou"},
+{text:"Kamu mungkin tidak mengendalikan semua kejadian, tetapi kamu dapat memilih untuk tidak diperkecil olehnya.",author:"Maya Angelou"},
+{text:"Beranilah mencoba, bahkan ketika gemetar.",author:"Maya Angelou"},
+{text:"Jadilah pelangi di awan seseorang.",author:"Maya Angelou"},
+{text:"Jika tidak bisa mengubah keadaan, ubahlah cara berpikirmu.",author:"Maya Angelou"},
+
+{text:"Pendidikan adalah mesin besar bagi perkembangan pribadi.",author:"Nelson Mandela"},
+{text:"Kepala yang baik dan hati yang baik selalu menjadi kombinasi yang kuat.",author:"Nelson Mandela"},
+{text:"Keberanian bukanlah tidak adanya rasa takut, tetapi kemenangan atas rasa takut.",author:"Nelson Mandela"},
+{text:"Pengalaman adalah warisan terbaik yang dapat dimiliki seseorang.",author:"Nelson Mandela"},
+{text:"Aku bekerja lebih baik dan berpikir lebih jernih ketika tubuhku bugar.",author:"Nelson Mandela"},
+{text:"Pendidikan adalah senjata paling kuat yang dapat kita gunakan.",author:"Nelson Mandela"},
+{text:"Kita harus belajar dari pengalaman yang menyenangkan maupun tidak menyenangkan.",author:"Nelson Mandela"},
+
+{text:"Semua jenis pengetahuan pada akhirnya berarti pengetahuan tentang diri sendiri.",author:"Bruce Lee"},
+{text:"Selalu jadilah dirimu sendiri, ekspresikan dirimu, dan percayai dirimu.",author:"Bruce Lee"},
+{text:"Gunakan hanya yang bekerja, dari mana pun kamu menemukannya.",author:"Bruce Lee"},
+{text:"Yang penting bukan seberapa banyak kamu belajar, tetapi seberapa banyak yang kamu serap.",author:"Bruce Lee"}
 ];
-let homeQuoteOrder=[];
-let homeQuoteCursor=0;
+
+let famousQuoteOrder=[];
+let famousQuoteCursor=0;
 let homeQuoteTimer=null;
-function prepareHomeQuotes(){
- homeQuoteOrder=HOME_QUOTES.map(function(_,i){return i});
- for(let i=homeQuoteOrder.length-1;i>0;i--){
+let dailyQuoteTimer=null;
+
+function prepareFamousQuotes(){
+ famousQuoteOrder=FAMOUS_QUOTES.map(function(_,i){return i});
+ for(let i=famousQuoteOrder.length-1;i>0;i--){
    const j=Math.floor(Math.random()*(i+1));
-   const t=homeQuoteOrder[i];homeQuoteOrder[i]=homeQuoteOrder[j];homeQuoteOrder[j]=t;
+   const t=famousQuoteOrder[i];famousQuoteOrder[i]=famousQuoteOrder[j];famousQuoteOrder[j]=t;
  }
- homeQuoteCursor=0;
+ famousQuoteCursor=0;
 }
+
+function nextFamousQuote(){
+ if(!famousQuoteOrder.length||famousQuoteCursor>=famousQuoteOrder.length)prepareFamousQuotes();
+ return FAMOUS_QUOTES[famousQuoteOrder[famousQuoteCursor++]];
+}
+
 function rotateHomeQuote(immediate){
  const card=document.getElementById("homeQuoteCard");
  const textEl=document.getElementById("homeQuoteText");
- if(!card||!textEl)return;
- if(!homeQuoteOrder.length||homeQuoteCursor>=homeQuoteOrder.length)prepareHomeQuotes();
+ const authorEl=document.getElementById("homeQuoteSign");
+ if(!card||!textEl||!authorEl)return;
  const show=function(){
-   const idx=homeQuoteOrder[homeQuoteCursor++];
-   textEl.textContent=HOME_QUOTES[idx];
+   let q=nextFamousQuote();
+   let guard=0;
+   while(q.text.length>120&&guard<20){q=nextFamousQuote();guard++}
+   textEl.textContent=q.text;
+   authorEl.textContent="— "+q.author;
    card.classList.remove("quote-changing");
  };
  if(immediate){show();return}
  card.classList.add("quote-changing");
  setTimeout(show,280);
 }
+
+function rotateDailyQuote(immediate){
+ const card=document.getElementById("dailyQuoteCard");
+ const textEl=document.getElementById("dailyQuoteText");
+ const authorEl=document.getElementById("dailyQuoteAuthor");
+ if(!card||!textEl||!authorEl)return;
+ const show=function(){
+   const q=nextFamousQuote();
+   textEl.textContent=q.text;
+   authorEl.textContent="— "+q.author;
+   card.classList.remove("quote-changing");
+ };
+ if(immediate){show();return}
+ card.classList.add("quote-changing");
+ setTimeout(show,280);
+}
+
 function startHomeQuoteRotation(){
  if(homeQuoteTimer)clearInterval(homeQuoteTimer);
+ if(dailyQuoteTimer)clearInterval(dailyQuoteTimer);
  rotateHomeQuote(true);
+ rotateDailyQuote(true);
  homeQuoteTimer=setInterval(function(){
-   if(!document.getElementById("mainHome").classList.contains("hidden"))rotateHomeQuote(false);
- },6500);
+   const home=document.getElementById("mainHome");
+   if(home&&!home.classList.contains("hidden"))rotateHomeQuote(false);
+ },7000);
+ dailyQuoteTimer=setInterval(function(){
+   const home=document.getElementById("mainHome");
+   if(home&&!home.classList.contains("hidden"))rotateDailyQuote(false);
+ },11000);
 }
 
 function allTrainingScores(){
