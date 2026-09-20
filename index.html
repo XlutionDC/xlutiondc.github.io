@@ -1131,6 +1131,7 @@ function updateWritingHomeUI(){
 function openMemoryHome(){
  document.getElementById("mainHome").classList.add("hidden");
  document.getElementById("writingHome").classList.add("hidden");
+ document.getElementById("communicationHome").classList.add("hidden");
  document.getElementById("memoryHome").classList.remove("hidden");
  updateStats();
 }
@@ -1139,9 +1140,11 @@ function openWritingHome(){
  document.getElementById("storySection").classList.add("hidden");
  document.getElementById("quizSection").classList.add("hidden");
  document.getElementById("writingSection").classList.add("hidden");
+ document.getElementById("communicationSection").classList.add("hidden");
  document.getElementById("homeSection").classList.remove("hidden");
  document.getElementById("mainHome").classList.add("hidden");
  document.getElementById("memoryHome").classList.add("hidden");
+ document.getElementById("communicationHome").classList.add("hidden");
  document.getElementById("writingHome").classList.remove("hidden");
  updateWritingHomeUI();
  document.getElementById("typeStat").textContent="Mode: Kalimat Efektif";
@@ -1489,6 +1492,306 @@ function toggleWritingProgress(){
  if(!p.classList.contains("hidden"))renderWritingProgress();
 }
 
+
+const COMM_CATEGORIES={
+ mixed:"Mixed",
+ point:"What's the Point",
+ direct:"Point First",
+ relevance:"Pilih Informasi",
+ compression:"Compression",
+ audience:"Audience Switching",
+ oneshot:"One-Shot"
+};
+const COMM_LEVELS={
+ easy:{label:"Mudah",desc:"Situasi sederhana dengan 3–4 fakta dan satu tujuan komunikasi yang jelas."},
+ medium:{label:"Sedang",desc:"Lebih banyak detail pengalih perhatian. Jawaban harus langsung, relevan, dan terstruktur."},
+ hard:{label:"Susah",desc:"Situasi realistis dengan banyak fakta, audiens berbeda, dan batas kata yang ketat."}
+};
+const COMM_SKILLS={
+ meaning:"Makna",
+ pointFirst:"Point First",
+ relevance:"Relevansi",
+ structure:"Struktur",
+ efficiency:"Efisiensi"
+};
+let communicationDifficulty=localStorage.getItem("communicationDifficulty")||"medium";
+let communicationCategory=localStorage.getItem("communicationCategory")||"mixed";
+let communicationHistory=JSON.parse(localStorage.getItem("communicationProgressHistory")||"[]");
+let currentCommunication=null;
+let communicationCompressionStage=0;
+let communicationRecognition=null;
+let communicationListening=false;
+
+const COMM_EXERCISES=[
+ {id:"c1",level:"easy",category:"point",scenario:"Customer menanyakan status pesanan.",audience:"Customer",facts:["File final masuk pukul 14.00.","Produksi membutuhkan sekitar 3 jam.","Pickup kurir terakhir pukul 16.00.","Pesanan akan dikirim besok pagi."],question:"Apa inti pesan yang perlu disampaikan?",required:[["pesanan"],["dikirim","kirim"],["besok pagi","besok"],["file","pickup","produksi"]],pointTerms:["besok","dikirim","pesanan"],noise:["pukul 14.00","3 jam","pukul 16.00"],targetMax:18,model:"Pesanan akan dikirim besok pagi karena file masuk terlambat untuk mengejar pickup hari ini.",framework:"Inti → alasan singkat"},
+ {id:"c2",level:"easy",category:"direct",scenario:"Atasan bertanya, “Apakah laporan selesai hari ini?”",audience:"Atasan",facts:["Masih ada satu revisi dari finance.","Revisi diperkirakan selesai besok pukul 10.","Sebagian besar laporan sudah selesai."],question:"Jawab pertanyaan atasan secara langsung.",required:[["belum","tidak"],["laporan"],["besok"],["pukul 10","jam 10"],["revisi"]],pointTerms:["belum","besok","laporan"],noise:["sebagian besar"],targetMax:18,model:"Belum. Laporan diperkirakan selesai besok pukul 10 karena masih ada satu revisi.",framework:"Jawaban → alasan → waktu"},
+ {id:"c3",level:"easy",category:"relevance",scenario:"Tim perlu mengetahui perubahan meeting.",audience:"Tim internal",facts:["Meeting tetap pukul 15.00.","Ruangan berubah dari A ke B.","Dimas akan hadir.","Ada kopi di ruang meeting.","Presentasi berlangsung 20 menit.","Printer lantai 2 rusak."],question:"Sampaikan hanya informasi yang relevan dengan perubahan meeting.",required:[["meeting","rapat"],["pukul 15","jam 3","15.00"],["ruang b","ruangan b"]],pointTerms:["meeting","ruang b"],noise:["dimas","kopi","20 menit","printer"],targetMax:14,model:"Meeting pukul 15.00 dipindahkan ke Ruang B.",framework:"Perubahan utama saja"},
+ {id:"c4",level:"easy",category:"compression",scenario:"Jelaskan keterlambatan produksi.",audience:"Rekan kerja",facts:["Customer mengubah desain setelah produksi dimulai.","Sebagian produk harus dicetak ulang.","Pengiriman mundur satu hari."],question:"Jelaskan dengan singkat tanpa kehilangan makna.",required:[["customer"],["mengubah","perubahan"],["desain"],["cetak ulang","dicetak ulang"],["pengiriman"],["satu hari","1 hari"]],pointTerms:["pengiriman","satu hari","desain"],noise:[],compression:[30,15,8],targetMax:30,model:"Perubahan desain setelah produksi dimulai membuat sebagian produk dicetak ulang dan pengiriman mundur satu hari.",framework:"Sebab → dampak"},
+ {id:"c5",level:"easy",category:"audience",scenario:"Mesin produksi sempat rusak selama dua jam.",audience:"Customer",facts:["Mesin berhenti 2 jam.","Mesin sudah kembali beroperasi.","Pesanan tetap diproses.","Estimasi selesai mundur sekitar 2 jam."],question:"Sampaikan update yang sesuai untuk customer.",required:[["pesanan"],["diproses","proses"],["mundur","terlambat"],["2 jam","dua jam"],["mesin","gangguan"]],pointTerms:["pesanan","2 jam","diproses"],noise:[],targetMax:22,model:"Pesanan tetap diproses, tetapi estimasi selesai mundur sekitar dua jam karena gangguan mesin yang sudah teratasi.",framework:"Status → dampak → reassurance"},
+ {id:"c6",level:"easy",category:"oneshot",scenario:"Teman bertanya, “Jam berapa barang dikirim?”",audience:"Teman kerja",facts:["Produksi selesai pukul 11.00.","QC membutuhkan 30 menit.","Kurir pickup pukul 14.00.","Packing sudah siap."],question:"Jawab hanya yang ditanyakan.",required:[["pukul 14","jam 2","14.00"]],pointTerms:["14","jam 2","pukul 14"],noise:["11","30 menit","packing"],targetMax:8,model:"Sekitar pukul 14.00.",framework:"Jawab inti saja"},
+
+ {id:"c7",level:"medium",category:"point",scenario:"Vendor belum mengirim bahan yang dibutuhkan produksi.",audience:"Manajer",facts:["Bahan dijanjikan Senin.","Vendor mengubah jadwal menjadi Selasa sore.","Produksi tidak bisa mulai tanpa bahan.","Deadline awal Rabu.","Tim bisa menyelesaikan produksi Kamis pagi."],question:"Apa inti update yang perlu diketahui manajer?",required:[["vendor"],["bahan"],["selasa"],["produksi"],["kamis"],["deadline","jadwal"]],pointTerms:["produksi","kamis","vendor"],noise:["senin","rabu"],targetMax:24,model:"Produksi tertunda karena vendor baru mengirim bahan Selasa sore; target selesai bergeser ke Kamis pagi.",framework:"Status → penyebab → dampak"},
+ {id:"c8",level:"medium",category:"direct",scenario:"Klien bertanya apakah kampanye bisa mulai Senin.",audience:"Klien",facts:["Desain sudah selesai.","Landing page masih diuji.","Pengujian selesai Selasa pagi.","Iklan baru bisa aktif setelah landing page lolos tes.","Tim sudah menyiapkan materi iklan."],question:"Berikan jawaban langsung dan ekspektasi waktu.",required:[["tidak","belum"],["senin"],["selasa"],["landing page"],["kampanye","iklan"]],pointTerms:["belum","selasa","kampanye"],noise:["desain","materi iklan"],targetMax:24,model:"Belum bisa mulai Senin. Landing page baru selesai diuji Selasa pagi, setelah itu kampanye dapat diaktifkan.",framework:"Jawaban → alasan → next step"},
+ {id:"c9",level:"medium",category:"relevance",scenario:"Atasan meminta update pengiriman untuk pesanan prioritas.",audience:"Atasan",facts:["Pesanan terdiri dari 800 booklet.","500 sudah selesai.","300 masih dijilid.","Kurir datang pukul 17.00.","Kertas tambahan datang pukul 13.00.","Operator kedua sedang istirahat.","Packing 500 unit sudah selesai."],question:"Berikan update yang paling relevan.",required:[["800"],["500"],["300"],["dijilid","jilid"],["kurir"],["17","jam 5"]],pointTerms:["500","300","17"],noise:["kertas","operator","istirahat"],targetMax:26,model:"Dari 800 booklet, 500 sudah siap dan 300 masih dijilid. Targetnya selesai sebelum pickup kurir pukul 17.00.",framework:"Progress → sisa → target"},
+ {id:"c10",level:"medium",category:"compression",scenario:"Ringkas update proyek berikut.",audience:"Tim proyek",facts:["Klien menyetujui desain Selasa.","Tim produksi mulai Rabu.","Mesin berhenti dua jam Kamis pagi.","Produksi dilanjutkan siang hari.","Pengiriman tetap dijadwalkan Jumat."],question:"Pertahankan urutan dan hasil akhir.",required:[["klien"],["selasa"],["produksi"],["rabu"],["mesin"],["2 jam","dua jam"],["jumat"],["pengiriman"]],pointTerms:["jumat","pengiriman","produksi"],noise:[],compression:[35,18,10],targetMax:35,model:"Desain disetujui Selasa, produksi dimulai Rabu dan sempat terganggu dua jam Kamis, tetapi pengiriman tetap Jumat.",framework:"Urutan → gangguan → hasil"},
+ {id:"c11",level:"medium",category:"audience",scenario:"Stok bahan habis dan baru tersedia besok.",audience:"Customer",facts:["Stok habis hari ini.","Vendor mengirim bahan besok pagi.","Produksi mulai setelah bahan tiba.","Estimasi pengiriman mundur satu hari.","Tidak ada perubahan spesifikasi pesanan."],question:"Sampaikan update kepada customer dengan jelas dan profesional.",required:[["stok","bahan"],["besok pagi","besok"],["produksi"],["pengiriman"],["satu hari","1 hari"]],pointTerms:["pengiriman","satu hari","besok"],noise:["spesifikasi"],targetMax:25,model:"Bahan baru tersedia besok pagi, sehingga produksi dan pengiriman pesanan mundur sekitar satu hari.",framework:"Penyebab → dampak"},
+ {id:"c12",level:"medium",category:"audience",scenario:"Stok bahan habis dan baru tersedia besok.",audience:"Tim produksi",facts:["Stok habis hari ini.","Vendor mengirim bahan besok pukul 09.00.","Produksi bisa mulai pukul 10.00.","Prioritaskan pesanan A sebelum pesanan B.","Target pesanan A selesai pukul 15.00."],question:"Berikan instruksi yang sesuai untuk tim produksi.",required:[["bahan"],["pukul 9","09.00","jam 9"],["mulai"],["pukul 10","10.00","jam 10"],["pesanan a"],["pukul 15","15.00","jam 3"]],pointTerms:["pesanan a","10","15"],noise:[],targetMax:28,model:"Bahan tiba pukul 09.00. Mulai produksi pukul 10.00 dan prioritaskan Pesanan A agar selesai pukul 15.00.",framework:"Waktu → tindakan → prioritas"},
+ {id:"c13",level:"medium",category:"oneshot",scenario:"Dalam meeting, direktur bertanya, “Kenapa margin turun?”",audience:"Direktur",facts:["Omzet naik 8%.","Biaya iklan naik 25%.","Harga bahan naik 6%.","Diskon tidak berubah.","Volume pesanan meningkat."],question:"Jawab dalam satu respons langsung.",required:[["margin"],["biaya iklan"],["25"],["harga bahan"],["6"]],pointTerms:["biaya iklan","harga bahan","margin"],noise:["omzet","diskon","volume"],targetMax:20,model:"Margin turun terutama karena biaya iklan naik 25% dan harga bahan naik 6%.",framework:"Kesimpulan → dua penyebab utama"},
+
+ {id:"c14",level:"hard",category:"point",scenario:"Proyek integrasi aplikasi mengalami perubahan jadwal.",audience:"CEO",facts:["Fitur inti selesai.","Security review menemukan dua isu sedang.","Perbaikan membutuhkan satu hari.","Partner API maintenance Selasa malam.","Testing final baru bisa Rabu.","Peluncuran awal direncanakan Rabu pagi.","Tim merekomendasikan peluncuran Kamis pagi."],question:"Berikan executive update paling penting.",required:[["peluncuran"],["kamis"],["security","keamanan"],["partner api","api"],["testing","tes"]],pointTerms:["kamis","peluncuran","security"],noise:["fitur inti","selasa malam","rabu pagi"],targetMax:28,model:"Peluncuran sebaiknya dipindahkan ke Kamis pagi karena perbaikan hasil security review dan testing final baru selesai Rabu.",framework:"Rekomendasi → alasan"},
+ {id:"c15",level:"hard",category:"direct",scenario:"Customer besar bertanya apakah 5.000 unit bisa dikirim Jumat.",audience:"Customer besar",facts:["Kapasitas normal 1.500 unit per hari.","2.000 unit sudah selesai.","Mesin kedua bisa menambah 700 unit per hari.","Bahan cukup untuk semua unit.","Kamis adalah hari kedua produksi tambahan.","Dengan lembur, maksimal selesai 4.600 unit Jumat pagi.","Sisa 400 unit selesai Sabtu pagi."],question:"Jawab ya/tidak dan berikan opsi realistis.",required:[["tidak","belum"],["5000","5.000"],["4600","4.600"],["jumat"],["400"],["sabtu"]],pointTerms:["tidak","4600","400"],noise:["1500","700","bahan"],targetMax:30,model:"Belum seluruhnya. Kami bisa mengirim sekitar 4.600 unit Jumat dan sisa 400 unit Sabtu pagi.",framework:"Jawaban → kapasitas nyata → alternatif"},
+ {id:"c16",level:"hard",category:"relevance",scenario:"Investor meminta alasan utama arus kas bulan ini lebih ketat.",audience:"Investor",facts:["Penjualan naik 12%.","Piutang customer korporat bertambah Rp180 juta.","Pembelian mesin Rp90 juta dibayar tunai.","Biaya listrik naik 4%.","Persediaan bahan naik Rp35 juta.","Jumlah karyawan tetap.","Iklan turun 8%."],question:"Pilih faktor yang paling relevan dan sampaikan secara singkat.",required:[["arus kas"],["piutang"],["180 juta"],["mesin"],["90 juta"],["persediaan","bahan"],["35 juta"]],pointTerms:["piutang","mesin","persediaan"],noise:["listrik","karyawan","iklan","penjualan"],targetMax:30,model:"Arus kas lebih ketat terutama karena piutang naik Rp180 juta, pembelian mesin Rp90 juta, dan tambahan persediaan Rp35 juta.",framework:"Kesimpulan → faktor material"},
+ {id:"c17",level:"hard",category:"compression",scenario:"Kompres penjelasan insiden berikut.",audience:"Manajemen",facts:["Server utama lambat sejak 09.10.","Traffic naik 40%.","Database mencapai batas koneksi.","Tim menaikkan kapasitas pukul 09.35.","Performa normal kembali 09.50.","Tidak ada data hilang.","Sebagian user mengalami timeout selama 40 menit."],question:"Pertahankan sebab, dampak, tindakan, dan hasil.",required:[["traffic","40"],["database","koneksi"],["timeout"],["40 menit"],["kapasitas"],["normal"],["tidak ada data hilang","data"]],pointTerms:["timeout","normal","database"],noise:[],compression:[45,22,12],targetMax:45,model:"Lonjakan traffic membuat database mencapai batas koneksi dan menyebabkan timeout sekitar 40 menit. Kapasitas ditambah, layanan kembali normal tanpa kehilangan data.",framework:"Penyebab → dampak → tindakan → hasil"},
+ {id:"c18",level:"hard",category:"audience",scenario:"Terjadi keterlambatan karena kesalahan internal input alamat.",audience:"Customer",facts:["Alamat diketik salah oleh staf.","Paket kembali ke gudang.","Alamat sudah dikoreksi.","Paket dikirim ulang hari ini.","Customer tidak dikenakan biaya tambahan.","Estimasi tiba besok."],question:"Sampaikan kepada customer tanpa menyalahkan individu.",required:[["alamat"],["kesalahan","keliru"],["dikirim ulang","kirim ulang"],["hari ini"],["besok"],["tanpa biaya","tidak dikenakan biaya"]],pointTerms:["dikirim ulang","besok","alamat"],noise:["staf","gudang"],targetMax:30,model:"Terjadi kesalahan pada alamat pengiriman. Alamat sudah dikoreksi dan paket dikirim ulang hari ini tanpa biaya tambahan, dengan estimasi tiba besok.",framework:"Akui masalah → tindakan → solusi"},
+ {id:"c19",level:"hard",category:"audience",scenario:"Terjadi keterlambatan karena kesalahan internal input alamat.",audience:"Supervisor operasional",facts:["Staf A salah memasukkan digit nomor rumah.","Paket kembali ke gudang pukul 11.00.","Alamat dikoreksi pukul 11.20.","Paket masuk pickup ulang pukul 14.00.","Customer sudah diberi tahu.","Perlu review proses verifikasi alamat."],question:"Sampaikan update operasional yang bisa ditindaklanjuti.",required:[["alamat"],["salah"],["11.00","jam 11"],["11.20"],["14.00","jam 2"],["customer"],["verifikasi"]],pointTerms:["verifikasi","alamat","pickup"],noise:["staf a"],targetMax:35,model:"Kesalahan input alamat membuat paket kembali pukul 11.00. Alamat dikoreksi 11.20, masuk pickup ulang 14.00, customer sudah diinformasikan, dan proses verifikasi alamat perlu direview.",framework:"Insiden → recovery → tindakan pencegahan"},
+ {id:"c20",level:"hard",category:"oneshot",scenario:"Dalam rapat krisis, CEO bertanya, “Apa keputusan yang kamu rekomendasikan sekarang?”",audience:"CEO",facts:["Produk baru memiliki bug minor pada fitur laporan.","Bug tidak memengaruhi transaksi.","Perbaikan membutuhkan 6 jam.","Kampanye pemasaran mulai besok pagi.","Menunda peluncuran satu hari menambah biaya sekitar Rp25 juta.","Tim engineering yakin patch selesai malam ini."],question:"Berikan rekomendasi dalam maksimal 25 kata.",required:[["lanjut","tetap","peluncuran"],["patch","perbaikan"],["malam ini"],["transaksi","tidak memengaruhi"],["kampanye","besok"]],pointTerms:["lanjut","patch","malam ini"],noise:["25 juta","6 jam"],targetMax:25,model:"Saya rekomendasikan tetap meluncurkan besok, dengan patch diselesaikan malam ini karena bug tidak memengaruhi transaksi.",framework:"Rekomendasi → alasan utama"}
+];
+
+function setCommunicationDifficulty(x){
+ communicationDifficulty=x;
+ localStorage.setItem("communicationDifficulty",x);
+ updateCommunicationHomeUI();
+}
+function setCommunicationCategory(x){
+ communicationCategory=x;
+ localStorage.setItem("communicationCategory",x);
+ updateCommunicationHomeUI();
+}
+function renderCommunicationCategories(){
+ const el=document.getElementById("communicationCategories");
+ if(!el)return;
+ el.innerHTML="";
+ Object.keys(COMM_CATEGORIES).forEach(function(k){
+   const b=document.createElement("button");
+   b.className="category-btn"+(communicationCategory===k?" active":"");
+   b.textContent=COMM_CATEGORIES[k];
+   b.onclick=function(){setCommunicationCategory(k)};
+   el.appendChild(b);
+ });
+}
+function updateCommunicationHomeUI(){
+ ["easy","medium","hard"].forEach(function(x){
+   const el=document.getElementById("comm-"+x);
+   if(el)el.classList.toggle("active",x===communicationDifficulty);
+ });
+ const d=document.getElementById("communicationLevelDesc");
+ if(d)d.textContent=COMM_LEVELS[communicationDifficulty].desc;
+ renderCommunicationCategories();
+ const count=COMM_EXERCISES.filter(function(x){return x.level===communicationDifficulty}).length;
+ const h=document.getElementById("communicationHint");
+ if(h)h.innerHTML="Latihan level ini: <b>"+count+"</b>. Fokus: inti pesan, relevansi, struktur, dan efisiensi.";
+}
+function openCommunicationHome(){
+ clearStoryTimer();
+ ["storySection","quizSection","writingSection","communicationSection"].forEach(function(id){document.getElementById(id).classList.add("hidden")});
+ document.getElementById("homeSection").classList.remove("hidden");
+ document.getElementById("mainHome").classList.add("hidden");
+ document.getElementById("memoryHome").classList.add("hidden");
+ document.getElementById("writingHome").classList.add("hidden");
+ document.getElementById("communicationHome").classList.remove("hidden");
+ updateCommunicationHomeUI();
+ document.getElementById("typeStat").textContent="Mode: Komunikasi Efektif";
+}
+function chooseCommunicationExercise(){
+ let pool=COMM_EXERCISES.filter(function(x){return x.level===communicationDifficulty&&(communicationCategory==="mixed"||x.category===communicationCategory)});
+ if(!pool.length)pool=COMM_EXERCISES.filter(function(x){return x.level===communicationDifficulty});
+ const recent=communicationHistory.slice(-12).map(function(x){return x.exerciseId});
+ const fresh=pool.filter(function(x){return !recent.includes(x.id)});
+ return pick(fresh.length?fresh:pool);
+}
+function beginCommunicationSession(){
+ currentCommunication=chooseCommunicationExercise();
+ communicationCompressionStage=0;
+ renderCommunicationExercise();
+}
+function nextCommunicationExercise(){
+ currentCommunication=chooseCommunicationExercise();
+ communicationCompressionStage=0;
+ renderCommunicationExercise();
+}
+function currentCommunicationLimit(){
+ if(currentCommunication.compression){
+   return currentCommunication.compression[Math.min(communicationCompressionStage,currentCommunication.compression.length-1)];
+ }
+ return currentCommunication.targetMax||30;
+}
+function renderCommunicationExercise(){
+ document.getElementById("homeSection").classList.add("hidden");
+ document.getElementById("storySection").classList.add("hidden");
+ document.getElementById("quizSection").classList.add("hidden");
+ document.getElementById("writingSection").classList.add("hidden");
+ document.getElementById("communicationSection").classList.remove("hidden");
+ document.getElementById("communicationMeta").textContent=COMM_LEVELS[currentCommunication.level].label+" · "+COMM_CATEGORIES[currentCommunication.category];
+ document.getElementById("communicationChallenge").textContent=(currentCommunication.compression?"Compression tahap "+(communicationCompressionStage+1)+": maksimal "+currentCommunicationLimit()+" kata. ":"Maksimal "+currentCommunicationLimit()+" kata. ")+currentCommunication.framework;
+ document.getElementById("communicationScenario").textContent=currentCommunication.scenario;
+ document.getElementById("communicationAudience").textContent="Audiens: "+currentCommunication.audience;
+ const facts=document.getElementById("communicationFacts");
+ facts.innerHTML="";
+ currentCommunication.facts.forEach(function(x){facts.innerHTML+='<div class="comm-fact">• '+esc(x)+'</div>'});
+ document.getElementById("communicationQuestion").textContent=currentCommunication.question;
+ document.getElementById("communicationAnswer").value="";
+ document.getElementById("communicationResult").classList.add("hidden");
+ document.getElementById("communicationNextBtn").classList.add("hidden");
+ document.getElementById("communicationHomeBtn").classList.add("hidden");
+ document.getElementById("communicationCompressionBtn").classList.add("hidden");
+ document.getElementById("communicationCheckBtn").disabled=false;
+ document.getElementById("typeStat").textContent="Mode: Komunikasi Efektif";
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function commContains(answer,group){
+ return group.some(function(t){return norm(answer).includes(norm(t))||typo(norm(answer),norm(t))});
+}
+function pointFirstScore(answer,ex){
+ const first=norm(answer).split(/[.!?]/)[0];
+ let hits=0;
+ (ex.pointTerms||[]).forEach(function(t){if(first.includes(norm(t)))hits++});
+ return Math.min(20,Math.round(20*hits/Math.max(1,(ex.pointTerms||[]).length)));
+}
+function relevanceScore(answer,ex){
+ const text=norm(answer);
+ let penalty=0;
+ (ex.noise||[]).forEach(function(n){if(text.includes(norm(n)))penalty+=3});
+ return Math.max(0,15-penalty);
+}
+function communicationStructureScore(answer){
+ const wc=wordCount(answer);
+ let score=15;
+ if(wc<2)score=4;
+ if((answer.match(/\b(jadi|terus|sebenarnya|intinya|karena|sehingga|lalu)\b/gi)||[]).length>5)score-=3;
+ if(sentenceCount(answer)>4)score-=3;
+ return Math.max(0,score);
+}
+function communicationEfficiencyScore(answer,ex){
+ const wc=wordCount(answer),limit=currentCommunicationLimit();
+ if(wc<=limit)return 10;
+ return Math.max(0,10-Math.ceil((wc-limit)/3)*2);
+}
+function scoreCommunication(answer,ex){
+ const text=norm(answer);
+ if(!text)return {total:0,meaning:0,pointFirst:0,relevance:0,structure:0,efficiency:0,facts:0};
+ let hit=0;
+ ex.required.forEach(function(g){if(commContains(text,g))hit++});
+ const meaning=Math.round(40*hit/ex.required.length);
+ const pointFirst=pointFirstScore(answer,ex);
+ const relevance=relevanceScore(answer,ex);
+ const structure=communicationStructureScore(answer);
+ const efficiency=communicationEfficiencyScore(answer,ex);
+ let total=meaning+pointFirst+relevance+structure+efficiency;
+ if(meaning<30)total=Math.min(total,74);
+ if(meaning<20)total=Math.min(total,59);
+ return {total:Math.round(total),meaning,pointFirst,relevance,structure,efficiency,facts:Math.round(100*hit/ex.required.length)};
+}
+function communicationLabel(score){
+ if(score>=90)return"Sangat Efektif";
+ if(score>=75)return"Efektif";
+ if(score>=60)return"Cukup Efektif";
+ return"Perlu Diperbaiki";
+}
+function saveCommunicationProgress(sc,answer){
+ communicationHistory.push({
+   time:Date.now(),exerciseId:currentCommunication.id,difficulty:currentCommunication.level,category:currentCommunication.category,
+   score:sc.total,meaning:sc.meaning,pointFirst:sc.pointFirst,relevance:sc.relevance,structure:sc.structure,efficiency:sc.efficiency,
+   answer:answer,model:currentCommunication.model,audience:currentCommunication.audience,limit:currentCommunicationLimit()
+ });
+ communicationHistory=communicationHistory.slice(-80);
+ localStorage.setItem("communicationProgressHistory",JSON.stringify(communicationHistory));
+}
+function checkCommunicationAnswer(){
+ const answer=document.getElementById("communicationAnswer").value;
+ if(!norm(answer)){document.getElementById("communicationResult").classList.remove("hidden");document.getElementById("communicationResult").innerHTML='<div class="feedback-box focus">Tulis atau ucapkan jawaban terlebih dahulu.</div>';return}
+ const sc=scoreCommunication(answer,currentCommunication);
+ saveCommunicationProgress(sc,answer);
+ const wc=wordCount(answer),limit=currentCommunicationLimit();
+ const signal=Math.round((sc.facts/100)*Math.min(100,limit/Math.max(1,wc)*100));
+ const r=document.getElementById("communicationResult");
+ r.classList.remove("hidden");
+ r.innerHTML='<div class="score-big">'+sc.total+'/100 · '+communicationLabel(sc.total)+'</div>'+
+ '<div class="comm-score-grid">'+
+ '<div class="rubric-card"><span>Makna</span><strong>'+sc.meaning+'/40</strong></div>'+
+ '<div class="rubric-card"><span>Point First</span><strong>'+sc.pointFirst+'/20</strong></div>'+
+ '<div class="rubric-card"><span>Relevansi</span><strong>'+sc.relevance+'/15</strong></div>'+
+ '<div class="rubric-card"><span>Struktur</span><strong>'+sc.structure+'/15</strong></div>'+
+ '<div class="rubric-card"><span>Efisiensi</span><strong>'+sc.efficiency+'/10</strong></div></div>'+
+ '<div class="comm-signal"><b>Signal-to-Noise:</b> '+signal+'% · '+wc+' kata dari batas '+limit+' · Makna terjaga '+sc.facts+'%</div>'+
+ '<div class="feedback-box '+(sc.total>=75?"good":"focus")+'">'+
+ (sc.pointFirst<14?"Taruh inti jawaban lebih awal. ":"")+
+ (sc.relevance<12?"Buang detail yang tidak membantu tujuan komunikasi. ":"")+
+ (sc.efficiency<8?"Jawaban masih bisa dipadatkan. ":"")+
+ (sc.meaning<40?"Pastikan fakta penting tidak hilang. ":"")+
+ '</div>'+
+ '<div class="model-answer"><b>Contoh jawaban:</b><br>'+esc(currentCommunication.model)+'</div>';
+ document.getElementById("communicationNextBtn").classList.remove("hidden");
+ document.getElementById("communicationHomeBtn").classList.remove("hidden");
+ if(currentCommunication.compression&&communicationCompressionStage<currentCommunication.compression.length-1){
+   document.getElementById("communicationCompressionBtn").classList.remove("hidden");
+ }
+ r.scrollIntoView({behavior:"smooth",block:"start"});
+}
+function nextCompressionStage(){
+ if(!currentCommunication.compression)return;
+ communicationCompressionStage++;
+ document.getElementById("communicationAnswer").value="";
+ document.getElementById("communicationResult").classList.add("hidden");
+ document.getElementById("communicationCompressionBtn").classList.add("hidden");
+ document.getElementById("communicationNextBtn").classList.add("hidden");
+ document.getElementById("communicationHomeBtn").classList.add("hidden");
+ document.getElementById("communicationChallenge").textContent="Compression tahap "+(communicationCompressionStage+1)+": maksimal "+currentCommunicationLimit()+" kata. "+currentCommunication.framework;
+ document.getElementById("communicationAnswer").focus();
+}
+function communicationProfile(){
+ const recent=communicationHistory.slice(-20);
+ const keys=["meaning","pointFirst","relevance","structure","efficiency"];
+ const max={meaning:40,pointFirst:20,relevance:15,structure:15,efficiency:10};
+ const out={};
+ keys.forEach(function(k){
+   const vals=recent.map(function(x){return Math.round((x[k]||0)/max[k]*100)});
+   out[k]={count:vals.length,avg:vals.length?avg(vals):0};
+ });
+ return out;
+}
+function renderCommunicationProgress(){
+ const p=document.getElementById("communicationProgressPanel");
+ if(!communicationHistory.length){p.innerHTML='<div class="empty-state">Belum ada latihan komunikasi yang selesai.</div>';return}
+ const prof=communicationProfile();
+ const recent=communicationHistory.slice(-8).reverse();
+ let bars="";
+ Object.keys(COMM_SKILLS).forEach(function(k){
+   const x=prof[k];
+   bars+='<div class="skill-bar-row"><div class="skill-bar-head"><span>'+COMM_SKILLS[k]+'</span><span>'+x.avg+'%</span></div><div class="memory-bar"><div class="memory-bar-fill" style="width:'+x.avg+'%"></div></div></div>';
+ });
+ let hist="";
+ recent.forEach(function(x){
+   const d=new Date(x.time).toLocaleString("id-ID",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"});
+   hist+='<details class="history-row"><summary><span class="history-score">'+x.score+'/100</span> · '+COMM_CATEGORIES[x.category]+' · '+esc(x.audience)+'</summary><div class="history-meta">'+d+' · batas '+x.limit+' kata</div><div class="answer-review"><b>Jawaban:</b><br>'+esc(x.answer)+'<br><br><b>Contoh:</b><br>'+esc(x.model)+'</div></details>';
+ });
+ const scores=communicationHistory.slice(-10).map(function(x){return x.score});
+ p.innerHTML='<div class="progress-grid"><div class="progress-card"><span>Rata-rata 10 latihan</span><strong>'+avg(scores)+'/100</strong></div><div class="progress-card"><span>Best</span><strong>'+Math.max.apply(null,communicationHistory.map(function(x){return x.score}))+'/100</strong></div><div class="progress-card"><span>Selesai</span><strong>'+communicationHistory.length+'</strong></div></div><div class="progress-title">Profil Komunikasi</div>'+bars+'<div class="progress-title">Riwayat Terbaru</div>'+hist;
+}
+function toggleCommunicationProgress(){
+ const p=document.getElementById("communicationProgressPanel");
+ p.classList.toggle("hidden");
+ if(!p.classList.contains("hidden"))renderCommunicationProgress();
+}
+function toggleCommunicationMic(){
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ const btn=document.getElementById("commMicBtn");
+ if(!SR){alert("Speech-to-text belum didukung browser ini. Kamu tetap bisa mengetik jawaban.");return}
+ if(communicationListening&&communicationRecognition){communicationRecognition.stop();return}
+ communicationRecognition=new SR();
+ communicationRecognition.lang="id-ID";
+ communicationRecognition.interimResults=true;
+ communicationRecognition.continuous=false;
+ communicationRecognition.onstart=function(){communicationListening=true;btn.classList.add("mic-live");btn.textContent="⏹️ Stop"};
+ communicationRecognition.onresult=function(e){
+   let text="";
+   for(let i=e.resultIndex;i<e.results.length;i++)text+=e.results[i][0].transcript+" ";
+   document.getElementById("communicationAnswer").value=text.trim();
+ };
+ communicationRecognition.onend=function(){communicationListening=false;btn.classList.remove("mic-live");btn.textContent="🎙️ Bicara"};
+ communicationRecognition.onerror=function(){communicationListening=false;btn.classList.remove("mic-live");btn.textContent="🎙️ Bicara"};
+ communicationRecognition.start();
+}
+
 const builders=[shopping,cinema,airport,study,eventStory,office,roadtrip,birthday,restaurant,park,errand];
 let currentStory=null;
 let storyNumber=Number(localStorage.getItem("storyNumber")||0);
@@ -1799,6 +2102,7 @@ function showHome(){
  document.getElementById("mainHome").classList.remove("hidden");
  document.getElementById("memoryHome").classList.add("hidden");
  document.getElementById("writingHome").classList.add("hidden");
+ document.getElementById("communicationHome").classList.add("hidden");
  document.getElementById("result").classList.add("hidden");
  document.getElementById("nextBtn").classList.add("hidden");
  document.getElementById("homeAfterBtn").classList.add("hidden");
