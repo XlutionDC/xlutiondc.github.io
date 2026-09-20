@@ -699,6 +699,331 @@ input:focus,textarea:focus{border-color:#6f9180;box-shadow:0 0 0 4px rgba(87,126
   .writing-shell,#storySection,#quizSection{margin-top:24px}
 }
 
+
+/* Yuk Bisa — refinement sprint */
+.difficulty{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:11px;
+  margin:18px 0 12px;
+}
+.difficulty .level-btn{
+  min-height:70px;
+  padding:12px 14px!important;
+  border-radius:16px!important;
+  border:1px solid transparent!important;
+  box-shadow:none!important;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  gap:3px;
+  text-align:left;
+  transition:transform .16s ease,box-shadow .16s ease,filter .16s ease;
+}
+.difficulty .level-btn span{font-size:15px;font-weight:800;line-height:1.15}
+.difficulty .level-btn small{font-size:11px;font-weight:600;opacity:.72;line-height:1.2}
+.difficulty .level-btn:hover:not(:disabled){transform:translateY(-2px);filter:saturate(1.05)}
+
+/* Mudah = hijau */
+#level-easy,#write-easy,#comm-easy{
+  background:#e9f4ec!important;color:#35644c!important;border-color:#cfe2d4!important;
+}
+#level-easy.active,#write-easy.active,#comm-easy.active{
+  background:#4f8165!important;color:#fff!important;border-color:#4f8165!important;
+  box-shadow:0 9px 22px rgba(79,129,101,.18)!important;
+}
+
+/* Sedang = amber */
+#level-medium,#write-medium,#comm-medium{
+  background:#fff1df!important;color:#986524!important;border-color:#efd7b6!important;
+}
+#level-medium.active,#write-medium.active,#comm-medium.active{
+  background:#d59443!important;color:#fff!important;border-color:#d59443!important;
+  box-shadow:0 9px 22px rgba(213,148,67,.18)!important;
+}
+
+/* Susah = coral */
+#level-hard,#write-hard,#comm-hard{
+  background:#fbe9e6!important;color:#a9574d!important;border-color:#efcbc5!important;
+}
+#level-hard.active,#write-hard.active,#comm-hard.active{
+  background:#bc685d!important;color:#fff!important;border-color:#bc685d!important;
+  box-shadow:0 9px 22px rgba(188,104,93,.18)!important;
+}
+
+.level-desc{
+  position:relative;
+  padding:15px 17px 15px 43px;
+  border-radius:15px;
+  background:#faf8f1;
+  border:1px solid #e6e2d8;
+  line-height:1.6;
+}
+.level-desc:before{
+  content:"i";
+  position:absolute;left:15px;top:15px;
+  width:19px;height:19px;border-radius:50%;
+  display:grid;place-items:center;
+  background:#e5eee8;color:#42695a;
+  font-family:Georgia,serif;font-size:12px;font-weight:700;
+}
+
+/* Training menu polish */
+#memoryHome,#writingHome,#communicationHome{
+  width:min(920px,100%);
+  margin:30px auto 0;
+}
+#memoryHome>.home-card,#writingHome>.home-card,#communicationHome>.home-card{
+  position:relative;overflow:hidden;
+  padding:28px 30px;
+  border-radius:22px;
+  box-shadow:0 16px 36px rgba(43,67,59,.045);
+}
+#memoryHome>.home-card:after,#writingHome>.home-card:after,#communicationHome>.home-card:after{
+  content:"";
+  position:absolute;right:-42px;top:-48px;
+  width:160px;height:160px;border-radius:50%;
+  background:rgba(92,138,114,.08);
+}
+#writingHome>.home-card:after{background:rgba(200,140,82,.09)}
+#communicationHome>.home-card:after{background:rgba(72,130,122,.09)}
+
+.progress-title{
+  margin-top:22px;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:1.3px;
+  color:#78877f;
+}
+.category-grid{gap:9px}
+.category-btn{
+  padding:10px 13px;
+  border-radius:999px;
+  font-size:12px;
+  transition:all .15s ease;
+}
+.category-btn:hover:not(:disabled){border-color:#91aa9f;background:#f5f7f3}
+.category-btn.active{
+  background:#315f52!important;
+  border-color:#315f52!important;
+  color:#fff!important;
+  box-shadow:0 6px 14px rgba(49,95,82,.12);
+}
+
+/* Exercise surface */
+.writing-shell,#storySection,#quizSection{
+  width:min(920px,100%);
+}
+.meta{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:12px;
+}
+.meta:before{
+  content:"";
+  width:7px;height:7px;border-radius:50%;
+  background:#7f9d8d;
+  flex:0 0 auto;
+}
+.challenge-box{
+  padding:14px 16px;
+  border-left:3px solid #6e9480;
+}
+.prompt-card,.story{
+  position:relative;
+  overflow:hidden;
+  padding:28px;
+}
+.prompt-card:after,.story:after{
+  content:"";
+  position:absolute;right:-34px;bottom:-40px;
+  width:120px;height:120px;border-radius:50%;
+  background:rgba(107,143,123,.055);
+  pointer-events:none;
+}
+.question{
+  position:relative;
+  padding:22px 22px 20px;
+}
+.question:focus-within{
+  border-color:#cbd8d0!important;
+  box-shadow:0 12px 28px rgba(44,78,65,.07);
+}
+.question label strong{
+  display:block;
+  margin-bottom:4px;
+  line-height:1.45;
+}
+input,textarea{
+  min-height:48px;
+  padding:13px 14px;
+}
+textarea{min-height:145px}
+
+/* Buttons feel less prototype-like */
+.actions{gap:10px;margin-top:18px}
+.actions .primary,.actions .secondary,.actions .rest-btn{
+  min-height:45px;
+  padding:12px 17px;
+  border-radius:13px;
+}
+.actions .primary{box-shadow:0 8px 18px rgba(49,95,82,.12)}
+.actions .secondary{background:#fffdf9}
+.actions .rest-btn{margin-left:auto}
+.back-link{
+  padding:8px 0;
+  font-size:13px;
+  font-weight:700;
+}
+
+/* Result screens */
+.result{
+  position:relative;
+  margin-top:24px;
+  padding:24px;
+  overflow:hidden;
+  box-shadow:0 14px 34px rgba(46,73,63,.055);
+}
+.result:before{
+  content:"";
+  display:block;
+  width:42px;height:4px;border-radius:99px;
+  background:linear-gradient(90deg,#5f8c75,#c99a62);
+  margin-bottom:15px;
+}
+.score-big{
+  font-size:34px;
+  line-height:1.15;
+  letter-spacing:-.6px;
+  margin-bottom:12px;
+}
+.result-note{
+  padding:13px 15px;
+  border-radius:12px;
+  background:rgba(255,255,255,.62);
+  border:1px solid #e4e7df;
+  color:#52635c;
+}
+.item{
+  margin:12px 0;
+  padding:15px 16px;
+  border-radius:14px;
+}
+.item>strong{line-height:1.45;color:#263f37}
+.badge{
+  margin:5px 0 2px 7px;
+  padding:5px 9px;
+}
+.answer-line{
+  margin-top:7px;
+  color:#68756f;
+  line-height:1.5;
+}
+.rubric-grid,.comm-score-grid{gap:9px}
+.rubric-card{
+  min-height:80px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  border-radius:14px;
+}
+.rubric-card strong{font-family:Georgia,serif;font-size:21px;color:#264d42}
+.metric-card{
+  border-radius:14px;
+  padding:13px 10px;
+}
+.metric-card strong{font-family:Georgia,serif;font-size:20px;color:#315f52}
+.feedback-box,.model-answer,.issue-box,.comm-signal{
+  border-radius:14px;
+  padding:14px 16px;
+  line-height:1.6;
+}
+
+/* Progress becomes more rewarding */
+.progress-panel{
+  padding:22px;
+  border-radius:20px;
+  box-shadow:0 12px 30px rgba(46,73,63,.04);
+}
+.progress-grid{gap:12px}
+.progress-card{
+  position:relative;
+  overflow:hidden;
+  min-height:138px;
+  padding:17px;
+  border-radius:16px;
+}
+.progress-card:after{
+  content:"";
+  position:absolute;right:-20px;bottom:-26px;
+  width:78px;height:78px;border-radius:50%;
+  background:rgba(255,255,255,.33);
+}
+.progress-card strong{
+  font-family:Georgia,serif;
+  font-size:28px;
+  color:#294a40;
+}
+.history-row{
+  padding:14px 15px;
+  border-radius:14px;
+}
+.history-row summary{
+  line-height:1.45;
+  color:#42574f;
+}
+.history-score{font-family:Georgia,serif;font-size:20px}
+.memory-profile{padding:19px;border-radius:17px}
+.memory-bar{height:10px}
+.memory-bar-fill{transition:width .35s ease}
+.empty-state{
+  padding:20px;
+  border:1px dashed #cfd9d2;
+  border-radius:14px;
+  background:#fbfaf5;
+  text-align:center;
+  color:#718078;
+}
+
+/* Homepage cards: stronger hierarchy without getting busy */
+.mode-card{
+  border-radius:20px;
+  min-height:235px;
+  overflow:hidden;
+  position:relative;
+}
+.mode-card:after{
+  content:"";
+  position:absolute;right:-32px;bottom:-42px;
+  width:130px;height:130px;border-radius:50%;
+  background:rgba(255,255,255,.28);
+}
+.mode-card-top,.mode-card h3,.mode-card p,.mode-link{position:relative;z-index:1}
+.mode-icon-badge{
+  width:58px;height:58px;border-radius:18px;
+}
+.mode-icon-badge svg{width:30px;height:30px}
+.mode-card h3{font-size:25px}
+.mode-link{
+  display:inline-flex;align-items:center;gap:6px;
+  font-weight:800;
+}
+.journey-card{
+  box-shadow:0 14px 34px rgba(47,74,64,.04);
+}
+.daily-message{
+  box-shadow:0 14px 34px rgba(83,67,49,.04);
+}
+
+@media(max-width:700px){
+  .difficulty{grid-template-columns:1fr}
+  .difficulty .level-btn{min-height:62px}
+  .actions .rest-btn{margin-left:0}
+  .score-big{font-size:29px}
+}
+
 </style>
 </head>
 <body>
@@ -815,9 +1140,9 @@ input:focus,textarea:focus{border-color:#6f9180;box-shadow:0 0 0 4px rgba(87,126
       <div class="home-tip">Pada level Susah, timer baru mulai setelah tombol Mulai Latihan ditekan.</div>
     </div>
     <div class="difficulty">
-      <button class="level-btn" id="level-easy" onclick="setDifficulty('easy')">Mudah</button>
-      <button class="level-btn" id="level-medium" onclick="setDifficulty('medium')">Sedang</button>
-      <button class="level-btn" id="level-hard" onclick="setDifficulty('hard')">Susah</button>
+      <button class="level-btn" id="level-easy" onclick="setDifficulty('easy')"><span>Mudah</span><small>Mulai santai</small></button>
+      <button class="level-btn" id="level-medium" onclick="setDifficulty('medium')"><span>Sedang</span><small>Butuh fokus</small></button>
+      <button class="level-btn" id="level-hard" onclick="setDifficulty('hard')"><span>Susah</span><small>Lebih menantang</small></button>
     </div>
     <div class="level-desc" id="levelDesc"></div>
     <div class="actions home-start">
@@ -834,9 +1159,9 @@ input:focus,textarea:focus{border-color:#6f9180;box-shadow:0 0 0 4px rgba(87,126
       <div class="home-tip"><b>Rubric 100 poin:</b> Makna & kelogisan 30 · Struktur 20 · Kehematan 15 · Kejelasan & kepaduan 15 · Diksi 10 · Ejaan & tanda baca 10.</div>
     </div>
     <div class="difficulty">
-      <button class="level-btn" id="write-easy" onclick="setWritingDifficulty('easy')">Mudah</button>
-      <button class="level-btn" id="write-medium" onclick="setWritingDifficulty('medium')">Sedang</button>
-      <button class="level-btn" id="write-hard" onclick="setWritingDifficulty('hard')">Susah</button>
+      <button class="level-btn" id="write-easy" onclick="setWritingDifficulty('easy')"><span>Mudah</span><small>1 fokus utama</small></button>
+      <button class="level-btn" id="write-medium" onclick="setWritingDifficulty('medium')"><span>Sedang</span><small>Beberapa aspek</small></button>
+      <button class="level-btn" id="write-hard" onclick="setWritingDifficulty('hard')"><span>Susah</span><small>Detail kompleks</small></button>
     </div>
     <div class="level-desc" id="writingLevelDesc"></div>
     <div class="progress-title">Jenis latihan</div>
@@ -858,9 +1183,9 @@ input:focus,textarea:focus{border-color:#6f9180;box-shadow:0 0 0 4px rgba(87,126
       <div class="home-tip"><b>Penilaian:</b> Makna 40 · Point First 20 · Relevansi 15 · Struktur 15 · Efisiensi 10.</div>
     </div>
     <div class="difficulty">
-      <button class="level-btn" id="comm-easy" onclick="setCommunicationDifficulty('easy')">Mudah</button>
-      <button class="level-btn" id="comm-medium" onclick="setCommunicationDifficulty('medium')">Sedang</button>
-      <button class="level-btn" id="comm-hard" onclick="setCommunicationDifficulty('hard')">Susah</button>
+      <button class="level-btn" id="comm-easy" onclick="setCommunicationDifficulty('easy')"><span>Mudah</span><small>Situasi sederhana</small></button>
+      <button class="level-btn" id="comm-medium" onclick="setCommunicationDifficulty('medium')"><span>Sedang</span><small>Ada distraksi</small></button>
+      <button class="level-btn" id="comm-hard" onclick="setCommunicationDifficulty('hard')"><span>Susah</span><small>Situasi realistis</small></button>
     </div>
     <div class="level-desc" id="communicationLevelDesc"></div>
     <div class="progress-title">Jenis latihan</div>
@@ -1912,13 +2237,13 @@ function toggleWritingProgress(){
 
 
 const COMM_CATEGORIES={
- mixed:"Mixed",
- point:"What's the Point",
- direct:"Point First",
+ mixed:"Campuran",
+ point:"Tangkap Inti",
+ direct:"Jawab Langsung",
  relevance:"Pilih Informasi",
- compression:"Compression",
- audience:"Audience Switching",
- oneshot:"One-Shot"
+ compression:"Padatkan",
+ audience:"Sesuaikan Lawan Bicara",
+ oneshot:"Jawab Sekali"
 };
 const COMM_LEVELS={
  easy:{label:"Mudah",desc:"Situasi sederhana dengan 3–4 fakta dan satu tujuan komunikasi yang jelas."},
