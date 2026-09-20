@@ -1512,6 +1512,7 @@ function updateWritingHomeUI(){
  if(db&&localStorage.getItem("writingDiagnosticDone")==="1")db.textContent="Ulangi Tes Kemampuan";
 }
 function openMemoryHome(){
+ const shell=document.getElementById("appShell");if(shell)shell.classList.remove("home-view");
  document.getElementById("mainHome").classList.add("hidden");
  document.getElementById("writingHome").classList.add("hidden");
  document.getElementById("communicationHome").classList.add("hidden");
@@ -1519,6 +1520,7 @@ function openMemoryHome(){
  updateStats();
 }
 function openWritingHome(){
+ const shell=document.getElementById("appShell");if(shell)shell.classList.remove("home-view");
  clearStoryTimer();
  document.getElementById("storySection").classList.add("hidden");
  document.getElementById("quizSection").classList.add("hidden");
@@ -1590,6 +1592,7 @@ function formatLabel(format){
  return {rewrite:"Rewrite",trim:"Potong",combine:"Gabungkan",focus:"Perbaiki Fokus",choice:"Pilih Terbaik"}[format]||"Rewrite";
 }
 function renderWritingExercise(){
+ const shell=document.getElementById("appShell");if(shell)shell.classList.remove("home-view");
  currentWritingSessionId="w-"+Date.now()+"-"+Math.floor(Math.random()*100000);
  currentWritingAttempt=0;
  selectedWritingOption=null;
@@ -1965,6 +1968,7 @@ function updateCommunicationHomeUI(){
  if(h)h.innerHTML="Latihan level ini: <b>"+count+"</b>. Fokus: inti pesan, relevansi, struktur, dan efisiensi.";
 }
 function openCommunicationHome(){
+ const shell=document.getElementById("appShell");if(shell)shell.classList.remove("home-view");
  clearStoryTimer();
  ["storySection","quizSection","writingSection","communicationSection"].forEach(function(id){document.getElementById(id).classList.add("hidden")});
  document.getElementById("homeSection").classList.remove("hidden");
@@ -1999,6 +2003,7 @@ function currentCommunicationLimit(){
  return currentCommunication.targetMax||30;
 }
 function renderCommunicationExercise(){
+ const shell=document.getElementById("appShell");if(shell)shell.classList.remove("home-view");
  document.getElementById("homeSection").classList.add("hidden");
  document.getElementById("storySection").classList.add("hidden");
  document.getElementById("quizSection").classList.add("hidden");
@@ -2376,6 +2381,7 @@ function updateStats(){
  updateDifficultyUI();
 }
 function render(){
+ const shell=document.getElementById("appShell");if(shell)shell.classList.remove("home-view");
  peekUsed=false;
  document.getElementById("homeSection").classList.add("hidden");
  document.getElementById("storyMeta").textContent="Cerita #"+storyNumber+" - "+currentStory.questions.length+" pertanyaan - Level "+LEVELS[difficulty].label;
@@ -2472,8 +2478,52 @@ function newStory(){
  render();
  window.scrollTo({top:0,behavior:"smooth"});
 }
+function allTrainingScores(){
+ const a=[];
+ progressHistory.forEach(function(x){if(typeof x.pct==="number")a.push(x.pct)});
+ writingHistory.forEach(function(x){if(typeof x.score==="number")a.push(x.score)});
+ communicationHistory.forEach(function(x){if(typeof x.score==="number")a.push(x.score)});
+ return a;
+}
+function updateHomepageJourney(){
+ const total=progressHistory.length+writingHistory.length+communicationHistory.length;
+ const scores=allTrainingScores();
+ const avgScore=scores.length?Math.round(scores.reduce(function(a,b){return a+b},0)/scores.length):null;
+ const best=scores.length?Math.max.apply(null,scores):null;
+ const totalEl=document.getElementById("homeTotalTraining");
+ const avgEl=document.getElementById("homeAverageScore");
+ const bestEl=document.getElementById("homeBestScore");
+ if(totalEl)totalEl.textContent=total;
+ if(avgEl)avgEl.textContent=avgScore===null?"-":avgScore+"%";
+ if(bestEl)bestEl.textContent=best===null?"-":best+"%";
+ const focus=document.getElementById("homeFocusText");
+ const note=document.getElementById("homeFocusNote");
+ const weakW=typeof weakestWritingSkill==="function"?weakestWritingSkill():null;
+ if(focus&&note){
+   if(communicationHistory.length<3){focus.textContent="Komunikasi";note.textContent="Coba satu latihan komunikasi efektif hari ini.";}
+   else if(weakW){focus.textContent=WRITING_SKILLS[weakW];note.textContent="Area ini bisa jadi fokus latihan berikutnya.";}
+   else{focus.textContent="Lanjut";note.textContent="Pilih latihan yang paling ingin kamu perkuat.";}
+ }
+}
+function goToTraining(){
+ showHome();
+ setTimeout(function(){
+   const el=document.getElementById("trainingChoices");
+   if(el)el.scrollIntoView({behavior:"smooth",block:"start"});
+ },0);
+}
+function goToProgress(){
+ showHome();
+ setTimeout(function(){
+   const el=document.getElementById("homepageProgress");
+   if(el)el.scrollIntoView({behavior:"smooth",block:"start"});
+ },0);
+}
+
 function showHome(){
  clearStoryTimer();
+ const shell=document.getElementById("appShell");
+ if(shell)shell.classList.add("home-view");
  const timer=document.getElementById("timerStat");
  timer.classList.add("hidden");
  currentStory=null;
@@ -2491,6 +2541,7 @@ function showHome(){
  document.getElementById("homeAfterBtn").classList.add("hidden");
  updateStats();
  document.getElementById("typeStat").textContent="Mode: Home";
+ updateHomepageJourney();
  window.scrollTo({top:0,behavior:"smooth"});
 }
 showHome();
