@@ -1933,6 +1933,44 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
 #vocab-hard.active{background:#bb667f!important;color:#fff!important;border-color:#bb667f!important}
 .vocab-context{width:min(650px,100%);margin:5px auto 15px;padding:11px 14px;border-radius:12px;background:rgba(255,255,255,.7);border:1px solid #e4dfea;color:#676176;font-family:Georgia,"Times New Roman",serif;font-size:16px;font-style:italic;line-height:1.5}
 @media(max-width:650px){.vocab-difficulty{grid-template-columns:1fr 1fr 1fr!important}.vocab-difficulty .level-btn{padding:11px 7px!important}.vocab-difficulty .level-btn small{font-size:9px}}
+
+/* Image memory training */
+.memory-mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0 18px}
+.memory-mode-btn{min-height:118px;text-align:left;padding:17px;border-radius:17px;background:#fff;border:1px solid #e1dfea;color:#554f65;box-shadow:0 7px 18px rgba(56,48,84,.035);display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:12px;align-items:center}
+.memory-mode-btn.active{border-color:#8eaed2;background:linear-gradient(145deg,#eff6ff,#f7f3ff);box-shadow:0 9px 24px rgba(98,126,171,.1)}
+.memory-mode-btn strong{font-size:15px}
+.memory-mode-btn small{grid-column:2;color:#817b8d;font-size:12px;line-height:1.45}
+.memory-mode-icon{grid-row:1 / span 2;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:#eeeafb;color:#655d9d;font-family:Georgia,serif;font-size:18px}
+.image-memory-shell{width:min(940px,100%);margin:18px auto 0}
+.image-memory-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin:15px 0}
+.image-memory-head h2,.image-quiz-heading h2{margin:5px 0 6px;font-family:Georgia,"Times New Roman",serif;font-weight:500;color:#35304d}
+.image-memory-head p,.image-quiz-heading p{margin:0;color:#777181;line-height:1.55}
+.image-memory-timer{min-width:68px;text-align:center;padding:11px 14px;border-radius:999px;background:#f8e8ee;color:#a45d76;font-weight:900;font-size:17px;border:1px solid #edd0db}
+.image-memory-frame{position:relative;overflow:hidden;border-radius:22px;border:1px solid #ded9e5;background:#f4f1f5;min-height:390px;display:grid;place-items:center;box-shadow:0 18px 40px rgba(55,48,78,.07)}
+.image-memory-frame img{display:block;width:100%;max-height:620px;object-fit:contain;background:#eeeae8}
+.image-memory-frame img.loading{opacity:.18}
+.image-memory-loading{position:absolute;inset:0;display:grid;place-items:center;color:#777181;font-weight:700;background:rgba(248,246,244,.72)}
+.image-memory-credit{margin-top:7px;font-size:11px;color:#918a97;text-align:right}
+.image-memory-credit a{color:#746b9a;text-decoration:none}
+.image-quiz-heading{margin:14px 0 18px}
+.image-memory-question{padding:17px;border-radius:16px;border:1px solid #e2dee7;background:#fffdfa;margin:11px 0}
+.image-memory-question-title{font-weight:800;color:#504a62;line-height:1.45;margin-bottom:11px}
+.image-memory-options{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.image-memory-option{display:flex;align-items:center;gap:10px;text-align:left;background:#fff;border:1px solid #e1ddea;color:#5a5466;padding:11px 12px;border-radius:12px;font-size:13px}
+.image-memory-option.selected{background:#f0edff;border-color:#9f95cc;color:#554a92}
+.image-memory-option.correct{background:#eaf3ff;border-color:#82a9d0;color:#3c658c}
+.image-memory-option.wrong{background:#fae9ef;border-color:#d69aae;color:#905268}
+.image-option-dot{width:10px;height:10px;border-radius:50%;background:#d8d2df;flex:0 0 auto}
+.image-memory-option.selected .image-option-dot{background:#8176b9}
+.image-memory-option.correct .image-option-dot{background:#6593c3}
+.image-memory-option.wrong .image-option-dot{background:#bc6d8a}
+@media(max-width:650px){
+ .memory-mode-grid,.image-memory-options{grid-template-columns:1fr}
+ .image-memory-frame{min-height:250px}
+ .image-memory-head{align-items:start}
+ .image-memory-timer{min-width:60px;padding:9px 11px}
+}
+
 </style>
 </head>
 <body>
@@ -2056,9 +2094,25 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
     <button class="back-link" onclick="showHome()">← Kembali ke pilihan latihan</button>
     <div class="home-card">
       <h2>Latihan Ingatan</h2>
-      <p>Pilih tingkat kesulitan, lalu mulai satu ronde saat kamu siap.</p>
-      <div class="home-tip">Pada level Susah, timer baru mulai setelah tombol Mulai Latihan ditekan.</div>
+      <p>Latih ingatan lewat cerita atau lewat gambar realistis. Pilih jenis latihan dan tingkat kesulitan.</p>
+      <div class="home-tip" id="memoryModeHint">Cerita & Detail melatih fakta, urutan, perubahan rencana, angka, dan detail kecil.</div>
     </div>
+
+    <div class="progress-title">Jenis latihan</div>
+    <div class="memory-mode-grid">
+      <button class="memory-mode-btn active" id="memory-mode-text" onclick="setMemoryMode('text')">
+        <span class="memory-mode-icon">Aa</span>
+        <strong>Cerita & Detail</strong>
+        <small>Baca cerita, lalu ingat fakta pentingnya.</small>
+      </button>
+      <button class="memory-mode-btn" id="memory-mode-image" onclick="setMemoryMode('image')">
+        <span class="memory-mode-icon">▧</span>
+        <strong>Ingat dari Gambar</strong>
+        <small>Lihat foto nyata, lalu jawab detail visualnya.</small>
+      </button>
+    </div>
+
+    <div class="progress-title">Tingkat kesulitan</div>
     <div class="difficulty">
       <button class="level-btn" id="level-easy" onclick="setDifficulty('easy')"><span>Mudah</span><small>Mulai santai</small></button>
       <button class="level-btn" id="level-medium" onclick="setDifficulty('medium')"><span>Sedang</span><small>Butuh fokus</small></button>
@@ -2066,9 +2120,10 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
     </div>
     <div class="level-desc" id="levelDesc"></div>
     <div class="actions home-start">
-      <button class="primary" onclick="beginSession()">Mulai Latihan Ingatan</button>
+      <button class="primary" onclick="beginMemorySelected()">Mulai Latihan Ingatan</button>
       <button class="secondary" onclick="toggleProgress()">Lihat Progress Saya</button>
     </div>
+    <div id="progressPanel" class="progress-panel hidden"></div>
   </div>
 
   <div id="writingHome" class="hidden">
@@ -2229,6 +2284,44 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
   </div>
 </div>
 
+<div id="imageMemorySection" class="hidden image-memory-shell">
+  <button class="back-link" onclick="openMemoryHome()">← Kembali ke menu Latihan Ingatan</button>
+  <div class="image-memory-head">
+    <div>
+      <span class="section-kicker">INGAT DARI GAMBAR</span>
+      <h2 id="imageMemoryTitle">Amati gambar ini</h2>
+      <p id="imageMemoryInstruction">Perhatikan benda, warna, jumlah, dan posisi. Gambar akan hilang saat waktunya habis.</p>
+    </div>
+    <div class="image-memory-timer" id="imageMemoryTimer">20s</div>
+  </div>
+  <div class="image-memory-frame">
+    <img id="imageMemoryPhoto" alt="Foto latihan ingatan" />
+    <div id="imageMemoryLoading" class="image-memory-loading">Memuat foto...</div>
+  </div>
+  <div class="image-memory-credit">Foto: <a id="imageMemorySource" href="#" target="_blank" rel="noopener">Wikimedia Commons</a></div>
+  <div class="actions">
+    <button class="primary" id="imageReadyBtn" onclick="startImageMemoryQuiz()">Saya Sudah Ingat</button>
+    <button class="secondary" onclick="nextImageMemoryScene()">Ganti Gambar</button>
+    <button class="rest-btn" onclick="showHome()">Istirahat / Home</button>
+  </div>
+</div>
+
+<div id="imageMemoryQuiz" class="hidden image-memory-shell">
+  <button class="back-link" onclick="openMemoryHome()">← Kembali ke menu Latihan Ingatan</button>
+  <div class="image-quiz-heading">
+    <span class="section-kicker">TANPA MELIHAT GAMBAR</span>
+    <h2>Seberapa banyak yang kamu ingat?</h2>
+    <p>Pilih satu jawaban untuk setiap pertanyaan.</p>
+  </div>
+  <div id="imageMemoryQuestions"></div>
+  <div id="imageMemoryResult" class="result hidden"></div>
+  <div class="actions">
+    <button class="primary" id="imageMemoryCheckBtn" onclick="checkImageMemoryAnswers()">Cek Jawaban</button>
+    <button class="secondary hidden" id="imageMemoryNextBtn" onclick="beginImageMemory()">Gambar Baru</button>
+    <button class="rest-btn" onclick="showHome()">Istirahat / Home</button>
+  </div>
+</div>
+
 <div id="storySection" class="hidden">
   <div id="storyMeta" class="meta"></div>
   <div id="story" class="story"></div>
@@ -2254,6 +2347,7 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
 </div>
 </div>
 <script src="vocabulary-data.js"></script>
+<script src="image-memory-data.js"></script>
 <script>
 const D={
 places:["Grand Indonesia","Plaza Indonesia","Senayan City","Kota Kasablanka","Central Park","Pondok Indah Mall","Blok M","PIK"],
@@ -2345,7 +2439,8 @@ const MEMORY_CATEGORIES={
  numbers:{label:"Angka & Waktu"},
  ownership:{label:"Kepemilikan & Titipan"},
  location:{label:"Lokasi & Navigasi"},
- detail:{label:"Detail Objek"}
+ detail:{label:"Detail Objek"},
+ visual:{label:"Ingatan Visual"}
 };
 function memoryCategory(text){
  const z=norm(text);
@@ -2844,10 +2939,18 @@ function updateWritingHomeUI(){
 }
 function openMemoryHome(){
  const shell=document.getElementById("appShell");if(shell)shell.classList.remove("home-view");
+ clearStoryTimer();
+ clearImageMemoryTimer();
+ ["storySection","quizSection","writingSection","communicationSection","vocabularySection","imageMemorySection","imageMemoryQuiz"].forEach(function(id){
+   const el=document.getElementById(id);if(el)el.classList.add("hidden");
+ });
+ document.getElementById("homeSection").classList.remove("hidden");
  document.getElementById("mainHome").classList.add("hidden");
  document.getElementById("writingHome").classList.add("hidden");
  document.getElementById("communicationHome").classList.add("hidden");
+ document.getElementById("vocabularyHome").classList.add("hidden");
  document.getElementById("memoryHome").classList.remove("hidden");
+ updateMemoryModeUI();
  updateStats();
 }
 function openWritingHome(){
@@ -3667,18 +3770,230 @@ function toggleProgress(){
  p.classList.toggle("hidden");
  if(!p.classList.contains("hidden"))renderProgress();
 }
+let memoryMode=localStorage.getItem("memoryMode")||"text";
+let imageMemoryTimer=null;
+let imageMemoryRemaining=0;
+let currentImageScene=null;
+let currentImageQuestions=[];
+let imageMemorySelections={};
+let recentImageScenes=JSON.parse(localStorage.getItem("recentImageScenes")||"[]");
+
+const IMAGE_MEMORY_LEVELS={
+ easy:{time:20,count:4,desc:"Foto terlihat 20 detik · 4 pertanyaan visual · fokus pada benda dan detail utama."},
+ medium:{time:15,count:5,desc:"Foto terlihat 15 detik · 5 pertanyaan visual · lebih banyak detail yang perlu diingat."},
+ hard:{time:10,count:6,desc:"Foto terlihat 10 detik · 6 pertanyaan visual · detail lebih rapat dan waktu lebih singkat."}
+};
+
+function setMemoryMode(mode){
+ memoryMode=mode;
+ localStorage.setItem("memoryMode",mode);
+ updateMemoryModeUI();
+ updateDifficultyUI();
+}
+function updateMemoryModeUI(){
+ const textBtn=document.getElementById("memory-mode-text");
+ const imageBtn=document.getElementById("memory-mode-image");
+ if(textBtn)textBtn.classList.toggle("active",memoryMode==="text");
+ if(imageBtn)imageBtn.classList.toggle("active",memoryMode==="image");
+ const hint=document.getElementById("memoryModeHint");
+ if(hint)hint.textContent=memoryMode==="image"
+   ?"Ingat dari Gambar memakai foto realistis. Perhatikan objek, warna, jumlah, dan detail kecil sebelum fotonya hilang."
+   :"Cerita & Detail melatih fakta, urutan, perubahan rencana, angka, dan detail kecil.";
+}
+function beginMemorySelected(){
+ if(memoryMode==="image")beginImageMemory();
+ else beginSession();
+}
+function commonsImageUrl(file){
+ return "https://commons.wikimedia.org/wiki/Special:Redirect/file/"+encodeURIComponent(file)+"?width=1400";
+}
+function chooseImageMemoryScene(){
+ let pool=IMAGE_MEMORY_SCENES.filter(function(x){return !recentImageScenes.includes(x.id)});
+ if(!pool.length)pool=IMAGE_MEMORY_SCENES.slice();
+ const scene=pick(pool);
+ recentImageScenes.unshift(scene.id);
+ recentImageScenes=recentImageScenes.slice(0,Math.min(5,IMAGE_MEMORY_SCENES.length-1));
+ localStorage.setItem("recentImageScenes",JSON.stringify(recentImageScenes));
+ return scene;
+}
+function shuffledCopy(arr){
+ const a=arr.slice();
+ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const t=a[i];a[i]=a[j];a[j]=t}
+ return a;
+}
+function beginImageMemory(){
+ clearStoryTimer();
+ clearImageMemoryTimer();
+ currentStory=null;
+ currentImageScene=chooseImageMemoryScene();
+ const cfg=IMAGE_MEMORY_LEVELS[difficulty];
+ currentImageQuestions=shuffledCopy(currentImageScene.questions).slice(0,Math.min(cfg.count,currentImageScene.questions.length));
+ imageMemorySelections={};
+
+ document.getElementById("homeSection").classList.add("hidden");
+ ["storySection","quizSection","writingSection","communicationSection","vocabularySection","imageMemoryQuiz"].forEach(function(id){
+   const el=document.getElementById(id);if(el)el.classList.add("hidden");
+ });
+ document.getElementById("imageMemorySection").classList.remove("hidden");
+
+ const img=document.getElementById("imageMemoryPhoto");
+ const loading=document.getElementById("imageMemoryLoading");
+ const ready=document.getElementById("imageReadyBtn");
+ document.getElementById("imageMemoryTitle").textContent=currentImageScene.title+" · Level "+LEVELS[difficulty].label;
+ document.getElementById("imageMemorySource").href=currentImageScene.source;
+ document.getElementById("imageMemoryTimer").textContent=cfg.time+"s";
+ loading.textContent="Memuat foto...";
+ loading.classList.remove("hidden");
+ img.classList.add("loading");
+ ready.disabled=true;
+
+ img.onload=function(){
+   loading.classList.add("hidden");
+   img.classList.remove("loading");
+   ready.disabled=false;
+   startImageMemoryTimer();
+ };
+ img.onerror=function(){
+   clearImageMemoryTimer();
+   loading.textContent="Foto gagal dimuat. Coba ganti gambar.";
+   loading.classList.remove("hidden");
+   ready.disabled=true;
+ };
+ img.src=commonsImageUrl(currentImageScene.file);
+ document.getElementById("typeStat").textContent="Mode: Ingatan Visual · "+LEVELS[difficulty].label;
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function nextImageMemoryScene(){
+ beginImageMemory();
+}
+function clearImageMemoryTimer(){
+ if(imageMemoryTimer){clearInterval(imageMemoryTimer);imageMemoryTimer=null}
+}
+function startImageMemoryTimer(){
+ clearImageMemoryTimer();
+ imageMemoryRemaining=IMAGE_MEMORY_LEVELS[difficulty].time;
+ const el=document.getElementById("imageMemoryTimer");
+ el.textContent=imageMemoryRemaining+"s";
+ imageMemoryTimer=setInterval(function(){
+   imageMemoryRemaining--;
+   el.textContent=imageMemoryRemaining+"s";
+   if(imageMemoryRemaining<=0){
+     clearImageMemoryTimer();
+     startImageMemoryQuiz();
+   }
+ },1000);
+}
+function startImageMemoryQuiz(){
+ if(!currentImageScene)return;
+ clearImageMemoryTimer();
+ document.getElementById("imageMemorySection").classList.add("hidden");
+ document.getElementById("imageMemoryQuiz").classList.remove("hidden");
+ document.getElementById("imageMemoryResult").classList.add("hidden");
+ document.getElementById("imageMemoryNextBtn").classList.add("hidden");
+ document.getElementById("imageMemoryCheckBtn").disabled=false;
+
+ const wrap=document.getElementById("imageMemoryQuestions");
+ wrap.innerHTML="";
+ const letters=["A","B","C","D"];
+ currentImageQuestions.forEach(function(q,qi){
+   const block=document.createElement("div");
+   block.className="image-memory-question";
+   const title=document.createElement("div");
+   title.className="image-memory-question-title";
+   title.textContent=(qi+1)+". "+q.q;
+   block.appendChild(title);
+
+   const options=document.createElement("div");
+   options.className="image-memory-options";
+   shuffledCopy(q.options).forEach(function(opt){
+     const btn=document.createElement("button");
+     btn.className="image-memory-option";
+     btn.type="button";
+     btn.innerHTML='<span class="image-option-dot"></span><span>'+esc(opt)+'</span>';
+     btn.onclick=function(){
+       if(document.getElementById("imageMemoryCheckBtn").disabled)return;
+       imageMemorySelections[qi]=opt;
+       options.querySelectorAll(".image-memory-option").forEach(function(b){b.classList.remove("selected")});
+       btn.classList.add("selected");
+     };
+     options.appendChild(btn);
+   });
+   block.appendChild(options);
+   wrap.appendChild(block);
+ });
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function checkImageMemoryAnswers(){
+ let correct=0;
+ let answerLog=[];
+ const blocks=document.querySelectorAll("#imageMemoryQuestions .image-memory-question");
+ currentImageQuestions.forEach(function(q,i){
+   const selected=imageMemorySelections[i]||"";
+   const ok=selected===q.answer;
+   if(ok)correct++;
+   answerLog.push({question:q.q,user:selected,correct:q.answer,score:ok?1:0,label:ok?"Benar":"Salah",category:"visual"});
+   const buttons=blocks[i].querySelectorAll(".image-memory-option");
+   buttons.forEach(function(btn){
+     const text=btn.querySelector("span:last-child").textContent;
+     btn.disabled=true;
+     if(text===q.answer)btn.classList.add("correct");
+     if(text===selected&&!ok)btn.classList.add("wrong");
+   });
+ });
+ const max=currentImageQuestions.length;
+ const pct=Math.round(correct/max*100);
+ completed++;
+ localStorage.setItem("completedMemoryStories",String(completed));
+ if(pct>(bestScores[difficulty]||0)){
+   bestScores[difficulty]=pct;
+   localStorage.setItem("bestMemoryScores",JSON.stringify(bestScores));
+ }
+ const previous=sessionsFor(difficulty);
+ const prevPct=previous.length?previous[previous.length-1].pct:null;
+ saveProgressSession({
+   time:Date.now(),
+   difficulty:difficulty,
+   type:"Ingatan Visual · "+currentImageScene.title,
+   pct:pct,
+   score:correct,
+   max:max,
+   correct:correct,
+   partial:0,
+   wrong:max-correct,
+   delta:prevPct===null?null:pct-prevPct,
+   answers:answerLog
+ });
+ updateStats();
+ updateHomepageJourney();
+
+ const result=document.getElementById("imageMemoryResult");
+ result.innerHTML='<div class="score-big">Skor: '+correct+'/'+max+' ('+pct+'%)</div>'+
+   '<div class="result-note">'+(pct>=90?"Tajam. Detail visualnya tertangkap dengan baik.":pct>=70?"Bagus. Ada beberapa detail visual yang masih lolos.":pct>=50?"Lumayan. Coba fokus pada warna, jumlah, dan benda kecil.":"Coba lagi dengan memindai gambar dari kiri ke kanan sebelum menghafal.")+'</div>'+
+   '<div>Benar: '+correct+' · Salah: '+(max-correct)+'</div>';
+ result.classList.remove("hidden");
+ document.getElementById("imageMemoryCheckBtn").disabled=true;
+ document.getElementById("imageMemoryNextBtn").classList.remove("hidden");
+ result.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
 const LEVELS={
  easy:{label:"Mudah",desc:"8 soal. Mayoritas fakta langsung dan satu-detail. Cerita boleh dilihat ulang 1x saat menjawab. Tanpa batas waktu.",time:0,peek:true},
  medium:{label:"Sedang",desc:"10 soal. Campuran fakta, angka, kepemilikan, urutan, dan beberapa pilihan awal vs akhir. Cerita tidak bisa dilihat ulang.",time:0,peek:false},
  hard:{label:"Susah",desc:"12 soal. Dominan detail mirip, perubahan rencana, pembatalan, dan relasi antar-fakta. Waktu membaca 45 detik, tanpa lihat ulang.",time:45,peek:false}
 };
 function updateDifficultyUI(){
- ["easy","medium","hard"].forEach(function(x){document.getElementById("level-"+x).classList.toggle("active",x===difficulty)});
- document.getElementById("levelDesc").textContent=LEVELS[difficulty].desc;
+ ["easy","medium","hard"].forEach(function(x){
+   const el=document.getElementById("level-"+x);
+   if(el)el.classList.toggle("active",x===difficulty);
+ });
+ const desc=document.getElementById("levelDesc");
+ if(desc)desc.textContent=memoryMode==="image"?IMAGE_MEMORY_LEVELS[difficulty].desc:LEVELS[difficulty].desc;
  const p=document.getElementById("peekBtn");
- p.style.display=LEVELS[difficulty].peek?"":"none";
- p.disabled=false;
- p.textContent="Lihat Cerita (1x)";
+ if(p){
+   p.style.display=LEVELS[difficulty].peek?"":"none";
+   p.disabled=false;
+   p.textContent="Lihat Cerita (1x)";
+ }
 }
 function setDifficulty(x){
  clearStoryTimer();
@@ -4194,6 +4509,9 @@ function showHome(){
  document.getElementById("quizSection").classList.add("hidden");
  document.getElementById("writingSection").classList.add("hidden");
  document.getElementById("vocabularySection").classList.add("hidden");
+ document.getElementById("imageMemorySection").classList.add("hidden");
+ document.getElementById("imageMemoryQuiz").classList.add("hidden");
+ clearImageMemoryTimer();
  document.getElementById("homeSection").classList.remove("hidden");
  document.getElementById("mainHome").classList.remove("hidden");
  document.getElementById("memoryHome").classList.add("hidden");
