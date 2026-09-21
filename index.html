@@ -1950,6 +1950,7 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
 .image-memory-frame img{display:block;width:100%;max-height:620px;object-fit:contain;background:#eeeae8}
 .image-memory-frame img.loading{opacity:.18}
 .image-memory-loading{position:absolute;inset:0;display:grid;place-items:center;color:#777181;font-weight:700;background:rgba(248,246,244,.72)}
+.image-memory-loading.hidden{display:none!important}
 .image-memory-credit{margin-top:7px;font-size:11px;color:#918a97;text-align:right}
 .image-memory-credit a{color:#746b9a;text-decoration:none}
 .image-quiz-heading{margin:14px 0 18px}
@@ -2941,6 +2942,7 @@ function openMemoryHome(){
  const shell=document.getElementById("appShell");if(shell)shell.classList.remove("home-view");
  clearStoryTimer();
  clearImageMemoryTimer();
+ cancelPendingImageMemoryLoad();
  ["storySection","quizSection","writingSection","communicationSection","vocabularySection","imageMemorySection","imageMemoryQuiz"].forEach(function(id){
    const el=document.getElementById(id);if(el)el.classList.add("hidden");
  });
@@ -3773,6 +3775,7 @@ function toggleProgress(){
 let memoryMode=localStorage.getItem("memoryMode")||"text";
 let imageMemoryTimer=null;
 let imageMemoryRemaining=0;
+let imageMemoryLoadToken=0;
 let currentImageScene=null;
 let currentImageQuestions=[];
 let imageMemorySelections={};
@@ -3839,26 +3842,44 @@ function beginImageMemory(){
  const img=document.getElementById("imageMemoryPhoto");
  const loading=document.getElementById("imageMemoryLoading");
  const ready=document.getElementById("imageReadyBtn");
+ const timerEl=document.getElementById("imageMemoryTimer");
+ const loadToken=++imageMemoryLoadToken;
+
  document.getElementById("imageMemoryTitle").textContent=currentImageScene.title+" · Level "+LEVELS[difficulty].label;
  document.getElementById("imageMemorySource").href=currentImageScene.source;
- document.getElementById("imageMemoryTimer").textContent=cfg.time+"s";
+ timerEl.textContent="...";
  loading.textContent="Memuat foto...";
  loading.classList.remove("hidden");
  img.classList.add("loading");
  ready.disabled=true;
 
- img.onload=function(){
-   loading.classList.add("hidden");
-   img.classList.remove("loading");
-   ready.disabled=false;
-   startImageMemoryTimer();
+ img.onload=async function(){
+   if(loadToken!==imageMemoryLoadToken)return;
+   try{
+     if(img.decode)await img.decode();
+   }catch(e){}
+   if(loadToken!==imageMemoryLoadToken)return;
+
+   requestAnimationFrame(function(){
+     requestAnimationFrame(function(){
+       if(loadToken!==imageMemoryLoadToken)return;
+       loading.classList.add("hidden");
+       img.classList.remove("loading");
+       ready.disabled=false;
+       startImageMemoryTimer();
+     });
+   });
  };
  img.onerror=function(){
+   if(loadToken!==imageMemoryLoadToken)return;
    clearImageMemoryTimer();
+   timerEl.textContent="—";
    loading.textContent="Foto gagal dimuat. Coba ganti gambar.";
    loading.classList.remove("hidden");
+   img.classList.add("loading");
    ready.disabled=true;
  };
+ img.removeAttribute("src");
  img.src=commonsImageUrl(currentImageScene.file);
  document.getElementById("typeStat").textContent="Mode: Ingatan Visual · "+LEVELS[difficulty].label;
  window.scrollTo({top:0,behavior:"smooth"});
@@ -3868,6 +3889,11 @@ function nextImageMemoryScene(){
 }
 function clearImageMemoryTimer(){
  if(imageMemoryTimer){clearInterval(imageMemoryTimer);imageMemoryTimer=null}
+}
+function cancelPendingImageMemoryLoad(){
+ imageMemoryLoadToken++;
+ const img=document.getElementById("imageMemoryPhoto");
+ if(img){img.onload=null;img.onerror=null}
 }
 function startImageMemoryTimer(){
  clearImageMemoryTimer();
@@ -4512,6 +4538,7 @@ function showHome(){
  document.getElementById("imageMemorySection").classList.add("hidden");
  document.getElementById("imageMemoryQuiz").classList.add("hidden");
  clearImageMemoryTimer();
+ cancelPendingImageMemoryLoad();
  document.getElementById("homeSection").classList.remove("hidden");
  document.getElementById("mainHome").classList.remove("hidden");
  document.getElementById("memoryHome").classList.add("hidden");
