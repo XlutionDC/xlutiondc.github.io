@@ -1992,6 +1992,10 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
 @media(max-width:650px){
  .mode-grid{grid-template-columns:1fr}
 }
+
+.logic-expert-btn{background:linear-gradient(135deg,#282238,#4a365e)!important;color:#fff!important;border-color:#554268!important}
+.logic-expert-btn.active{box-shadow:0 8px 20px rgba(55,38,75,.28)!important;transform:translateY(-1px)}
+.logic-home-card .home-tip{line-height:1.55}
 </style>
 </head>
 <body>
@@ -2246,6 +2250,7 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
       <button class="level-btn" id="logic-easy" onclick="setLogicDifficulty('easy')"><span>Mudah</span><small>Dasar yang solid</small></button>
       <button class="level-btn" id="logic-medium" onclick="setLogicDifficulty('medium')"><span>Sedang</span><small>Beberapa langkah</small></button>
       <button class="level-btn" id="logic-hard" onclick="setLogicDifficulty('hard')"><span>Susah</span><small>Multi-step reasoning</small></button>
+      <button class="level-btn logic-expert-btn" id="logic-expert" onclick="setLogicDifficulty('expert')"><span>Expert</span><small>Brutal reasoning</small></button>
     </div>
     <div class="level-desc" id="logicLevelDesc"></div>
     <div class="actions">
@@ -3827,7 +3832,7 @@ function renderProgress(){
  const panel=document.getElementById("progressPanel");
  const labels={easy:"Mudah",medium:"Sedang",hard:"Susah"};
  let cards="";
- ["easy","medium","hard"].forEach(function(level){
+ ["easy","medium","hard","expert"].forEach(function(level){
    const x=levelSummary(level);
    const trend=x.trend===null?"Belum cukup data":x.trend>0?"Naik "+x.trend+" poin":x.trend===0?"Stabil":"Turun "+Math.abs(x.trend)+" poin";
    cards+='<div class="progress-card"><span>'+labels[level]+'</span><strong>'+(x.count?x.recent+"%":"-")+'</strong><div>Rata-rata 5 sesi terakhir</div><div>Best: '+(x.count?x.best+"%":"-")+'</div><div class="'+(x.trend>0?"trend-up":"")+'">'+trend+'</div></div>';
@@ -4614,10 +4619,11 @@ function openLogicHome(){
 function chooseLogicRound(){
  const key="logicRecent_"+logicDifficulty;
  let recent=[];try{recent=JSON.parse(localStorage.getItem(key)||"[]")}catch(e){}
+ const targetCount=logicDifficulty==="expert"?10:8;
  let pool=LOGIC_BANK[logicDifficulty].filter(function(q){return !recent.includes(q.id)});
- if(pool.length<8)pool=LOGIC_BANK[logicDifficulty].slice();
- const chosen=shuffledCopy(pool).slice(0,Math.min(8,pool.length));
- localStorage.setItem(key,JSON.stringify(recent.concat(chosen.map(function(q){return q.id})).slice(-12)));
+ if(pool.length<targetCount)pool=LOGIC_BANK[logicDifficulty].slice();
+ const chosen=shuffledCopy(pool).slice(0,Math.min(targetCount,pool.length));
+ localStorage.setItem(key,JSON.stringify(recent.concat(chosen.map(function(q){return q.id})).slice(-(logicDifficulty==="expert"?16:12))));
  return chosen;
 }
 function beginLogicSession(){
