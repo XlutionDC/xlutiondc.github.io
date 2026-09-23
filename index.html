@@ -1925,14 +1925,14 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
 .vocab-difficulty{margin-top:10px}
 .vocab-difficulty .level-btn{display:grid;gap:3px}
 .vocab-difficulty .level-btn small{font-size:10px;font-weight:650;opacity:.78}
-#vocab-easy{background:#eaf3ff!important;color:#4776a7!important;border-color:#cfdef0!important}
-#vocab-easy.active{background:#6597cc!important;color:#fff!important;border-color:#6597cc!important}
-#vocab-medium{background:#fff0df!important;color:#976126!important;border-color:#efd5b6!important}
-#vocab-medium.active{background:#d8944e!important;color:#fff!important;border-color:#d8944e!important}
-#vocab-hard{background:#f9e8ee!important;color:#a2556d!important;border-color:#ebcad5!important}
-#vocab-hard.active{background:#bb667f!important;color:#fff!important;border-color:#bb667f!important}
+#vocab-easy{background:#e9f4ec!important;color:#35644c!important;border-color:#cfe2d4!important}
+#vocab-easy.active{background:#4f8165!important;color:#fff!important;border-color:#4f8165!important;box-shadow:0 9px 22px rgba(79,129,101,.18)!important}
+#vocab-medium{background:#fff1df!important;color:#986524!important;border-color:#efd7b6!important}
+#vocab-medium.active{background:#d59443!important;color:#fff!important;border-color:#d59443!important;box-shadow:0 9px 22px rgba(213,148,67,.18)!important}
+#vocab-hard{background:#fbe9e6!important;color:#a9574d!important;border-color:#efcbc5!important}
+#vocab-hard.active{background:#bc685d!important;color:#fff!important;border-color:#bc685d!important;box-shadow:0 9px 22px rgba(188,104,93,.18)!important}
 .vocab-context{width:min(650px,100%);margin:5px auto 15px;padding:11px 14px;border-radius:12px;background:rgba(255,255,255,.7);border:1px solid #e4dfea;color:#676176;font-family:Georgia,"Times New Roman",serif;font-size:16px;font-style:italic;line-height:1.5}
-@media(max-width:650px){.vocab-difficulty{grid-template-columns:1fr 1fr 1fr!important}.vocab-difficulty .level-btn{padding:11px 7px!important}.vocab-difficulty .level-btn small{font-size:9px}}
+@media(max-width:650px){.vocab-difficulty .level-btn{padding:10px 8px!important}.vocab-difficulty .level-btn small{font-size:9px}}
 
 /* Image memory training */
 .memory-mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0 18px}
@@ -1991,10 +1991,29 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
 }
 @media(max-width:650px){
  .mode-grid{grid-template-columns:1fr}
+ .difficulty{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+ .difficulty .level-btn{min-width:0;padding:10px 8px!important;align-items:center;text-align:center}
+ .difficulty .level-btn span{font-size:13px}
+ .difficulty .level-btn small{font-size:9px;line-height:1.25}
 }
 
-.logic-expert-btn{background:linear-gradient(135deg,#282238,#4a365e)!important;color:#fff!important;border-color:#554268!important}
-.logic-expert-btn.active{box-shadow:0 8px 20px rgba(55,38,75,.28)!important;transform:translateY(-1px)}
+#logicHome{width:min(920px,100%);margin:30px auto 0}
+#logicHome>.home-card{
+  position:relative;overflow:hidden;padding:28px 30px;border-radius:22px;
+  background:linear-gradient(145deg,#f8f3ff,#fff8ef);
+  border:1px solid #e7ddea;border-top:4px solid #8a6fb0;
+  box-shadow:0 18px 38px rgba(76,59,94,.07)
+}
+#logicHome>.home-card:after{
+  content:"";position:absolute;right:-42px;top:-48px;width:160px;height:160px;border-radius:50%;
+  background:rgba(132,102,169,.08)
+}
+#logic-easy{background:#e9f4ec!important;color:#35644c!important;border-color:#cfe2d4!important}
+#logic-easy.active{background:#4f8165!important;color:#fff!important;border-color:#4f8165!important;box-shadow:0 9px 22px rgba(79,129,101,.18)!important}
+#logic-medium{background:#fff1df!important;color:#986524!important;border-color:#efd7b6!important}
+#logic-medium.active{background:#d59443!important;color:#fff!important;border-color:#d59443!important;box-shadow:0 9px 22px rgba(213,148,67,.18)!important}
+#logic-hard{background:#fbe9e6!important;color:#a9574d!important;border-color:#efcbc5!important}
+#logic-hard.active{background:#bc685d!important;color:#fff!important;border-color:#bc685d!important;box-shadow:0 9px 22px rgba(188,104,93,.18)!important}
 .logic-home-card .home-tip{line-height:1.55}
 </style>
 </head>
@@ -2247,10 +2266,9 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
     </div>
     <div class="progress-title">Tingkat kesulitan</div>
     <div class="difficulty">
-      <button class="level-btn" id="logic-easy" onclick="setLogicDifficulty('easy')"><span>Mudah</span><small>Dasar yang solid</small></button>
-      <button class="level-btn" id="logic-medium" onclick="setLogicDifficulty('medium')"><span>Sedang</span><small>Beberapa langkah</small></button>
-      <button class="level-btn" id="logic-hard" onclick="setLogicDifficulty('hard')"><span>Susah</span><small>Multi-step reasoning</small></button>
-      <button class="level-btn logic-expert-btn" id="logic-expert" onclick="setLogicDifficulty('expert')"><span>Expert</span><small>Brutal reasoning</small></button>
+      <button class="level-btn" id="logic-easy" onclick="setLogicDifficulty('easy')"><span>Mudah</span><small>Beberapa langkah</small></button>
+      <button class="level-btn" id="logic-medium" onclick="setLogicDifficulty('medium')"><span>Sedang</span><small>Multi-step reasoning</small></button>
+      <button class="level-btn" id="logic-hard" onclick="setLogicDifficulty('hard')"><span>Susah</span><small>Coret-coret disarankan</small></button>
     </div>
     <div class="level-desc" id="logicLevelDesc"></div>
     <div class="actions">
@@ -3832,7 +3850,7 @@ function renderProgress(){
  const panel=document.getElementById("progressPanel");
  const labels={easy:"Mudah",medium:"Sedang",hard:"Susah"};
  let cards="";
- ["easy","medium","hard","expert"].forEach(function(level){
+ ["easy","medium","hard"].forEach(function(level){
    const x=levelSummary(level);
    const trend=x.trend===null?"Belum cukup data":x.trend>0?"Naik "+x.trend+" poin":x.trend===0?"Stabil":"Turun "+Math.abs(x.trend)+" poin";
    cards+='<div class="progress-card"><span>'+labels[level]+'</span><strong>'+(x.count?x.recent+"%":"-")+'</strong><div>Rata-rata 5 sesi terakhir</div><div>Best: '+(x.count?x.best+"%":"-")+'</div><div class="'+(x.trend>0?"trend-up":"")+'">'+trend+'</div></div>';
@@ -4619,11 +4637,11 @@ function openLogicHome(){
 function chooseLogicRound(){
  const key="logicRecent_"+logicDifficulty;
  let recent=[];try{recent=JSON.parse(localStorage.getItem(key)||"[]")}catch(e){}
- const targetCount=logicDifficulty==="expert"?10:8;
+ const targetCount=logicDifficulty==="hard"?10:8;
  let pool=LOGIC_BANK[logicDifficulty].filter(function(q){return !recent.includes(q.id)});
  if(pool.length<targetCount)pool=LOGIC_BANK[logicDifficulty].slice();
  const chosen=shuffledCopy(pool).slice(0,Math.min(targetCount,pool.length));
- localStorage.setItem(key,JSON.stringify(recent.concat(chosen.map(function(q){return q.id})).slice(-(logicDifficulty==="expert"?16:12))));
+ localStorage.setItem(key,JSON.stringify(recent.concat(chosen.map(function(q){return q.id})).slice(-(logicDifficulty==="hard"?16:12))));
  return chosen;
 }
 function beginLogicSession(){
