@@ -1972,6 +1972,26 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
  .image-memory-timer{min-width:60px;padding:9px 11px}
 }
 
+
+.mode-grid{grid-template-columns:repeat(6,1fr)}
+.mode-card{grid-column:span 2}
+.mode-card:nth-child(4),.mode-card:nth-child(5){grid-column:span 3}
+.mode-card.logic{background:linear-gradient(145deg,#f6f1ff,#fff6ea);border-color:#e5d9f2}
+.mode-card.logic .mode-icon-badge{background:#eee5fa;color:#70558f}
+.logic-home-card{background:linear-gradient(135deg,#f7f2ff,#fff8ef)}
+.logic-question-card{margin:18px 0;padding:20px;border-radius:18px;background:linear-gradient(145deg,#fbf8ff,#fffaf3);border:1px solid #e5dfec}
+.logic-prompt{white-space:pre-line;font-size:16px;line-height:1.7;color:#4c4658;font-weight:650}
+.logic-options{margin-top:12px}
+.image-memory-answer{margin-top:10px}
+.image-memory-answer.visual-answer-correct{border-color:#82a9d0;background:#f2f8ff}
+.image-memory-answer.visual-answer-wrong{border-color:#d69aae;background:#fff5f8}
+@media(max-width:1050px){
+ .mode-grid{grid-template-columns:1fr 1fr}
+ .mode-card,.mode-card:nth-child(4),.mode-card:nth-child(5){grid-column:auto}
+}
+@media(max-width:650px){
+ .mode-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -2013,7 +2033,7 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
         <div>
           <span class="section-kicker">PILIH LATIHAN</span>
           <h2>Latihan untuk Versi Terbaik Kamu</h2>
-          <p>Empat fokus sederhana untuk melatih cara mengingat, berpikir, menyampaikan, dan memperkaya kosakata.</p>
+          <p>Lima fokus sederhana untuk melatih ingatan, cara berpikir, komunikasi, menulis, dan vocabulary.</p>
         </div>
       </div>
       <div class="mode-grid">
@@ -2063,6 +2083,18 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
           <div class="mode-focus">Fokus · Vocabulary yang Kepakai</div>
           <h3>Vocabulary Bahasa Inggris</h3>
           <p>Dari vocabulary sehari-hari sampai kata yang sering muncul di buku dan artikel—tetap berguna, bukan sekadar terdengar sulit.</p>
+          <span class="mode-link">Mulai latihan →</span>
+        </div>
+        <div class="mode-card logic" onclick="openLogicHome()">
+          <div class="mode-card-top">
+            <div class="mode-icon-badge" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 5h6v5H4zM14 5h6v5h-6zM9 14h6v5H9z"/><path d="M7 10v2h5m5-2v2h-5v2"/></svg>
+            </div>
+            <div class="mode-number">05</div>
+          </div>
+          <div class="mode-focus">Fokus · Logika & Penalaran</div>
+          <h3>Logika & Penalaran</h3>
+          <p>Latih deduksi, aturan, argumen, dan kemampuan membedakan apa yang pasti, mungkin, atau cuma asumsi.</p>
           <span class="mode-link">Mulai latihan →</span>
         </div>
       </div>
@@ -2190,7 +2222,7 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
     </div>
     <div class="level-desc" id="vocabularyLevelDesc"></div>
     <div class="vocab-overview-grid">
-      <div><strong>300</strong><span>vocabulary</span><small>100 kata di setiap level</small></div>
+      <div><strong>600</strong><span>vocabulary</span><small>200 kata di setiap level</small></div>
       <div><strong>10</strong><span>soal / ronde</span><small>acak tanpa cepat mengulang</small></div>
       <div><strong>4</strong><span>pilihan</span><small>mirip, tetapi tidak ambigu</small></div>
     </div>
@@ -2199,6 +2231,28 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
       <button class="secondary" onclick="toggleVocabularyProgress()">Lihat Progress Vocabulary</button>
     </div>
     <div id="vocabularyProgressPanel" class="progress-panel hidden"></div>
+  </div>
+
+  <div id="logicHome" class="hidden">
+    <button class="back-link" onclick="showHome()">← Kembali ke pilihan latihan</button>
+    <div class="home-card logic-home-card">
+      <div class="vocab-home-kicker">LATIHAN 05</div>
+      <h2>Logika & Penalaran</h2>
+      <p>Bukan tebak-tebakan IQ. Fokusnya multi-step reasoning, conditional logic, urutan, dan critical reasoning.</p>
+      <div class="home-tip"><b>Tujuan:</b> membedakan apa yang pasti benar, masih mungkin, tidak cukup informasi, atau hanya asumsi.</div>
+    </div>
+    <div class="progress-title">Tingkat kesulitan</div>
+    <div class="difficulty">
+      <button class="level-btn" id="logic-easy" onclick="setLogicDifficulty('easy')"><span>Mudah</span><small>Dasar yang solid</small></button>
+      <button class="level-btn" id="logic-medium" onclick="setLogicDifficulty('medium')"><span>Sedang</span><small>Beberapa langkah</small></button>
+      <button class="level-btn" id="logic-hard" onclick="setLogicDifficulty('hard')"><span>Susah</span><small>Multi-step reasoning</small></button>
+    </div>
+    <div class="level-desc" id="logicLevelDesc"></div>
+    <div class="actions">
+      <button class="primary" onclick="beginLogicSession()">Mulai Logika</button>
+      <button class="secondary" onclick="toggleLogicProgress()">Lihat Progress Logika</button>
+    </div>
+    <div id="logicProgressPanel" class="progress-panel hidden"></div>
   </div>
 </div>
 
@@ -2285,6 +2339,30 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
   </div>
 </div>
 
+<div id="logicSection" class="hidden writing-shell logic-shell">
+  <button class="back-link" onclick="openLogicHome()">← Kembali ke menu Logika</button>
+  <div class="vocab-round-head">
+    <div>
+      <span class="vocab-round-label">LOGIKA & PENALARAN</span>
+      <strong id="logicProgressText">Soal 1 dari 8</strong>
+    </div>
+    <div class="vocab-live-score" id="logicScoreText">Benar 0</div>
+  </div>
+  <div class="vocab-progress-track"><div id="logicProgressBar" class="vocab-progress-fill"></div></div>
+  <div class="logic-question-card">
+    <div class="prompt-label" id="logicSkillLabel">Deduksi</div>
+    <div id="logicPrompt" class="logic-prompt"></div>
+  </div>
+  <div id="logicOptions" class="vocab-options logic-options"></div>
+  <div id="logicFeedback" class="vocab-feedback hidden"></div>
+  <div id="logicResult" class="result hidden"></div>
+  <div class="actions">
+    <button id="logicNextBtn" class="primary hidden" onclick="nextLogicQuestion()">Soal Berikutnya</button>
+    <button id="logicRestartBtn" class="secondary hidden" onclick="beginLogicSession()">Ronde Baru</button>
+    <button class="rest-btn" onclick="showHome()">Istirahat / Home</button>
+  </div>
+</div>
+
 <div id="imageMemorySection" class="hidden image-memory-shell">
   <button class="back-link" onclick="openMemoryHome()">← Kembali ke menu Latihan Ingatan</button>
   <div class="image-memory-head">
@@ -2312,7 +2390,7 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
   <div class="image-quiz-heading">
     <span class="section-kicker">TANPA MELIHAT GAMBAR</span>
     <h2>Seberapa banyak yang kamu ingat?</h2>
-    <p>Pilih satu jawaban untuk setiap pertanyaan.</p>
+    <p>Jawab dari ingatan tanpa pilihan. Typo ringan dan jawaban setara tetap ditoleransi.</p>
   </div>
   <div id="imageMemoryQuestions"></div>
   <div id="imageMemoryResult" class="result hidden"></div>
@@ -2349,6 +2427,7 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
 </div>
 <script src="vocabulary-data.js"></script>
 <script src="image-memory-data.js"></script>
+<script src="logic-data.js"></script>
 <script>
 const D={
 places:["Grand Indonesia","Plaza Indonesia","Senayan City","Kota Kasablanka","Central Park","Pondok Indah Mall","Blok M","PIK"],
@@ -2951,6 +3030,7 @@ function openMemoryHome(){
  document.getElementById("writingHome").classList.add("hidden");
  document.getElementById("communicationHome").classList.add("hidden");
  document.getElementById("vocabularyHome").classList.add("hidden");
+ document.getElementById("logicHome").classList.add("hidden");
  document.getElementById("memoryHome").classList.remove("hidden");
  updateMemoryModeUI();
  updateStats();
@@ -3782,9 +3862,9 @@ let imageMemorySelections={};
 let recentImageScenes=JSON.parse(localStorage.getItem("recentImageScenes")||"[]");
 
 const IMAGE_MEMORY_LEVELS={
- easy:{time:20,count:4,desc:"Foto terlihat 20 detik · 4 pertanyaan visual · fokus pada benda dan detail utama."},
- medium:{time:15,count:5,desc:"Foto terlihat 15 detik · 5 pertanyaan visual · lebih banyak detail yang perlu diingat."},
- hard:{time:10,count:6,desc:"Foto terlihat 10 detik · 6 pertanyaan visual · detail lebih rapat dan waktu lebih singkat."}
+ easy:{time:20,count:5,desc:"Foto terlihat 20 detik · 5 pertanyaan isian · fokus pada benda dan detail utama."},
+ medium:{time:14,count:7,desc:"Foto terlihat 14 detik · sampai 7 pertanyaan isian · lebih banyak detail yang perlu diingat."},
+ hard:{time:8,count:10,desc:"Foto terlihat 8 detik · sampai 10 pertanyaan isian · tanpa clue pilihan ganda, fokus pada detail dan relasi visual."}
 };
 
 function setMemoryMode(mode){
@@ -3909,6 +3989,43 @@ function startImageMemoryTimer(){
    }
  },1000);
 }
+function visualAnswerVariants(q){
+ const base=[q.answer].concat(q.accept||[]);
+ const aliases={
+   "dua":["2","dua buah","ada 2","ada dua"],
+   "satu":["1","satu buah","ada 1","ada satu"],
+   "tiga":["3","tiga buah","ada 3","ada tiga"],
+   "empat":["4","empat buah","ada 4","ada empat"],
+   "napkin / serbet":["napkin","serbet"],
+   "meja kopi":["coffee table","meja kecil"],
+   "gelas wine":["wine glass","gelas anggur"],
+   "pagi hari":["pagi"],
+   "malam hari":["malam"],
+   "di samping laptop":["samping laptop","sebelah laptop","di sebelah laptop"],
+   "mati / layar tidak menyala":["mati","layar mati","tidak menyala","layarnya mati"],
+   "kaos bermotif / printed shirts":["kaos bermotif","printed shirts","kaos motif"],
+   "packing untuk liburan":["packing","berkemas","berkemas untuk liburan"],
+   "biru-hijau":["biru hijau","biru dan hijau"]
+ };
+ base.slice().forEach(function(v){
+   const key=norm(v);
+   if(aliases[key])base.push.apply(base,aliases[key]);
+ });
+ return Array.from(new Set(base.filter(Boolean)));
+}
+function gradeVisualAnswer(user,q){
+ const u=norm(user);
+ if(!u)return {score:0,label:"Kosong"};
+ const variants=visualAnswerVariants(q);
+ for(const v of variants){
+   if(u===norm(v)||typo(u,v)||sameCoreTokens(u,v))return {score:1,label:"Benar"};
+ }
+ for(const v of variants){
+   const ov=tokenOverlap(u,v);
+   if(!hasNumberConflict(u,v)&&ov.targetCoverage>=0.75&&ov.userCoverage>=0.6)return {score:1,label:"Benar"};
+ }
+ return {score:0,label:"Belum tepat"};
+}
 function startImageMemoryQuiz(){
  if(!currentImageScene)return;
  clearImageMemoryTimer();
@@ -3920,51 +4037,32 @@ function startImageMemoryQuiz(){
 
  const wrap=document.getElementById("imageMemoryQuestions");
  wrap.innerHTML="";
- const letters=["A","B","C","D"];
  currentImageQuestions.forEach(function(q,qi){
    const block=document.createElement("div");
    block.className="image-memory-question";
-   const title=document.createElement("div");
-   title.className="image-memory-question-title";
-   title.textContent=(qi+1)+". "+q.q;
-   block.appendChild(title);
-
-   const options=document.createElement("div");
-   options.className="image-memory-options";
-   shuffledCopy(q.options).forEach(function(opt){
-     const btn=document.createElement("button");
-     btn.className="image-memory-option";
-     btn.type="button";
-     btn.innerHTML='<span class="image-option-dot"></span><span>'+esc(opt)+'</span>';
-     btn.onclick=function(){
-       if(document.getElementById("imageMemoryCheckBtn").disabled)return;
-       imageMemorySelections[qi]=opt;
-       options.querySelectorAll(".image-memory-option").forEach(function(b){b.classList.remove("selected")});
-       btn.classList.add("selected");
-     };
-     options.appendChild(btn);
-   });
-   block.appendChild(options);
+   block.innerHTML='<label class="image-memory-question-title" for="imageMemoryAnswer'+qi+'">'+(qi+1)+'. '+esc(q.q)+'</label>'+
+     '<input class="image-memory-answer" id="imageMemoryAnswer'+qi+'" type="text" autocomplete="off" placeholder="Ketik jawabanmu...">';
    wrap.appendChild(block);
  });
+ const first=document.getElementById("imageMemoryAnswer0");
+ if(first)first.focus();
  window.scrollTo({top:0,behavior:"smooth"});
 }
 function checkImageMemoryAnswers(){
  let correct=0;
  let answerLog=[];
- const blocks=document.querySelectorAll("#imageMemoryQuestions .image-memory-question");
+ let details=[];
  currentImageQuestions.forEach(function(q,i){
-   const selected=imageMemorySelections[i]||"";
-   const ok=selected===q.answer;
-   if(ok)correct++;
-   answerLog.push({question:q.q,user:selected,correct:q.answer,score:ok?1:0,label:ok?"Benar":"Salah",category:"visual"});
-   const buttons=blocks[i].querySelectorAll(".image-memory-option");
-   buttons.forEach(function(btn){
-     const text=btn.querySelector("span:last-child").textContent;
-     btn.disabled=true;
-     if(text===q.answer)btn.classList.add("correct");
-     if(text===selected&&!ok)btn.classList.add("wrong");
-   });
+   const el=document.getElementById("imageMemoryAnswer"+i);
+   const user=el?el.value:"";
+   const gr=gradeVisualAnswer(user,q);
+   if(gr.score===1)correct++;
+   answerLog.push({question:q.q,user:user,correct:q.answer,score:gr.score,label:gr.label,category:"visual"});
+   if(el){
+     el.disabled=true;
+     el.classList.add(gr.score===1?"visual-answer-correct":"visual-answer-wrong");
+   }
+   details.push('<div class="item"><strong>'+(i+1)+'. '+esc(q.q)+'</strong><span class="badge">'+gr.label+'</span><div class="answer-line">Jawaban kamu: <b>'+esc(user||"(kosong)")+'</b></div><div class="answer-line">Jawaban utama: <b>'+esc(q.answer)+'</b></div></div>');
  });
  const max=currentImageQuestions.length;
  const pct=Math.round(correct/max*100);
@@ -3994,8 +4092,8 @@ function checkImageMemoryAnswers(){
 
  const result=document.getElementById("imageMemoryResult");
  result.innerHTML='<div class="score-big">Skor: '+correct+'/'+max+' ('+pct+'%)</div>'+
-   '<div class="result-note">'+(pct>=90?"Tajam. Detail visualnya tertangkap dengan baik.":pct>=70?"Bagus. Ada beberapa detail visual yang masih lolos.":pct>=50?"Lumayan. Coba fokus pada warna, jumlah, dan benda kecil.":"Coba lagi dengan memindai gambar dari kiri ke kanan sebelum menghafal.")+'</div>'+
-   '<div>Benar: '+correct+' · Salah: '+(max-correct)+'</div>';
+   '<div class="result-note">'+(pct>=90?"Tajam. Detail visualnya tertangkap dengan baik.":pct>=70?"Bagus. Beberapa detail visual masih lolos.":pct>=50?"Lumayan. Coba pindai gambar secara sistematis: kiri → tengah → kanan.":"Mode ini memang lebih berat karena tidak ada pilihan jawaban. Fokus pada warna, jumlah, posisi, dan hubungan antar benda.")+'</div>'+
+   '<div>Benar: '+correct+' · Salah: '+(max-correct)+'</div>'+details.join("");
  result.classList.remove("hidden");
  document.getElementById("imageMemoryCheckBtn").disabled=true;
  document.getElementById("imageMemoryNextBtn").classList.remove("hidden");
@@ -4208,9 +4306,9 @@ function findVocabularyWord(word){
 function openVocabularyHome(){
  const shell=document.getElementById("appShell");if(shell)shell.classList.remove("home-view");
  clearStoryTimer();
- ["storySection","quizSection","writingSection","communicationSection","vocabularySection"].forEach(function(id){const el=document.getElementById(id);if(el)el.classList.add("hidden")});
+ ["storySection","quizSection","writingSection","communicationSection","vocabularySection","logicSection","imageMemorySection","imageMemoryQuiz"].forEach(function(id){const el=document.getElementById(id);if(el)el.classList.add("hidden")});
  document.getElementById("homeSection").classList.remove("hidden");
- ["mainHome","memoryHome","writingHome","communicationHome"].forEach(function(id){document.getElementById(id).classList.add("hidden")});
+ ["mainHome","memoryHome","writingHome","communicationHome","logicHome"].forEach(function(id){document.getElementById(id).classList.add("hidden")});
  document.getElementById("vocabularyHome").classList.remove("hidden");
  document.getElementById("typeStat").textContent="Mode: Vocabulary";
  updateVocabularyHomeUI();window.scrollTo({top:0,behavior:"smooth"});
@@ -4479,16 +4577,154 @@ function startHomeQuoteRotation(){
  },11000);
 }
 
+let logicDifficulty=localStorage.getItem("logicDifficulty")||"medium";
+let logicHistory=JSON.parse(localStorage.getItem("logicProgressHistory")||"[]");
+let logicRound=[],logicIndex=0,logicScore=0,logicAnswered=false,logicAnswers=[];
+
+function setLogicDifficulty(level){
+ logicDifficulty=level;
+ localStorage.setItem("logicDifficulty",level);
+ updateLogicHomeUI();
+}
+function updateLogicHomeUI(){
+ ["easy","medium","hard"].forEach(function(level){
+   const el=document.getElementById("logic-"+level);
+   if(el)el.classList.toggle("active",level===logicDifficulty);
+ });
+ const d=document.getElementById("logicLevelDesc");
+ if(d)d.textContent=LOGIC_LEVELS[logicDifficulty].desc;
+ const p=document.getElementById("logicProgressPanel");
+ if(p&&!p.classList.contains("hidden"))renderLogicProgress();
+}
+function openLogicHome(){
+ const shell=document.getElementById("appShell");if(shell)shell.classList.remove("home-view");
+ clearStoryTimer();clearImageMemoryTimer();cancelPendingImageMemoryLoad();
+ ["storySection","quizSection","writingSection","communicationSection","vocabularySection","logicSection","imageMemorySection","imageMemoryQuiz"].forEach(function(id){
+   const el=document.getElementById(id);if(el)el.classList.add("hidden");
+ });
+ document.getElementById("homeSection").classList.remove("hidden");
+ ["mainHome","memoryHome","writingHome","communicationHome","vocabularyHome"].forEach(function(id){
+   const el=document.getElementById(id);if(el)el.classList.add("hidden");
+ });
+ document.getElementById("logicHome").classList.remove("hidden");
+ document.getElementById("typeStat").textContent="Mode: Logika";
+ updateLogicHomeUI();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function chooseLogicRound(){
+ const key="logicRecent_"+logicDifficulty;
+ let recent=[];try{recent=JSON.parse(localStorage.getItem(key)||"[]")}catch(e){}
+ let pool=LOGIC_BANK[logicDifficulty].filter(function(q){return !recent.includes(q.id)});
+ if(pool.length<8)pool=LOGIC_BANK[logicDifficulty].slice();
+ const chosen=shuffledCopy(pool).slice(0,Math.min(8,pool.length));
+ localStorage.setItem(key,JSON.stringify(recent.concat(chosen.map(function(q){return q.id})).slice(-12)));
+ return chosen;
+}
+function beginLogicSession(){
+ logicRound=chooseLogicRound();logicIndex=0;logicScore=0;logicAnswers=[];logicAnswered=false;
+ document.getElementById("logicResult").classList.add("hidden");
+ document.getElementById("logicRestartBtn").classList.add("hidden");
+ renderLogicQuestion();
+}
+function renderLogicQuestion(){
+ const shell=document.getElementById("appShell");if(shell)shell.classList.remove("home-view");
+ document.getElementById("homeSection").classList.add("hidden");
+ ["storySection","quizSection","writingSection","communicationSection","vocabularySection","imageMemorySection","imageMemoryQuiz"].forEach(function(id){
+   const el=document.getElementById(id);if(el)el.classList.add("hidden");
+ });
+ document.getElementById("logicSection").classList.remove("hidden");
+ const q=logicRound[logicIndex];logicAnswered=false;
+ document.getElementById("logicProgressText").textContent=LOGIC_LEVELS[logicDifficulty].label+" · Soal "+(logicIndex+1)+" dari "+logicRound.length;
+ document.getElementById("logicScoreText").textContent="Benar "+logicScore;
+ document.getElementById("logicProgressBar").style.width=(logicIndex/logicRound.length*100)+"%";
+ document.getElementById("logicSkillLabel").textContent=q.skill;
+ document.getElementById("logicPrompt").textContent=q.prompt;
+ const opts=document.getElementById("logicOptions");opts.innerHTML="";
+ shuffledCopy(q.options).forEach(function(opt,i){
+   const btn=document.createElement("button");btn.className="vocab-option";
+   btn.innerHTML='<span class="vocab-letter">'+String.fromCharCode(65+i)+'</span><span>'+esc(opt)+'</span>';
+   btn.onclick=function(){chooseLogicAnswer(opt,btn)};opts.appendChild(btn);
+ });
+ document.getElementById("logicFeedback").classList.add("hidden");
+ document.getElementById("logicResult").classList.add("hidden");
+ document.getElementById("logicNextBtn").classList.add("hidden");
+ document.getElementById("logicRestartBtn").classList.add("hidden");
+ document.getElementById("typeStat").textContent="Mode: Logika · "+LOGIC_LEVELS[logicDifficulty].label;
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function chooseLogicAnswer(selected,clicked){
+ if(logicAnswered)return;
+ logicAnswered=true;
+ const q=logicRound[logicIndex];
+ const correct=selected===q.answer;
+ if(correct)logicScore++;
+ logicAnswers.push({id:q.id,skill:q.skill,selected:selected,correct:q.answer,isCorrect:correct});
+ document.querySelectorAll("#logicOptions .vocab-option").forEach(function(btn){
+   btn.disabled=true;
+   const value=btn.querySelector("span:last-child").textContent;
+   if(value===q.answer)btn.classList.add("correct");
+   if(btn===clicked&&!correct)btn.classList.add("wrong");
+ });
+ const fb=document.getElementById("logicFeedback");
+ fb.className="vocab-feedback "+(correct?"correct":"wrong");
+ fb.innerHTML=(correct?'<strong>Benar.</strong> ':'<strong>Belum tepat.</strong> ')+'<span>'+esc(q.explanation)+'</span>';
+ fb.classList.remove("hidden");
+ document.getElementById("logicScoreText").textContent="Benar "+logicScore;
+ document.getElementById("logicProgressBar").style.width=((logicIndex+1)/logicRound.length*100)+"%";
+ const next=document.getElementById("logicNextBtn");
+ next.textContent=logicIndex===logicRound.length-1?"Lihat Hasil":"Soal Berikutnya";
+ next.classList.remove("hidden");
+}
+function nextLogicQuestion(){
+ if(!logicAnswered)return;
+ if(logicIndex>=logicRound.length-1){finishLogicSession();return}
+ logicIndex++;renderLogicQuestion();
+}
+function finishLogicSession(){
+ const pct=Math.round(logicScore/logicRound.length*100);
+ const session={time:Date.now(),difficulty:logicDifficulty,score:logicScore,max:logicRound.length,pct:pct,answers:logicAnswers.slice()};
+ logicHistory.push(session);logicHistory=logicHistory.slice(-90);
+ localStorage.setItem("logicProgressHistory",JSON.stringify(logicHistory));
+ document.getElementById("logicOptions").innerHTML="";
+ document.getElementById("logicFeedback").classList.add("hidden");
+ document.getElementById("logicNextBtn").classList.add("hidden");
+ document.getElementById("logicRestartBtn").classList.remove("hidden");
+ const missed=logicAnswers.filter(function(x){return !x.isCorrect});
+ let review="";
+ missed.forEach(function(x){review+='<div class="vocab-review-row"><b>'+esc(x.skill)+'</b><span>'+esc(x.correct)+'</span></div>'});
+ const msg=pct>=90?"Penalaranmu sangat konsisten.":pct>=75?"Bagus. Beberapa jebakan asumsi masih bisa dipertajam.":pct>=50?"Lumayan. Periksa lagi hubungan “jika”, “hanya jika”, dan informasi yang belum cukup.":"Jangan buru-buru menyimpulkan. Uji aturan satu per satu dan buang opsi yang melanggar.";
+ const r=document.getElementById("logicResult");
+ r.innerHTML='<div class="score-big">'+LOGIC_LEVELS[logicDifficulty].label+' · '+logicScore+'/'+logicRound.length+' · '+pct+'%</div><div class="result-note">'+msg+'</div>'+(review?'<div class="progress-title">Yang perlu ditinjau</div>'+review:"");
+ r.classList.remove("hidden");
+ updateHomepageJourney();
+ r.scrollIntoView({behavior:"smooth",block:"start"});
+}
+function renderLogicProgress(){
+ const p=document.getElementById("logicProgressPanel");
+ const arr=logicHistory.filter(function(x){return x.difficulty===logicDifficulty});
+ if(!arr.length){p.innerHTML='<div class="empty-state">Belum ada ronde Logika di level ini.</div>';return}
+ const recent=arr.slice(-10);
+ const avgScore=Math.round(recent.reduce(function(a,b){return a+b.pct},0)/recent.length);
+ const best=Math.max.apply(null,arr.map(function(x){return x.pct}));
+ p.innerHTML='<div class="progress-grid"><div class="progress-card"><span>Sesi</span><strong>'+arr.length+'</strong><small>'+LOGIC_LEVELS[logicDifficulty].label+'</small></div><div class="progress-card"><span>Rata-rata 10 sesi</span><strong>'+avgScore+'%</strong><small>Reasoning terbaru</small></div><div class="progress-card"><span>Best</span><strong>'+best+'%</strong><small>Skor tertinggi</small></div></div>';
+}
+function toggleLogicProgress(){
+ const p=document.getElementById("logicProgressPanel");
+ p.classList.toggle("hidden");
+ if(!p.classList.contains("hidden"))renderLogicProgress();
+}
+
 function allTrainingScores(){
  const a=[];
  progressHistory.forEach(function(x){if(typeof x.pct==="number")a.push(x.pct)});
  writingHistory.forEach(function(x){if(typeof x.score==="number")a.push(x.score)});
  communicationHistory.forEach(function(x){if(typeof x.score==="number")a.push(x.score)});
  vocabularyHistory.forEach(function(x){if(typeof x.pct==="number")a.push(x.pct)});
+ logicHistory.forEach(function(x){if(typeof x.pct==="number")a.push(x.pct)});
  return a;
 }
 function updateHomepageJourney(){
- const total=progressHistory.length+writingHistory.length+communicationHistory.length+vocabularyHistory.length;
+ const total=progressHistory.length+writingHistory.length+communicationHistory.length+vocabularyHistory.length+logicHistory.length;
  const scores=allTrainingScores();
  const avgScore=scores.length?Math.round(scores.reduce(function(a,b){return a+b},0)/scores.length):null;
  const best=scores.length?Math.max.apply(null,scores):null;
@@ -4535,6 +4771,7 @@ function showHome(){
  document.getElementById("quizSection").classList.add("hidden");
  document.getElementById("writingSection").classList.add("hidden");
  document.getElementById("vocabularySection").classList.add("hidden");
+ document.getElementById("logicSection").classList.add("hidden");
  document.getElementById("imageMemorySection").classList.add("hidden");
  document.getElementById("imageMemoryQuiz").classList.add("hidden");
  clearImageMemoryTimer();
