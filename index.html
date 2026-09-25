@@ -2245,7 +2245,7 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
     </div>
     <div class="level-desc" id="vocabularyLevelDesc"></div>
     <div class="vocab-overview-grid">
-      <div><strong>600</strong><span>vocabulary</span><small>200 kata di setiap level</small></div>
+      <div><strong>780</strong><span>vocabulary</span><small>260 kata di setiap level</small></div>
       <div><strong>10</strong><span>soal / ronde</span><small>acak tanpa cepat mengulang</small></div>
       <div><strong>4</strong><span>pilihan</span><small>mirip, tetapi tidak ambigu</small></div>
     </div>
@@ -2451,6 +2451,7 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
 <script src="vocabulary-data.js"></script>
 <script src="image-memory-data.js"></script>
 <script src="logic-data.js"></script>
+<script src="extra-training-data.js"></script>
 <script>
 const D={
 places:["Grand Indonesia","Plaza Indonesia","Senayan City","Kota Kasablanka","Central Park","Pondok Indah Mall","Blok M","PIK"],
@@ -2519,7 +2520,7 @@ function choose(pool){
  const leftovers=freshFirst([...groups[1],...groups[2],...groups[3]]).filter(x=>!out.includes(x));
  out.push(...leftovers.slice(0,Math.max(0,count-out.length)));
  out=shuf(out.slice(0,count));
- recentQuestionTexts=[...out.map(x=>norm(x.q)),...recentQuestionTexts].slice(0,120);
+ recentQuestionTexts=[...out.map(x=>norm(x.q)),...recentQuestionTexts].slice(0,240);
  localStorage.setItem("recentQuestionTexts",JSON.stringify(recentQuestionTexts));
  return out
 }
@@ -2987,6 +2988,8 @@ const WRITING_EXERCISES=[
  {id:"h20",level:"hard",category:"punctuation",format:"focus",original:"manajer menjelaskan ada tiga prioritas pertama memperbaiki layanan kedua menekan biaya ketiga mempercepat pengiriman",required:[["manajer"],["memperbaiki layanan"],["menekan biaya"],["mempercepat pengiriman"]],waste:[],idealMin:14,idealMax:22,model:"Manajer menjelaskan tiga prioritas: pertama, memperbaiki layanan; kedua, menekan biaya; ketiga, mempercepat pengiriman.",note:"Gunakan titik dua, koma, dan titik koma untuk perincian kompleks.",challenge:"Buat daftar tiga prioritas mudah dibaca."},
  {id:"h21",level:"hard",category:"punctuation",format:"focus",original:"meskipun hasil penjualan naik kata direktur kita belum boleh puas sebab biaya operasional juga meningkat",required:[["hasil penjualan"],["naik"],["direktur"],["belum boleh puas"],["biaya operasional"],["meningkat"]],waste:[],idealMin:14,idealMax:21,model:"Meskipun hasil penjualan naik, direktur berkata, “Kita belum boleh puas karena biaya operasional juga meningkat.”",note:"Perbaiki struktur kutipan, koma, dan kapitalisasi.",challenge:"Jaga hubungan kontras dan ujaran langsung."}
 ];
+WRITING_EXERCISES.push(...EXTRA_WRITING_EXERCISES);
+
 
 function setWritingDifficulty(x){
  writingDifficulty=x;
@@ -3087,7 +3090,7 @@ function candidateWritingPool(){
 }
 function chooseWritingExercise(){
  const pool=candidateWritingPool();
- const recentIds=writingHistory.slice(-20).map(function(x){return x.exerciseId});
+ const recentIds=writingHistory.slice(-50).map(function(x){return x.exerciseId});
  const fresh=pool.filter(function(x){return !recentIds.includes(x.id)});
  return pick(fresh.length?fresh:pool);
 }
@@ -3471,6 +3474,8 @@ const COMM_EXERCISES=[
  {id:"c19",level:"hard",category:"audience",scenario:"Terjadi keterlambatan karena kesalahan internal input alamat.",audience:"Supervisor operasional",facts:["Staf A salah memasukkan digit nomor rumah.","Paket kembali ke gudang pukul 11.00.","Alamat dikoreksi pukul 11.20.","Paket masuk pickup ulang pukul 14.00.","Customer sudah diberi tahu.","Perlu review proses verifikasi alamat."],question:"Sampaikan update operasional yang bisa ditindaklanjuti.",required:[["alamat"],["salah"],["11.00","jam 11"],["11.20"],["14.00","jam 2"],["customer"],["verifikasi"]],pointTerms:["verifikasi","alamat","pickup"],noise:["staf a"],targetMax:35,model:"Kesalahan input alamat membuat paket kembali pukul 11.00. Alamat dikoreksi 11.20, masuk pickup ulang 14.00, customer sudah diinformasikan, dan proses verifikasi alamat perlu direview.",framework:"Insiden → recovery → tindakan pencegahan"},
  {id:"c20",level:"hard",category:"oneshot",scenario:"Dalam rapat krisis, CEO bertanya, “Apa keputusan yang kamu rekomendasikan sekarang?”",audience:"CEO",facts:["Produk baru memiliki bug minor pada fitur laporan.","Bug tidak memengaruhi transaksi.","Perbaikan membutuhkan 6 jam.","Kampanye pemasaran mulai besok pagi.","Menunda peluncuran satu hari menambah biaya sekitar Rp25 juta.","Tim engineering yakin patch selesai malam ini."],question:"Berikan rekomendasi dalam maksimal 25 kata.",required:[["lanjut","tetap","peluncuran"],["patch","perbaikan"],["malam ini"],["transaksi","tidak memengaruhi"],["kampanye","besok"]],pointTerms:["lanjut","patch","malam ini"],noise:["25 juta","6 jam"],targetMax:25,model:"Saya rekomendasikan tetap meluncurkan besok, dengan patch diselesaikan malam ini karena bug tidak memengaruhi transaksi.",framework:"Rekomendasi → alasan utama"}
 ];
+COMM_EXERCISES.push(...EXTRA_COMM_EXERCISES);
+
 
 function setCommunicationDifficulty(x){
  communicationDifficulty=x;
@@ -3521,7 +3526,7 @@ function openCommunicationHome(){
 function chooseCommunicationExercise(){
  let pool=COMM_EXERCISES.filter(function(x){return x.level===communicationDifficulty&&(communicationCategory==="mixed"||x.category===communicationCategory)});
  if(!pool.length)pool=COMM_EXERCISES.filter(function(x){return x.level===communicationDifficulty});
- const recent=communicationHistory.slice(-12).map(function(x){return x.exerciseId});
+ const recent=communicationHistory.slice(-36).map(function(x){return x.exerciseId});
  const fresh=pool.filter(function(x){return !recent.includes(x.id)});
  return pick(fresh.length?fresh:pool);
 }
@@ -3719,7 +3724,105 @@ function toggleCommunicationMic(){
  communicationRecognition.start();
 }
 
-const builders=[shopping,cinema,airport,study,eventStory,office,roadtrip,birthday,restaurant,park,errand];
+
+function trainTrip(){
+ const city=pick(D.cities),name=pick(D.names),platform1=pick(["Peron 2","Peron 3","Peron 5"]),platform2=diff(["Peron 2","Peron 3","Peron 5"],platform1),seat=pick(D.seats),food=pick(D.foods),drink=pick(D.drinks),transport=pick(D.transport),pay=pick(D.payments),back=pick(D.returnItems),h=pick([6,7,8,9]),spot=pick(D.spots),item=pick(D.items);
+ const story='A: “Kereta ke '+city+' tetap berangkat pagi. Informasi awal bilang '+platform1+', tapi layar stasiun mengubahnya ke '+platform2+'.”\n\nB: “Kursinya?”\n\nA: “Aku dapat '+seat+'. Ketemu '+htxt(h)+' di '+spot+', lalu kita ke stasiun naik '+transport+'. '+name+' juga minta aku bawa '+item+'.”\n\nB: “Makan di kereta?”\n\nA: “Aku bawa '+food+' dan '+drink+'. Tiketnya kubayar '+pay+'. Oh iya, '+back+' kamu masih aku pegang.”';
+ const pool=[
+  q(["Tujuan perjalanan kereta mereka ke mana?","Mereka naik kereta menuju kota apa?"],city),
+  q(["Peron yang benar setelah update apa?","Mereka akhirnya harus menuju peron mana?"],platform2),
+  q(["Peron yang tertulis pada informasi awal apa?","Peron lama yang kemudian berubah apa?"],platform1),
+  q(["Baris kursi mereka apa?","Posisi kursinya di baris apa?"],seat),
+  q(["Siapa yang meminta A membawa barang?","Barang tambahan itu diminta oleh siapa?"],name),
+  q(["Barang yang diminta dibawa apa?","A diminta membawa benda apa?"],item),
+  q(["Makanan yang dibawa apa?","Bekal makanan di kereta apa?"],food),
+  q(["Minumannya apa?","Bekal minuman mereka apa?"],drink),
+  q(["Mereka menuju stasiun naik apa?","Transportasi ke stasiun apa?"],transport),
+  q(["Tiket dibayar dengan apa?","Metode pembayaran tiket apa?"],pay),
+  q(["Barang B yang masih dipegang A apa?","Apa milik B yang belum dikembalikan?"],back),
+  q(["Titik ketemu sebelum ke stasiun di mana?","Mereka janjian di bagian mana?"],spot),
+  q(["Mereka bertemu pukul berapa?","Jam pertemuannya berapa?"],hans(h))
+ ];
+ return {type:"Perjalanan kereta",story,questions:choose(pool)};
+}
+function hotelStay(){
+ const hotel=pick(D.hotels),floor=pick(D.floors),room=pick(["203","307","415","518"]),name=pick(D.names),bag=pick(D.colors),pay=pick(D.payments),drink=pick(D.drinks),food1=pick(D.foods),food2=diff(D.foods,food1),back=pick(D.returnItems),h=pick([13,14,15,16]),item=pick(D.items),duration=pick(D.durations);
+ const story='A: “Check-in di '+hotel+' mulai '+htxt(h)+'. Kamar kita '+room+' di '+floor+'. Aku bawa koper '+bag+'.”\n\nB: “Sarapan besok tetap '+food1+'?”\n\nA: “Nggak, akhirnya pilih '+food2+'. '+name+' nanti mampir sekitar '+duration+'. Aku juga pesan '+drink+'.”\n\nB: “Bayarnya?”\n\nA: “Pakai '+pay+'. '+item+' aku taruh di kamar. Sama '+back+' kamu juga masih ada padaku.”';
+ const pool=[
+  q(["Mereka menginap di hotel apa?","Nama hotel tempat mereka check-in apa?"],hotel),
+  q(["Nomor kamar mereka berapa?","Kamar yang dipakai nomor berapa?"],room),
+  q(["Kamar berada di lantai berapa?","Lantai kamar mereka apa?"],floor),
+  q(["Check-in mulai jam berapa?","Waktu check-in pukul berapa?"],hans(h)),
+  q(["Warna koper A apa?","Kopernya berwarna apa?"],bag),
+  q(["Pilihan sarapan akhirnya apa?","Makanan yang akhirnya dipilih untuk sarapan apa?"],food2),
+  q(["Pilihan sarapan awal apa?","Makanan yang tadinya direncanakan apa?"],food1),
+  q(["Siapa yang akan mampir?","Orang yang datang ke hotel siapa?"],name),
+  q(["Orang itu akan mampir selama berapa lama?","Durasi kunjungannya berapa?"],duration),
+  q(["Minuman yang dipesan apa?","A memesan minuman apa?"],drink),
+  q(["Pembayaran menggunakan apa?","Metode pembayarannya apa?"],pay),
+  q(["Barang yang ditaruh di kamar apa?","A menaruh benda apa di kamar?"],item),
+  q(["Barang B yang masih dipegang A apa?","Apa milik B yang belum dikembalikan?"],back)
+ ];
+ return {type:"Menginap di hotel",story,questions:choose(pool)};
+}
+function gymSession(){
+ const activity1=pick(["treadmill","latihan kaki","sepeda statis","yoga"]),activity2=diff(["treadmill","latihan kaki","sepeda statis","yoga"],activity1),locker=pick(["L12","L18","B07","C14"]),duration=pick(D.durations),drink=pick(D.drinks),name=pick(D.names),item=pick(D.items),color=pick(D.colors),pay=pick(D.payments),h=hour(),back=pick(D.returnItems),spot=pick(D.spots);
+ const story='A: “Aku tadinya mau '+activity1+', tapi alatnya penuh, jadi mulai dari '+activity2+'.”\n\nB: “Locker?”\n\nA: “'+locker+'. Ketemu '+htxt(h)+' di '+spot+'. Latihan sekitar '+duration+'. '+name+' nitip '+item+' warna '+color+'.”\n\nB: “Minum?”\n\nA: “Aku beli '+drink+' dan bayar '+pay+'. '+back+' kamu juga aku bawa.”';
+ const pool=[
+  q(["Latihan yang akhirnya dilakukan lebih dulu apa?","Aktivitas pertama setelah rencana berubah apa?"],activity2),
+  q(["Latihan yang tadinya direncanakan apa?","Rencana olahraga awal apa?"],activity1),
+  q(["Nomor locker yang dipakai apa?","Locker mereka nomor berapa?"],locker),
+  q(["Durasi latihan sekitar berapa?","Mereka latihan selama apa?"],duration),
+  q(["Siapa yang menitip barang?","Barang tambahan itu titipan siapa?"],name),
+  q(["Barang titipannya apa?","Apa yang dititip?"],item),
+  q(["Warna barang titipan apa?","Barang titipan harus warna apa?"],color),
+  q(["Minuman yang dibeli apa?","A membeli minuman apa?"],drink),
+  q(["Pembayaran menggunakan apa?","Minuman dibayar dengan apa?"],pay),
+  q(["Titik ketemu mereka di mana?","Mereka bertemu di bagian mana?"],spot),
+  q(["Jam pertemuan berapa?","Mereka ketemu pukul berapa?"],hans(h)),
+  q(["Barang B yang dibawa A apa?","Apa milik B yang dibawa A?"],back)
+ ];
+ return {type:"Gym",story,questions:choose(pool)};
+}
+function packagePickup(){
+ const courier1=pick(["JNE","J&T","SiCepat","AnterAja"]),courier2=diff(["JNE","J&T","SiCepat","AnterAja"],courier1),spot=pick(D.spots),name=pick(D.names),item=pick(D.items),color=pick(D.colors),qty=pick(D.quantities),pay=pick(D.payments),h=hour(),task=pick(D.tasks),back=pick(D.returnItems),transport=pick(D.transport);
+ const story='A: “Paket '+qty+' '+item+' warna '+color+' tadinya tercatat dibawa '+courier1+', tapi update terakhir pindah ke '+courier2+'.”\n\nB: “Ambil di mana?”\n\nA: “Ketemu petugas '+htxt(h)+' di '+spot+'. Paketnya atas nama '+name+'. Sebelum ambil aku harus '+task+'.”\n\nB: “Kita ke sana naik apa?”\n\nA: “'+transport+'. Biayanya kubayar '+pay+'. Oh iya, '+back+' kamu juga kubawa.”';
+ const pool=[
+  q(["Kurir yang menangani paket setelah update apa?","Paket akhirnya ditangani kurir apa?"],courier2),
+  q(["Kurir yang tercatat sebelumnya apa?","Kurir awal sebelum update apa?"],courier1),
+  q(["Isi paket berupa barang apa?","Barang dalam paket apa?"],item),
+  q(["Berapa jumlah barang di paket?","Jumlah barangnya berapa?"],qty),
+  q(["Warna barang dalam paket apa?","Barangnya berwarna apa?"],color),
+  q(["Paket atas nama siapa?","Nama penerima paket siapa?"],name),
+  q(["Titik pengambilan paket di mana?","Mereka bertemu petugas di bagian mana?"],spot),
+  q(["Jam pengambilan paket berapa?","Mereka bertemu petugas pukul berapa?"],hans(h)),
+  q(["Apa urusan sebelum mengambil paket?","Sebelum pickup A harus apa?"],task),
+  q(["Mereka pergi naik apa?","Transportasi ke lokasi pickup apa?"],transport),
+  q(["Pembayaran menggunakan apa?","Biayanya dibayar dengan apa?"],pay),
+  q(["Barang B yang ikut dibawa A apa?","Apa milik B yang dibawa A?"],back)
+ ];
+ return {type:"Ambil paket",story,questions:choose(pool)};
+}
+function bookstoreVisit(){
+ const place=pick(D.studyPlaces),topic1=pick(D.subjects),topic2=diff(D.subjects,topic1),budget=pick(D.budgets),name=pick(D.names),qty=pick(D.quantities),drink=pick(D.drinks),pay=pick(D.payments),after=pick(D.after),h=hour(),spot=pick(D.spots),back=pick(D.returnItems);
+ const story='A: “Di '+place+' aku tadinya cari buku '+topic1+', tapi akhirnya prioritaskan '+topic2+' karena lebih mendesak.”\n\nB: “Beli berapa?”\n\nA: “Maksimal '+qty+' buku, budget '+budget+'. Ketemu '+htxt(h)+' di '+spot+'. '+name+' nanti menyusul.”\n\nB: “Setelahnya?”\n\nA: “Aku mau '+after+', beli '+drink+', dan bayar '+pay+'. '+back+' kamu masih aku bawa.”';
+ const pool=[
+  q(["Topik buku yang akhirnya diprioritaskan apa?","A akhirnya mencari buku tentang apa?"],topic2),
+  q(["Topik buku yang tadinya dicari apa?","Pilihan topik awal apa?"],topic1),
+  q(["Mereka pergi ke tempat apa?","Lokasi mencari bukunya di mana?"],place),
+  q(["Maksimal berapa buku yang akan dibeli?","Batas jumlah bukunya berapa?"],qty),
+  q(["Batas budget berapa?","Maksimal anggaran bukunya berapa?"],budget),
+  q(["Siapa yang akan menyusul?","Orang yang datang belakangan siapa?"],name),
+  q(["Titik ketemu mereka di mana?","Mereka janjian di bagian mana?"],spot),
+  q(["Mereka bertemu pukul berapa?","Jam pertemuannya berapa?"],hans(h)),
+  q(["Rencana setelah membeli buku apa?","Setelah belanja A mau apa?"],after),
+  q(["Minuman yang dibeli apa?","A mau minum apa?"],drink),
+  q(["Pembayaran menggunakan apa?","A membayar dengan metode apa?"],pay),
+  q(["Barang B yang masih dibawa A apa?","Apa milik B yang belum dikembalikan?"],back)
+ ];
+ return {type:"Toko buku",story,questions:choose(pool)};
+}
+const builders=[shopping,cinema,airport,study,eventStory,office,roadtrip,birthday,restaurant,park,errand,trainTrip,hotelStay,gymSession,packagePickup,bookstoreVisit];
 let currentStory=null;
 let storyNumber=Number(localStorage.getItem("storyNumber")||0);
 let completed=Number(localStorage.getItem("completedMemoryStories")||0);
@@ -3730,6 +3833,7 @@ let progressHistory=JSON.parse(localStorage.getItem("memoryProgressHistory")||"[
 function regradeProgressHistory(){
  let changed=false;
  progressHistory.forEach(function(sess){
+   if(String(sess.type||"").startsWith("Ingatan Visual"))return;
    let total=0,correct=0,partial=0,wrong=0;
    (sess.answers||[]).forEach(function(a){
      const gr=grade(a.user,{q:a.question,correct:[a.correct],partial:[]});
@@ -3757,7 +3861,7 @@ function generate(){
  let options=builders.filter(b=>!recentTypes.includes(b.name));
  if(!options.length)options=builders;
  const b=pick(options),s=b();
- recentTypes.unshift(b.name);recentTypes=recentTypes.slice(0,5);
+ recentTypes.unshift(b.name);recentTypes=recentTypes.slice(0,10);
  localStorage.setItem("recentTypes",JSON.stringify(recentTypes));
  storyNumber++;localStorage.setItem("storyNumber",String(storyNumber));
  return s
@@ -3918,7 +4022,7 @@ function chooseImageMemoryScene(){
  if(!pool.length)pool=IMAGE_MEMORY_SCENES.slice();
  const scene=pick(pool);
  recentImageScenes.unshift(scene.id);
- recentImageScenes=recentImageScenes.slice(0,Math.min(5,IMAGE_MEMORY_SCENES.length-1));
+ recentImageScenes=recentImageScenes.slice(0,Math.min(6,IMAGE_MEMORY_SCENES.length-1));
  localStorage.setItem("recentImageScenes",JSON.stringify(recentImageScenes));
  return scene;
 }
@@ -3927,13 +4031,22 @@ function shuffledCopy(arr){
  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const t=a[i];a[i]=a[j];a[j]=t}
  return a;
 }
+function chooseImageMemoryQuestions(scene,count){
+ const key="recentImageQuestions_"+scene.id;
+ let recent=[];try{recent=JSON.parse(localStorage.getItem(key)||"[]")}catch(e){}
+ const fresh=shuffledCopy(scene.questions.filter(function(q){return !recent.includes(q.q)}));
+ const old=shuffledCopy(scene.questions.filter(function(q){return recent.includes(q.q)}));
+ const chosen=fresh.concat(old).slice(0,Math.min(count,scene.questions.length));
+ localStorage.setItem(key,JSON.stringify(chosen.map(function(q){return q.q}).concat(recent).slice(0,12)));
+ return chosen;
+}
 function beginImageMemory(){
  clearStoryTimer();
  clearImageMemoryTimer();
  currentStory=null;
  currentImageScene=chooseImageMemoryScene();
  const cfg=IMAGE_MEMORY_LEVELS[difficulty];
- currentImageQuestions=shuffledCopy(currentImageScene.questions).slice(0,Math.min(cfg.count,currentImageScene.questions.length));
+ currentImageQuestions=chooseImageMemoryQuestions(currentImageScene,cfg.count);
  imageMemorySelections={};
 
  document.getElementById("homeSection").classList.add("hidden");
@@ -4311,7 +4424,7 @@ function chooseVocabularyRound(){
  let pool=bank.filter(function(x){return !recent.includes(x.word)});
  if(pool.length<10)pool=bank.slice();
  const chosen=vocabShuffle(pool).slice(0,10);
- localStorage.setItem(key,JSON.stringify(recent.concat(chosen.map(function(x){return x.word})).slice(-45)));
+ localStorage.setItem(key,JSON.stringify(recent.concat(chosen.map(function(x){return x.word})).slice(-120)));
  const positions=balancedVocabPositions();
  return chosen.map(function(item,i){
    const options=vocabShuffle(item.wrong).slice(0,3);
@@ -4641,7 +4754,7 @@ function chooseLogicRound(){
  let pool=LOGIC_BANK[logicDifficulty].filter(function(q){return !recent.includes(q.id)});
  if(pool.length<targetCount)pool=LOGIC_BANK[logicDifficulty].slice();
  const chosen=shuffledCopy(pool).slice(0,Math.min(targetCount,pool.length));
- localStorage.setItem(key,JSON.stringify(recent.concat(chosen.map(function(q){return q.id})).slice(-(logicDifficulty==="hard"?16:12))));
+ localStorage.setItem(key,JSON.stringify(recent.concat(chosen.map(function(q){return q.id})).slice(-(logicDifficulty==="hard"?20:18))));
  return chosen;
 }
 function beginLogicSession(){
