@@ -2063,6 +2063,73 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
 .strategy-path-step .alt{margin-top:7px;color:#785f45}
 @media(max-width:1050px){.mode-card:nth-child(6){grid-column:auto}}
 @media(max-width:700px){.strategy-principle-grid{grid-template-columns:1fr}.strategy-run-head{align-items:flex-start;flex-direction:column}.strategy-score-grid{grid-template-columns:1fr 1fr}}
+
+/* Mobile stability patch — keep late desktop grid rules from creating implicit columns */
+@media(max-width:1050px){
+  #trainingChoices .mode-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  #trainingChoices .mode-card,
+  #trainingChoices .mode-card:nth-child(4),
+  #trainingChoices .mode-card:nth-child(5),
+  #trainingChoices .mode-card:nth-child(6){
+    grid-column:auto!important;
+    min-width:0;
+  }
+}
+@media(max-width:650px){
+  html,body{
+    max-width:100%;
+    overflow-x:hidden;
+  }
+  .app{
+    width:100%;
+    max-width:100%;
+    padding-left:16px;
+    padding-right:16px;
+  }
+  #trainingChoices .mode-grid{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+  #trainingChoices .mode-card,
+  #trainingChoices .mode-card:nth-child(4),
+  #trainingChoices .mode-card:nth-child(5),
+  #trainingChoices .mode-card:nth-child(6){
+    grid-column:1!important;
+    width:100%;
+    min-width:0;
+  }
+  #strategyHome,#logicHome,#vocabularyHome,
+  .strategy-shell,.writing-shell,.image-memory-shell{
+    width:100%;
+    max-width:100%;
+    min-width:0;
+  }
+  #strategyHome>.home-card,
+  #logicHome>.home-card,
+  #vocabularyHome>.home-card{
+    padding:22px 18px;
+  }
+  .strategy-state-card{
+    padding:18px;
+  }
+  .strategy-choice{
+    width:100%;
+    min-width:0;
+  }
+  .strategy-choice span:last-child,
+  .strategy-objective,
+  .strategy-state,
+  .strategy-prompt,
+  .strategy-path-step{
+    min-width:0;
+    overflow-wrap:anywhere;
+    word-break:normal;
+  }
+  .strategy-score-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
 </style>
 </head>
 <body>
