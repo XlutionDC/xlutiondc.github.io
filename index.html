@@ -2015,6 +2015,54 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
 #logic-hard{background:#fbe9e6!important;color:#a9574d!important;border-color:#efcbc5!important}
 #logic-hard.active{background:#bc685d!important;color:#fff!important;border-color:#bc685d!important;box-shadow:0 9px 22px rgba(188,104,93,.18)!important}
 .logic-home-card .home-tip{line-height:1.55}
+
+/* Strategy & Anticipation */
+.mode-card:nth-child(4),.mode-card:nth-child(5),.mode-card:nth-child(6){grid-column:span 2}
+.mode-card.strategy{background:linear-gradient(145deg,#edf4ff,#f7f0ff);border-color:#d9def0}
+.mode-card.strategy .mode-icon-badge{background:#e9edfb;color:#62588f}
+#strategyHome{width:min(920px,100%);margin:30px auto 0}
+#strategyHome>.home-card{position:relative;overflow:hidden;padding:28px 30px;border-radius:22px;background:linear-gradient(145deg,#f0f5ff,#faf2ff);border:1px solid #dfe1ef;border-top:4px solid #78689f;box-shadow:0 18px 38px rgba(67,57,91,.07)}
+#strategyHome>.home-card:after{content:"";position:absolute;right:-45px;top:-52px;width:170px;height:170px;border-radius:50%;background:rgba(106,91,155,.08)}
+.strategy-principle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0 6px}
+.strategy-principle-grid>div{padding:14px;border-radius:15px;background:#fff;border:1px solid #e2dfeb;display:flex;align-items:center;gap:10px}
+.strategy-principle-grid strong{display:grid;place-items:center;width:29px;height:29px;border-radius:50%;background:#eeeafd;color:#6257a0;font-family:Georgia,serif}
+.strategy-principle-grid span{font-size:12px;font-weight:750;color:#5b5668}
+#strategy-easy{background:#e9f4ec!important;color:#35644c!important;border-color:#cfe2d4!important}
+#strategy-easy.active{background:#4f8165!important;color:#fff!important;border-color:#4f8165!important;box-shadow:0 9px 22px rgba(79,129,101,.18)!important}
+#strategy-medium{background:#fff1df!important;color:#986524!important;border-color:#efd7b6!important}
+#strategy-medium.active{background:#d59443!important;color:#fff!important;border-color:#d59443!important;box-shadow:0 9px 22px rgba(213,148,67,.18)!important}
+#strategy-hard{background:#fbe9e6!important;color:#a9574d!important;border-color:#efcbc5!important}
+#strategy-hard.active{background:#bc685d!important;color:#fff!important;border-color:#bc685d!important;box-shadow:0 9px 22px rgba(188,104,93,.18)!important}
+.strategy-primary{background:linear-gradient(135deg,#6c73a8,#7d5f94)!important}
+.strategy-shell{width:min(900px,100%)}
+.strategy-run-head{display:flex;justify-content:space-between;align-items:end;gap:14px;margin:18px 0 10px}
+.strategy-run-head>div:first-child{display:grid;gap:4px}
+#strategyScenarioTitle{font-family:Georgia,serif;font-size:23px;font-weight:500;color:#38334a}
+.strategy-step-pill{padding:8px 11px;border-radius:999px;background:#efecf9;border:1px solid #ddd7ed;font-size:11px;font-weight:850;color:#625b82;white-space:nowrap}
+.strategy-progress-fill{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#7198c4,#8067a6,#c18192);transition:width .28s ease}
+.strategy-objective{padding:12px 14px;margin:14px 0;border-radius:14px;background:#fff8e9;border:1px solid #efe1ba;color:#725b27;font-size:13px;line-height:1.5}
+.strategy-objective:before{content:"OBJECTIVE · ";font-size:10px;font-weight:900;letter-spacing:1px;color:#9a782f}
+.strategy-state-card{padding:24px;border-radius:21px;background:linear-gradient(145deg,#fffdfa,#f5f4ff);border:1px solid #e3deeb;box-shadow:0 14px 30px rgba(58,52,80,.05)}
+.strategy-state{font-size:17px;font-weight:700;line-height:1.65;color:#3f3b4d}
+.strategy-think-ahead{margin-top:16px;padding-top:13px;border-top:1px solid #e8e3ec;color:#81798b;font-size:12px;line-height:1.5}
+.strategy-prompt{margin:18px 2px 11px;font-size:15px;font-weight:850;color:#40394f}
+.strategy-choices{display:grid;gap:9px}
+.strategy-choice{display:flex;align-items:flex-start;gap:12px;width:100%;padding:15px 16px;text-align:left;border-radius:15px;background:#fff;border:1px solid #e0dce8;color:#4a4555;box-shadow:none}
+.strategy-choice:hover:not(:disabled){border-color:#a89dc3;transform:translateY(-1px)}
+.strategy-choice.selected{background:#f1eef9;border-color:#8e82ad;color:#4e456b}
+.strategy-choice .strategy-letter{display:grid;place-items:center;min-width:27px;height:27px;border-radius:50%;background:#efedf4;color:#6b6278;font-size:11px;font-weight:900}
+.strategy-choice.selected .strategy-letter{background:#76699b;color:#fff}
+.strategy-transition{margin:16px 0;padding:17px 18px;border-radius:16px;background:linear-gradient(145deg,#edf5fb,#f7f2fb);border:1px solid #dce2ec}
+.strategy-transition span{display:block;font-size:9px;letter-spacing:1.4px;font-weight:900;color:#746d90;margin-bottom:6px}
+.strategy-transition div{font-size:14px;line-height:1.6;color:#514c5d}
+.strategy-score-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:15px 0}
+.strategy-path-review{display:grid;gap:10px;margin-top:14px}
+.strategy-path-step{padding:13px 14px;border-radius:13px;background:#faf8fc;border:1px solid #e8e3ed}
+.strategy-path-step strong{display:block;color:#4f4961;margin-bottom:5px}
+.strategy-path-step p{margin:5px 0;color:#6f6877;font-size:12px;line-height:1.5}
+.strategy-path-step .alt{margin-top:7px;color:#785f45}
+@media(max-width:1050px){.mode-card:nth-child(6){grid-column:auto}}
+@media(max-width:700px){.strategy-principle-grid{grid-template-columns:1fr}.strategy-run-head{align-items:flex-start;flex-direction:column}.strategy-score-grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -2056,7 +2104,7 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
         <div>
           <span class="section-kicker">PILIH LATIHAN</span>
           <h2>Latihan untuk Versi Terbaik Kamu</h2>
-          <p>Lima fokus sederhana untuk melatih ingatan, cara berpikir, komunikasi, menulis, dan vocabulary.</p>
+          <p>Enam fokus untuk melatih ingatan, bahasa, komunikasi, penalaran, dan kemampuan memikirkan langkah berikutnya.</p>
         </div>
       </div>
       <div class="mode-grid">
@@ -2119,6 +2167,18 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
           <h3>Logika & Penalaran</h3>
           <p>Latih deduksi, aturan, argumen, dan kemampuan membedakan apa yang pasti, mungkin, atau cuma asumsi.</p>
           <span class="mode-link">Mulai latihan →</span>
+        </div>
+        <div class="mode-card strategy" onclick="openStrategyHome()">
+          <div class="mode-card-top">
+            <div class="mode-icon-badge" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 18h4v-4H4zM10 12h4V8h-4zM16 6h4V2h-4z"/><path d="M8 16c2.5 0 2-6 4-6h2c2 0 1.5-6 4-6"/><path d="M6 14V8h4"/></svg>
+            </div>
+            <div class="mode-number">06</div>
+          </div>
+          <div class="mode-focus">Fokus · Berpikir ke Depan</div>
+          <h3>Strategi & Antisipasi</h3>
+          <p>Mini-simulation bercabang: pilih langkah, lihat konsekuensinya, lalu ambil keputusan berikutnya.</p>
+          <span class="mode-link">Mainkan simulasi →</span>
         </div>
       </div>
     </section>
@@ -2277,6 +2337,33 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
     </div>
     <div id="logicProgressPanel" class="progress-panel hidden"></div>
   </div>
+
+  <div id="strategyHome" class="hidden">
+    <button class="back-link" onclick="showHome()">← Kembali ke pilihan latihan</button>
+    <div class="home-card strategy-home-card">
+      <div class="vocab-home-kicker">LATIHAN 06</div>
+      <h2>Strategi & Antisipasi</h2>
+      <p>Di sini keputusanmu mengubah posisi berikutnya. Jadi jangan cuma cari langkah yang terlihat bagus sekarang.</p>
+      <div class="home-tip"><b>Pola latihan:</b> langkahmu → konsekuensi / respons → langkahmu berikutnya. Tujuannya membiasakan otak berpikir beberapa langkah seperti saat bermain catur.</div>
+    </div>
+    <div class="strategy-principle-grid">
+      <div><strong>1</strong><span>Lihat posisi sekarang</span></div>
+      <div><strong>2</strong><span>Bayangkan respons berikutnya</span></div>
+      <div><strong>3</strong><span>Jaga opsi tetap terbuka</span></div>
+    </div>
+    <div class="progress-title">Tingkat kesulitan</div>
+    <div class="difficulty">
+      <button class="level-btn" id="strategy-easy" onclick="setStrategyDifficulty('easy')"><span>Mudah</span><small>2 keputusan</small></button>
+      <button class="level-btn" id="strategy-medium" onclick="setStrategyDifficulty('medium')"><span>Sedang</span><small>3 keputusan</small></button>
+      <button class="level-btn" id="strategy-hard" onclick="setStrategyDifficulty('hard')"><span>Susah</span><small>4 keputusan</small></button>
+    </div>
+    <div class="level-desc" id="strategyLevelDesc"></div>
+    <div class="actions">
+      <button class="primary strategy-primary" onclick="beginStrategySession()">Mulai Simulation</button>
+      <button class="secondary" onclick="toggleStrategyProgress()">Lihat Progress Strategi</button>
+    </div>
+    <div id="strategyProgressPanel" class="progress-panel hidden"></div>
+  </div>
 </div>
 
 <div id="writingSection" class="hidden writing-shell">
@@ -2386,6 +2473,39 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
   </div>
 </div>
 
+<div id="strategySection" class="hidden writing-shell strategy-shell">
+  <button class="back-link" onclick="openStrategyHome()">← Kembali ke menu Strategi</button>
+  <div class="strategy-run-head">
+    <div>
+      <span class="vocab-round-label">STRATEGI & ANTISIPASI</span>
+      <strong id="strategyScenarioTitle">Simulation</strong>
+    </div>
+    <div class="strategy-step-pill" id="strategyStepText">Keputusan 1</div>
+  </div>
+  <div class="vocab-progress-track"><div id="strategyProgressBar" class="strategy-progress-fill"></div></div>
+  <div class="strategy-objective" id="strategyObjective"></div>
+  <div class="strategy-state-card">
+    <div class="prompt-label" id="strategyCategory">SITUASI</div>
+    <div id="strategyState" class="strategy-state"></div>
+    <div class="strategy-think-ahead">Jangan cuma tanya “mana yang bagus sekarang?” — pikirkan juga posisi yang tersisa setelah keputusan ini.</div>
+  </div>
+  <div class="strategy-prompt" id="strategyPrompt"></div>
+  <div id="strategyChoices" class="strategy-choices"></div>
+  <div id="strategyTransition" class="strategy-transition hidden">
+    <span>YANG TERJADI BERIKUTNYA</span>
+    <div id="strategyConsequence"></div>
+  </div>
+  <div class="actions">
+    <button id="strategyContinueBtn" class="primary hidden" onclick="continueStrategy()">Lanjutkan →</button>
+    <button class="rest-btn" onclick="showHome()">Istirahat / Home</button>
+  </div>
+  <div id="strategyResult" class="result hidden"></div>
+  <div class="actions">
+    <button id="strategyAgainBtn" class="primary hidden" onclick="beginStrategySession()">Simulation Baru</button>
+    <button id="strategyHomeBtn" class="secondary hidden" onclick="showHome()">Selesai & Kembali Home</button>
+  </div>
+</div>
+
 <div id="imageMemorySection" class="hidden image-memory-shell">
   <button class="back-link" onclick="openMemoryHome()">← Kembali ke menu Latihan Ingatan</button>
   <div class="image-memory-head">
@@ -2451,6 +2571,7 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
 <script src="vocabulary-data.js"></script>
 <script src="image-memory-data.js"></script>
 <script src="logic-data.js"></script>
+<script src="strategy-data.js"></script>
 <script src="extra-training-data.js"></script>
 <script>
 const D={
@@ -3057,6 +3178,10 @@ function openMemoryHome(){
  document.getElementById("communicationHome").classList.add("hidden");
  document.getElementById("vocabularyHome").classList.add("hidden");
  document.getElementById("logicHome").classList.add("hidden");
+ document.getElementById("strategyHome").classList.add("hidden");
+ document.getElementById("logicHome").classList.add("hidden");
+ document.getElementById("strategyHome").classList.add("hidden");
+ document.getElementById("strategySection").classList.add("hidden");
  document.getElementById("memoryHome").classList.remove("hidden");
  updateMemoryModeUI();
  updateStats();
@@ -3068,10 +3193,12 @@ function openWritingHome(){
  document.getElementById("quizSection").classList.add("hidden");
  document.getElementById("writingSection").classList.add("hidden");
  document.getElementById("communicationSection").classList.add("hidden");
+ document.getElementById("strategySection").classList.add("hidden");
  document.getElementById("homeSection").classList.remove("hidden");
  document.getElementById("mainHome").classList.add("hidden");
  document.getElementById("memoryHome").classList.add("hidden");
  document.getElementById("communicationHome").classList.add("hidden");
+ document.getElementById("strategyHome").classList.add("hidden");
  document.getElementById("writingHome").classList.remove("hidden");
  updateWritingHomeUI();
  document.getElementById("typeStat").textContent="Mode: Kalimat Efektif";
@@ -3514,11 +3641,12 @@ function updateCommunicationHomeUI(){
 function openCommunicationHome(){
  const shell=document.getElementById("appShell");if(shell)shell.classList.remove("home-view");
  clearStoryTimer();
- ["storySection","quizSection","writingSection","communicationSection"].forEach(function(id){document.getElementById(id).classList.add("hidden")});
+ ["storySection","quizSection","writingSection","communicationSection","strategySection"].forEach(function(id){document.getElementById(id).classList.add("hidden")});
  document.getElementById("homeSection").classList.remove("hidden");
  document.getElementById("mainHome").classList.add("hidden");
  document.getElementById("memoryHome").classList.add("hidden");
  document.getElementById("writingHome").classList.add("hidden");
+ document.getElementById("strategyHome").classList.add("hidden");
  document.getElementById("communicationHome").classList.remove("hidden");
  updateCommunicationHomeUI();
  document.getElementById("typeStat").textContent="Mode: Komunikasi Efektif";
@@ -4442,9 +4570,9 @@ function findVocabularyWord(word){
 function openVocabularyHome(){
  const shell=document.getElementById("appShell");if(shell)shell.classList.remove("home-view");
  clearStoryTimer();
- ["storySection","quizSection","writingSection","communicationSection","vocabularySection","logicSection","imageMemorySection","imageMemoryQuiz"].forEach(function(id){const el=document.getElementById(id);if(el)el.classList.add("hidden")});
+ ["storySection","quizSection","writingSection","communicationSection","vocabularySection","logicSection","strategySection","imageMemorySection","imageMemoryQuiz"].forEach(function(id){const el=document.getElementById(id);if(el)el.classList.add("hidden")});
  document.getElementById("homeSection").classList.remove("hidden");
- ["mainHome","memoryHome","writingHome","communicationHome","logicHome"].forEach(function(id){document.getElementById(id).classList.add("hidden")});
+ ["mainHome","memoryHome","writingHome","communicationHome","logicHome","strategyHome"].forEach(function(id){document.getElementById(id).classList.add("hidden")});
  document.getElementById("vocabularyHome").classList.remove("hidden");
  document.getElementById("typeStat").textContent="Mode: Vocabulary";
  updateVocabularyHomeUI();window.scrollTo({top:0,behavior:"smooth"});
@@ -4739,7 +4867,7 @@ function openLogicHome(){
    const el=document.getElementById(id);if(el)el.classList.add("hidden");
  });
  document.getElementById("homeSection").classList.remove("hidden");
- ["mainHome","memoryHome","writingHome","communicationHome","vocabularyHome"].forEach(function(id){
+ ["mainHome","memoryHome","writingHome","communicationHome","vocabularyHome","strategyHome"].forEach(function(id){
    const el=document.getElementById(id);if(el)el.classList.add("hidden");
  });
  document.getElementById("logicHome").classList.remove("hidden");
@@ -4851,6 +4979,130 @@ function toggleLogicProgress(){
  if(!p.classList.contains("hidden"))renderLogicProgress();
 }
 
+let strategyDifficulty=localStorage.getItem("strategyDifficulty")||"medium";
+let strategyHistory=JSON.parse(localStorage.getItem("strategyProgressHistory")||"[]");
+let currentStrategy=null,currentStrategyNodeId=null,strategyPath=[],strategyPendingNext=null,strategyLocked=false;
+
+function setStrategyDifficulty(level){
+ strategyDifficulty=level;localStorage.setItem("strategyDifficulty",level);updateStrategyHomeUI();
+}
+function updateStrategyHomeUI(){
+ ["easy","medium","hard"].forEach(function(level){
+   const el=document.getElementById("strategy-"+level);if(el)el.classList.toggle("active",level===strategyDifficulty);
+ });
+ const d=document.getElementById("strategyLevelDesc");if(d)d.textContent=STRATEGY_LEVELS[strategyDifficulty].desc;
+ const p=document.getElementById("strategyProgressPanel");if(p&&!p.classList.contains("hidden"))renderStrategyProgress();
+}
+function openStrategyHome(){
+ const shell=document.getElementById("appShell");if(shell)shell.classList.remove("home-view");
+ clearStoryTimer();clearImageMemoryTimer();cancelPendingImageMemoryLoad();
+ ["storySection","quizSection","writingSection","communicationSection","vocabularySection","logicSection","strategySection","imageMemorySection","imageMemoryQuiz"].forEach(function(id){const el=document.getElementById(id);if(el)el.classList.add("hidden")});
+ document.getElementById("homeSection").classList.remove("hidden");
+ ["mainHome","memoryHome","writingHome","communicationHome","vocabularyHome","logicHome"].forEach(function(id){const el=document.getElementById(id);if(el)el.classList.add("hidden")});
+ document.getElementById("strategyHome").classList.remove("hidden");
+ document.getElementById("typeStat").textContent="Mode: Strategi";
+ updateStrategyHomeUI();window.scrollTo({top:0,behavior:"smooth"});
+}
+function chooseStrategyScenario(){
+ const key="strategyRecent_"+strategyDifficulty;
+ let recent=[];try{recent=JSON.parse(localStorage.getItem(key)||"[]")}catch(e){}
+ let pool=STRATEGY_BANK[strategyDifficulty].filter(function(x){return !recent.includes(x.id)});
+ if(!pool.length)pool=STRATEGY_BANK[strategyDifficulty].slice();
+ const chosen=pool[Math.floor(Math.random()*pool.length)];
+ localStorage.setItem(key,JSON.stringify(recent.concat([chosen.id]).slice(-3)));
+ return chosen;
+}
+function beginStrategySession(){
+ currentStrategy=chooseStrategyScenario();currentStrategyNodeId=currentStrategy.start;strategyPath=[];strategyPendingNext=null;strategyLocked=false;
+ document.getElementById("strategyResult").classList.add("hidden");
+ document.getElementById("strategyAgainBtn").classList.add("hidden");
+ document.getElementById("strategyHomeBtn").classList.add("hidden");
+ renderStrategyNode();
+}
+function renderStrategyNode(){
+ const shell=document.getElementById("appShell");if(shell)shell.classList.remove("home-view");
+ document.getElementById("homeSection").classList.add("hidden");
+ ["storySection","quizSection","writingSection","communicationSection","vocabularySection","logicSection","imageMemorySection","imageMemoryQuiz"].forEach(function(id){const el=document.getElementById(id);if(el)el.classList.add("hidden")});
+ document.getElementById("strategySection").classList.remove("hidden");
+ const node=currentStrategy.nodes[currentStrategyNodeId];strategyLocked=false;strategyPendingNext=null;
+ const step=strategyPath.length+1,estimated=Math.max(STRATEGY_LEVELS[strategyDifficulty].steps,step);
+ document.getElementById("strategyScenarioTitle").textContent=currentStrategy.title;
+ document.getElementById("strategyStepText").textContent="Keputusan "+step;
+ document.getElementById("strategyProgressBar").style.width=Math.min(92,((step-1)/estimated*100))+"%";
+ document.getElementById("strategyObjective").textContent=currentStrategy.objective;
+ document.getElementById("strategyCategory").textContent=currentStrategy.category;
+ document.getElementById("strategyState").textContent=node.state;
+ document.getElementById("strategyPrompt").textContent=node.prompt;
+ const wrap=document.getElementById("strategyChoices");wrap.innerHTML="";
+ node.choices.forEach(function(choice,i){
+   const b=document.createElement("button");b.className="strategy-choice";
+   b.innerHTML='<span class="strategy-letter">'+String.fromCharCode(65+i)+'</span><span>'+esc(choice.text)+'</span>';
+   b.onclick=function(){chooseStrategyChoice(i,b)};wrap.appendChild(b);
+ });
+ document.getElementById("strategyTransition").classList.add("hidden");
+ document.getElementById("strategyContinueBtn").classList.add("hidden");
+ document.getElementById("strategyResult").classList.add("hidden");
+ document.getElementById("typeStat").textContent="Mode: Strategi · "+STRATEGY_LEVELS[strategyDifficulty].label;
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function chooseStrategyChoice(index,button){
+ if(strategyLocked)return;strategyLocked=true;
+ const node=currentStrategy.nodes[currentStrategyNodeId],choice=node.choices[index];
+ const best=node.choices.find(function(x){return x.best});
+ strategyPath.push({nodeId:currentStrategyNodeId,prompt:node.prompt,choice:choice.text,consequence:choice.consequence,scores:choice.scores.slice(),best:!!choice.best,bestText:best?best.text:"",analysis:choice.analysis});
+ strategyPendingNext=choice.next;
+ document.querySelectorAll("#strategyChoices .strategy-choice").forEach(function(b){b.disabled=true});
+ button.classList.add("selected");
+ document.getElementById("strategyConsequence").textContent=choice.consequence;
+ document.getElementById("strategyTransition").classList.remove("hidden");
+ const next=document.getElementById("strategyContinueBtn");next.textContent=choice.next?"Hadapi situasi berikutnya →":"Lihat hasil";next.classList.remove("hidden");
+}
+function continueStrategy(){
+ if(!strategyLocked)return;
+ if(strategyPendingNext){currentStrategyNodeId=strategyPendingNext;renderStrategyNode()}else finishStrategySession();
+}
+function calculateStrategyScores(){
+ const sums=[0,0,0,0];strategyPath.forEach(function(x){x.scores.forEach(function(v,i){sums[i]+=v})});
+ const n=Math.max(1,strategyPath.length),v=sums.map(function(x){return Math.round(x/n)});
+ return {anticipation:v[0],risk:v[1],adaptation:v[2],efficiency:v[3],total:Math.round(v[0]*.35+v[1]*.25+v[2]*.25+v[3]*.15)};
+}
+function strategyLabel(score){
+ if(score>=90)return"Berpikir beberapa langkah ke depan";
+ if(score>=78)return"Antisipasi kuat";
+ if(score>=65)return"Strategi cukup solid";
+ if(score>=50)return"Masih terlalu fokus pada langkah pertama";
+ return"Perlu memperpanjang horizon keputusan";
+}
+function finishStrategySession(){
+ const scores=calculateStrategyScores(),bestCount=strategyPath.filter(function(x){return x.best}).length;
+ strategyHistory.push({time:Date.now(),scenarioId:currentStrategy.id,title:currentStrategy.title,difficulty:strategyDifficulty,pct:scores.total,score:scores.total,dims:scores,bestMoves:bestCount,steps:strategyPath.length,path:strategyPath.slice()});
+ strategyHistory=strategyHistory.slice(-80);localStorage.setItem("strategyProgressHistory",JSON.stringify(strategyHistory));
+ document.getElementById("strategyChoices").innerHTML="";document.getElementById("strategyPrompt").textContent="";
+ document.getElementById("strategyTransition").classList.add("hidden");document.getElementById("strategyContinueBtn").classList.add("hidden");document.getElementById("strategyProgressBar").style.width="100%";
+ let review="";
+ strategyPath.forEach(function(x,i){
+   review+='<div class="strategy-path-step"><strong>Keputusan '+(i+1)+': '+esc(x.choice)+'</strong><p>'+esc(x.consequence)+'</p><p><b>Analisis:</b> '+esc(x.analysis)+'</p>'+(!x.best&&x.bestText?'<p class="alt"><b>Line lebih kuat:</b> '+esc(x.bestText)+'</p>':"")+'</div>';
+ });
+ const r=document.getElementById("strategyResult");
+ r.innerHTML='<div class="score-big">'+scores.total+'/100 · '+strategyLabel(scores.total)+'</div><div class="result-note">Best-line decisions: '+bestCount+'/'+strategyPath.length+'. Yang dinilai bukan sekadar berani atau aman, tetapi apakah pilihanmu menjaga objective dan opsi untuk langkah berikutnya.</div>'+
+ '<div class="strategy-score-grid"><div class="rubric-card"><span>Antisipasi</span><strong>'+scores.anticipation+'</strong></div><div class="rubric-card"><span>Risk Control</span><strong>'+scores.risk+'</strong></div><div class="rubric-card"><span>Adaptasi</span><strong>'+scores.adaptation+'</strong></div><div class="rubric-card"><span>Efisiensi</span><strong>'+scores.efficiency+'</strong></div></div>'+
+ '<div class="progress-title">Review garis keputusan</div><div class="strategy-path-review">'+review+'</div>';
+ r.classList.remove("hidden");document.getElementById("strategyAgainBtn").classList.remove("hidden");document.getElementById("strategyHomeBtn").classList.remove("hidden");
+ updateHomepageJourney();r.scrollIntoView({behavior:"smooth",block:"start"});
+}
+function renderStrategyProgress(){
+ const p=document.getElementById("strategyProgressPanel"),arr=strategyHistory.filter(function(x){return x.difficulty===strategyDifficulty});
+ if(!arr.length){p.innerHTML='<div class="empty-state">Belum ada simulation Strategi di level ini.</div>';return}
+ const recent=arr.slice(-10),avgScore=Math.round(recent.reduce(function(a,b){return a+b.pct},0)/recent.length),best=Math.max.apply(null,arr.map(function(x){return x.pct}));
+ const keys=["anticipation","risk","adaptation","efficiency"],labels={anticipation:"Antisipasi",risk:"Risk Control",adaptation:"Adaptasi",efficiency:"Efisiensi"},avgs={};
+ keys.forEach(function(k){avgs[k]=Math.round(recent.reduce(function(a,b){return a+((b.dims&&b.dims[k])||0)},0)/recent.length)});
+ const weak=keys.slice().sort(function(a,b){return avgs[a]-avgs[b]})[0];
+ p.innerHTML='<div class="progress-grid"><div class="progress-card"><span>Sesi</span><strong>'+arr.length+'</strong><small>'+STRATEGY_LEVELS[strategyDifficulty].label+'</small></div><div class="progress-card"><span>Rata-rata 10 sesi</span><strong>'+avgScore+'%</strong><small>Strategi terbaru</small></div><div class="progress-card"><span>Best</span><strong>'+best+'%</strong><small>Skor tertinggi</small></div></div><div class="memory-callout focus"><b>Area yang paling bisa diperkuat:</b> '+labels[weak]+' ('+avgs[weak]+'%).</div>';
+}
+function toggleStrategyProgress(){
+ const p=document.getElementById("strategyProgressPanel");p.classList.toggle("hidden");if(!p.classList.contains("hidden"))renderStrategyProgress();
+}
+
 function allTrainingScores(){
  const a=[];
  progressHistory.forEach(function(x){if(typeof x.pct==="number")a.push(x.pct)});
@@ -4858,10 +5110,11 @@ function allTrainingScores(){
  communicationHistory.forEach(function(x){if(typeof x.score==="number")a.push(x.score)});
  vocabularyHistory.forEach(function(x){if(typeof x.pct==="number")a.push(x.pct)});
  logicHistory.forEach(function(x){if(typeof x.pct==="number")a.push(x.pct)});
+ strategyHistory.forEach(function(x){if(typeof x.pct==="number")a.push(x.pct)});
  return a;
 }
 function updateHomepageJourney(){
- const total=progressHistory.length+writingHistory.length+communicationHistory.length+vocabularyHistory.length+logicHistory.length;
+ const total=progressHistory.length+writingHistory.length+communicationHistory.length+vocabularyHistory.length+logicHistory.length+strategyHistory.length;
  const scores=allTrainingScores();
  const avgScore=scores.length?Math.round(scores.reduce(function(a,b){return a+b},0)/scores.length):null;
  const best=scores.length?Math.max.apply(null,scores):null;
@@ -4909,6 +5162,7 @@ function showHome(){
  document.getElementById("writingSection").classList.add("hidden");
  document.getElementById("vocabularySection").classList.add("hidden");
  document.getElementById("logicSection").classList.add("hidden");
+ document.getElementById("strategySection").classList.add("hidden");
  document.getElementById("imageMemorySection").classList.add("hidden");
  document.getElementById("imageMemoryQuiz").classList.add("hidden");
  clearImageMemoryTimer();
