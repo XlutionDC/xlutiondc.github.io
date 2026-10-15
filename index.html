@@ -2635,11 +2635,11 @@ input:focus,textarea:focus{border-color:#7774cf;box-shadow:0 0 0 4px rgba(91,91,
   </div>
 </div>
 </div>
-<script src="vocabulary-data.js"></script>
-<script src="image-memory-data.js"></script>
-<script src="logic-data.js"></script>
-<script src="strategy-data.js"></script>
-<script src="extra-training-data.js"></script>
+<script src="vocabulary-data.js?v=20261015"></script>
+<script src="image-memory-data.js?v=20261015"></script>
+<script src="logic-data.js?v=20261015"></script>
+<script src="strategy-data.js?v=20261015"></script>
+<script src="extra-training-data.js?v=20261015"></script>
 <script>
 const D={
 places:["Grand Indonesia","Plaza Indonesia","Senayan City","Kota Kasablanka","Central Park","Pondok Indah Mall","Blok M","PIK"],
@@ -3282,12 +3282,25 @@ function candidateWritingPool(){
  if(!pool.length)pool=WRITING_EXERCISES.filter(function(x){return x.level===writingDifficulty});
  return pool;
 }
-function chooseWritingExercise(){
- const pool=candidateWritingPool();
- const recentIds=writingHistory.slice(-50).map(function(x){return x.exerciseId});
- const fresh=pool.filter(function(x){return !recentIds.includes(x.id)});
- return pick(fresh.length?fresh:pool);
+// Persist selection order separately from score history. Unseen items come first;
+// once exhausted, the least recently presented item is eligible again.
+function takeTrainingItems(pool,key,count,idOf){
+ if(!pool.length)return [];
+ let state={next:1,seen:{}};
+ try{const saved=JSON.parse(localStorage.getItem(key)||"null");
+   if(saved&&Number.isSafeInteger(saved.next)&&saved.next>0&&saved.seen&&typeof saved.seen==="object"&&!Array.isArray(saved.seen))state=saved;
+ }catch(e){}
+ const ranked=shuf(pool).sort(function(a,b){return (Number(state.seen[idOf(a)])||0)-(Number(state.seen[idOf(b)])||0)});
+ const selected=ranked.slice(0,Math.min(count,pool.length));
+ selected.forEach(function(item){state.seen[idOf(item)]=state.next++});
+ try{localStorage.setItem(key,JSON.stringify(state))}catch(e){}
+ return selected;
 }
+
+function chooseWritingExercise(){
+ return takeTrainingItems(candidateWritingPool(),"rotationWriting_"+writingDifficulty,1,function(x){return x.id})[0];
+}
+
 function beginWritingSession(){
  writingDiagnosticActive=false;
  currentWriting=chooseWritingExercise();
@@ -3721,10 +3734,9 @@ function openCommunicationHome(){
 function chooseCommunicationExercise(){
  let pool=COMM_EXERCISES.filter(function(x){return x.level===communicationDifficulty&&(communicationCategory==="mixed"||x.category===communicationCategory)});
  if(!pool.length)pool=COMM_EXERCISES.filter(function(x){return x.level===communicationDifficulty});
- const recent=communicationHistory.slice(-36).map(function(x){return x.exerciseId});
- const fresh=pool.filter(function(x){return !recent.includes(x.id)});
- return pick(fresh.length?fresh:pool);
+ return takeTrainingItems(pool,"rotationCommunication_"+communicationDifficulty,1,function(x){return x.id})[0];
 }
+
 function beginCommunicationSession(){
  currentCommunication=chooseCommunicationExercise();
  communicationCompressionStage=0;
@@ -4018,6 +4030,11 @@ function bookstoreVisit(){
  return {type:"Toko buku",story,questions:choose(pool)};
 }
 const builders=[shopping,cinema,airport,study,eventStory,office,roadtrip,birthday,restaurant,park,errand,trainTrip,hotelStay,gymSession,packagePickup,bookstoreVisit];
+EXTRA_MEMORY_STORIES.forEach(function(scene){
+ const build=function(){return {type:scene.type,story:scene.story,questions:choose(scene.questions.map(function(q){return Object.assign({},q)}))}};
+ Object.defineProperty(build,"name",{value:scene.id});
+ builders.push(build);
+});
 let currentStory=null;
 let storyNumber=Number(localStorage.getItem("storyNumber")||0);
 let completed=Number(localStorage.getItem("completedMemoryStories")||0);
@@ -4053,14 +4070,12 @@ function regradeProgressHistory(){
 regradeProgressHistory();
 
 function generate(){
- let options=builders.filter(b=>!recentTypes.includes(b.name));
- if(!options.length)options=builders;
- const b=pick(options),s=b();
- recentTypes.unshift(b.name);recentTypes=recentTypes.slice(0,10);
- localStorage.setItem("recentTypes",JSON.stringify(recentTypes));
+ const b=takeTrainingItems(builders,"rotationStoryBuilders_"+difficulty,1,function(x){return x.name})[0];
+ const story=b();
  storyNumber++;localStorage.setItem("storyNumber",String(storyNumber));
- return s
+ return story;
 }
+
 function avg(nums){return nums.length?Math.round(nums.reduce(function(a,b){return a+b},0)/nums.length):0}
 function sessionsFor(level){return progressHistory.filter(function(x){return x.difficulty===level})}
 function improvementFor(level,pct){
@@ -4213,28 +4228,18 @@ function commonsImageUrl(file){
  return "https://commons.wikimedia.org/wiki/Special:Redirect/file/"+encodeURIComponent(file)+"?width=1400";
 }
 function chooseImageMemoryScene(){
- let pool=IMAGE_MEMORY_SCENES.filter(function(x){return !recentImageScenes.includes(x.id)});
- if(!pool.length)pool=IMAGE_MEMORY_SCENES.slice();
- const scene=pick(pool);
- recentImageScenes.unshift(scene.id);
- recentImageScenes=recentImageScenes.slice(0,Math.min(6,IMAGE_MEMORY_SCENES.length-1));
- localStorage.setItem("recentImageScenes",JSON.stringify(recentImageScenes));
- return scene;
+ return takeTrainingItems(IMAGE_MEMORY_SCENES,"rotationImageScenes",1,function(x){return x.id})[0];
 }
+
 function shuffledCopy(arr){
  const a=arr.slice();
  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const t=a[i];a[i]=a[j];a[j]=t}
  return a;
 }
 function chooseImageMemoryQuestions(scene,count){
- const key="recentImageQuestions_"+scene.id;
- let recent=[];try{recent=JSON.parse(localStorage.getItem(key)||"[]")}catch(e){}
- const fresh=shuffledCopy(scene.questions.filter(function(q){return !recent.includes(q.q)}));
- const old=shuffledCopy(scene.questions.filter(function(q){return recent.includes(q.q)}));
- const chosen=fresh.concat(old).slice(0,Math.min(count,scene.questions.length));
- localStorage.setItem(key,JSON.stringify(chosen.map(function(q){return q.q}).concat(recent).slice(0,12)));
- return chosen;
+ return takeTrainingItems(scene.questions,"rotationImageQuestions_"+scene.id,count,function(x){return x.q});
 }
+
 function beginImageMemory(){
  clearStoryTimer();
  clearImageMemoryTimer();
@@ -4613,13 +4618,7 @@ function updateVocabularyHomeUI(){
  if(p&&!p.classList.contains("hidden"))renderVocabularyProgress();
 }
 function chooseVocabularyRound(){
- const bank=VOCAB_BANK[vocabularyDifficulty];
- const key="vocabRecentWords_"+vocabularyDifficulty;
- let recent=[];try{recent=JSON.parse(localStorage.getItem(key)||"[]")}catch(e){}
- let pool=bank.filter(function(x){return !recent.includes(x.word)});
- if(pool.length<10)pool=bank.slice();
- const chosen=vocabShuffle(pool).slice(0,10);
- localStorage.setItem(key,JSON.stringify(recent.concat(chosen.map(function(x){return x.word})).slice(-120)));
+ const chosen=takeTrainingItems(VOCAB_BANK[vocabularyDifficulty],"rotationVocabulary_"+vocabularyDifficulty,10,function(x){return x.word});
  const positions=balancedVocabPositions();
  return chosen.map(function(item,i){
    const options=vocabShuffle(item.wrong).slice(0,3);
@@ -4943,15 +4942,10 @@ function openLogicHome(){
  window.scrollTo({top:0,behavior:"smooth"});
 }
 function chooseLogicRound(){
- const key="logicRecent_"+logicDifficulty;
- let recent=[];try{recent=JSON.parse(localStorage.getItem(key)||"[]")}catch(e){}
- const targetCount=logicDifficulty==="hard"?10:8;
- let pool=LOGIC_BANK[logicDifficulty].filter(function(q){return !recent.includes(q.id)});
- if(pool.length<targetCount)pool=LOGIC_BANK[logicDifficulty].slice();
- const chosen=shuffledCopy(pool).slice(0,Math.min(targetCount,pool.length));
- localStorage.setItem(key,JSON.stringify(recent.concat(chosen.map(function(q){return q.id})).slice(-(logicDifficulty==="hard"?20:18))));
- return chosen;
+ const count=logicDifficulty==="hard"?10:8;
+ return takeTrainingItems(LOGIC_BANK[logicDifficulty],"rotationLogic_"+logicDifficulty,count,function(x){return x.id}).map(function(q){return Object.assign({},q,{options:shuffledCopy(q.options)})});
 }
+
 function beginLogicSession(){
  logicRound=chooseLogicRound();logicIndex=0;logicScore=0;logicAnswers=[];logicAnswered=false;
  document.getElementById("logicResult").classList.add("hidden");
@@ -5071,14 +5065,9 @@ function openStrategyHome(){
  updateStrategyHomeUI();window.scrollTo({top:0,behavior:"smooth"});
 }
 function chooseStrategyScenario(){
- const key="strategyRecent_"+strategyDifficulty;
- let recent=[];try{recent=JSON.parse(localStorage.getItem(key)||"[]")}catch(e){}
- let pool=STRATEGY_BANK[strategyDifficulty].filter(function(x){return !recent.includes(x.id)});
- if(!pool.length)pool=STRATEGY_BANK[strategyDifficulty].slice();
- const chosen=pool[Math.floor(Math.random()*pool.length)];
- localStorage.setItem(key,JSON.stringify(recent.concat([chosen.id]).slice(-3)));
- return chosen;
+ return takeTrainingItems(STRATEGY_BANK[strategyDifficulty],"rotationStrategy_"+strategyDifficulty,1,function(x){return x.id})[0];
 }
+
 function beginStrategySession(){
  currentStrategy=chooseStrategyScenario();currentStrategyNodeId=currentStrategy.start;strategyPath=[];strategyPendingNext=null;strategyLocked=false;
  document.getElementById("strategyResult").classList.add("hidden");

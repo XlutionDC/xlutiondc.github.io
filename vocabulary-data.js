@@ -22,3 +22,672 @@ var VOCAB_BANK={
   medium:buildVocabularyBank(VOCAB_GROUPS.medium),
   hard:buildVocabularyBank(VOCAB_GROUPS.hard)
 };
+
+
+// Konteks dan kosakata tambahan Oktober 2026.
+VOCAB_BANK.easy.push(...[
+  {
+    "word": "shoelace",
+    "meaning": "tali sepatu",
+    "context": "Tie your shoelace before running.",
+    "wrong": [
+      "ritsleting",
+      "lengan baju",
+      "kerah baju"
+    ]
+  },
+  {
+    "word": "zipper",
+    "meaning": "ritsleting",
+    "context": "The zipper on my bag is broken.",
+    "wrong": [
+      "tali sepatu",
+      "lengan baju",
+      "kerah baju"
+    ]
+  },
+  {
+    "word": "sleeve",
+    "meaning": "lengan baju",
+    "context": "One sleeve of my shirt is wet.",
+    "wrong": [
+      "tali sepatu",
+      "ritsleting",
+      "kerah baju"
+    ]
+  },
+  {
+    "word": "collar",
+    "meaning": "kerah baju",
+    "context": "Please straighten your collar.",
+    "wrong": [
+      "tali sepatu",
+      "ritsleting",
+      "lengan baju"
+    ]
+  },
+  {
+    "word": "ladle",
+    "meaning": "sendok sayur",
+    "context": "Use a ladle to serve the soup.",
+    "wrong": [
+      "saringan berlubang untuk meniriskan",
+      "alat parut",
+      "penjepit makanan"
+    ]
+  },
+  {
+    "word": "colander",
+    "meaning": "saringan berlubang untuk meniriskan",
+    "context": "Drain the pasta in a colander.",
+    "wrong": [
+      "sendok sayur",
+      "alat parut",
+      "penjepit makanan"
+    ]
+  },
+  {
+    "word": "grater",
+    "meaning": "alat parut",
+    "context": "Use the grater for the cheese.",
+    "wrong": [
+      "sendok sayur",
+      "saringan berlubang untuk meniriskan",
+      "penjepit makanan"
+    ]
+  },
+  {
+    "word": "tongs",
+    "meaning": "penjepit makanan",
+    "context": "Pick up the hot bread with tongs.",
+    "wrong": [
+      "sendok sayur",
+      "saringan berlubang untuk meniriskan",
+      "alat parut"
+    ]
+  },
+  {
+    "word": "doormat",
+    "meaning": "keset pintu",
+    "context": "Wipe your shoes on the doormat.",
+    "wrong": [
+      "bel pintu",
+      "lubang kunci",
+      "ambang atau area tepat di depan pintu"
+    ]
+  },
+  {
+    "word": "doorbell",
+    "meaning": "bel pintu",
+    "context": "Someone rang the doorbell.",
+    "wrong": [
+      "keset pintu",
+      "lubang kunci",
+      "ambang atau area tepat di depan pintu"
+    ]
+  },
+  {
+    "word": "keyhole",
+    "meaning": "lubang kunci",
+    "context": "The key broke inside the keyhole.",
+    "wrong": [
+      "keset pintu",
+      "bel pintu",
+      "ambang atau area tepat di depan pintu"
+    ]
+  },
+  {
+    "word": "doorstep",
+    "meaning": "ambang atau area tepat di depan pintu",
+    "context": "A parcel was left on our doorstep.",
+    "wrong": [
+      "keset pintu",
+      "bel pintu",
+      "lubang kunci"
+    ]
+  },
+  {
+    "word": "ankle",
+    "meaning": "pergelangan kaki",
+    "context": "My ankle hurts after the walk.",
+    "wrong": [
+      "pergelangan tangan",
+      "siku",
+      "tumit"
+    ]
+  },
+  {
+    "word": "wrist",
+    "meaning": "pergelangan tangan",
+    "context": "The watch fits my wrist.",
+    "wrong": [
+      "pergelangan kaki",
+      "siku",
+      "tumit"
+    ]
+  },
+  {
+    "word": "elbow",
+    "meaning": "siku",
+    "context": "Keep your elbow off the table.",
+    "wrong": [
+      "pergelangan kaki",
+      "pergelangan tangan",
+      "tumit"
+    ]
+  },
+  {
+    "word": "heel",
+    "meaning": "tumit",
+    "context": "The back of my shoe rubs my heel.",
+    "wrong": [
+      "pergelangan kaki",
+      "pergelangan tangan",
+      "siku"
+    ]
+  },
+  {
+    "word": "hedge",
+    "meaning": "pagar tanaman",
+    "context": "A green hedge surrounds the garden.",
+    "wrong": [
+      "parit",
+      "genangan air kecil",
+      "batu kecil yang membulat"
+    ]
+  },
+  {
+    "word": "ditch",
+    "meaning": "parit",
+    "context": "Rainwater flowed into the ditch.",
+    "wrong": [
+      "pagar tanaman",
+      "genangan air kecil",
+      "batu kecil yang membulat"
+    ]
+  },
+  {
+    "word": "puddle",
+    "meaning": "genangan air kecil",
+    "context": "The child jumped into a puddle.",
+    "wrong": [
+      "pagar tanaman",
+      "parit",
+      "batu kecil yang membulat"
+    ]
+  },
+  {
+    "word": "pebble",
+    "meaning": "batu kecil yang membulat",
+    "context": "She picked up a smooth pebble.",
+    "wrong": [
+      "pagar tanaman",
+      "parit",
+      "genangan air kecil"
+    ]
+  },
+  {
+    "word": "itchy",
+    "meaning": "terasa gatal",
+    "context": "This wool sweater feels itchy.",
+    "wrong": [
+      "lembek karena terlalu basah",
+      "suam-suam kuku",
+      "tidak segar lagi"
+    ]
+  },
+  {
+    "word": "soggy",
+    "meaning": "lembek karena terlalu basah",
+    "context": "The bread became soggy in the soup.",
+    "wrong": [
+      "terasa gatal",
+      "suam-suam kuku",
+      "tidak segar lagi"
+    ]
+  },
+  {
+    "word": "lukewarm",
+    "meaning": "suam-suam kuku",
+    "context": "The tea is only lukewarm now.",
+    "wrong": [
+      "terasa gatal",
+      "lembek karena terlalu basah",
+      "tidak segar lagi"
+    ]
+  },
+  {
+    "word": "stale",
+    "meaning": "tidak segar lagi",
+    "context": "This bread tastes stale.",
+    "wrong": [
+      "terasa gatal",
+      "lembek karena terlalu basah",
+      "suam-suam kuku"
+    ]
+  }
+]);
+VOCAB_BANK.medium.push(...[
+  {
+    "word": "restock",
+    "meaning": "mengisi kembali persediaan",
+    "context": "We need to restock the shelves before opening.",
+    "wrong": [
+      "mengganti uang yang sudah dikeluarkan",
+      "merinci satu per satu",
+      "pesanan yang menunggu stok tersedia"
+    ]
+  },
+  {
+    "word": "reimburse",
+    "meaning": "mengganti uang yang sudah dikeluarkan",
+    "context": "The company will reimburse your travel expenses.",
+    "wrong": [
+      "mengisi kembali persediaan",
+      "merinci satu per satu",
+      "pesanan yang menunggu stok tersedia"
+    ]
+  },
+  {
+    "word": "itemize",
+    "meaning": "merinci satu per satu",
+    "context": "Please itemize the charges on the invoice.",
+    "wrong": [
+      "mengisi kembali persediaan",
+      "mengganti uang yang sudah dikeluarkan",
+      "pesanan yang menunggu stok tersedia"
+    ]
+  },
+  {
+    "word": "backorder",
+    "meaning": "pesanan yang menunggu stok tersedia",
+    "context": "This item is on backorder until next week.",
+    "wrong": [
+      "mengisi kembali persediaan",
+      "mengganti uang yang sudah dikeluarkan",
+      "merinci satu per satu"
+    ]
+  },
+  {
+    "word": "fray",
+    "meaning": "terurai atau berjumbai di tepi",
+    "context": "The fabric began to fray at the edges.",
+    "wrong": [
+      "melengkung karena perubahan bentuk",
+      "noda akibat sesuatu yang teroles",
+      "lekukan akibat benturan"
+    ]
+  },
+  {
+    "word": "warp",
+    "meaning": "melengkung karena perubahan bentuk",
+    "context": "Heat can warp this plastic panel.",
+    "wrong": [
+      "terurai atau berjumbai di tepi",
+      "noda akibat sesuatu yang teroles",
+      "lekukan akibat benturan"
+    ]
+  },
+  {
+    "word": "smudge",
+    "meaning": "noda akibat sesuatu yang teroles",
+    "context": "There is an ink smudge on the page.",
+    "wrong": [
+      "terurai atau berjumbai di tepi",
+      "melengkung karena perubahan bentuk",
+      "lekukan akibat benturan"
+    ]
+  },
+  {
+    "word": "dent",
+    "meaning": "lekukan akibat benturan",
+    "context": "The metal box has a small dent.",
+    "wrong": [
+      "terurai atau berjumbai di tepi",
+      "melengkung karena perubahan bentuk",
+      "noda akibat sesuatu yang teroles"
+    ]
+  },
+  {
+    "word": "stagger",
+    "meaning": "menjadwalkan secara berselang",
+    "context": "We stagger lunch breaks to keep the desk staffed.",
+    "wrong": [
+      "menyederhanakan proses agar efisien",
+      "menyerahkan pekerjaan ke pihak luar",
+      "melimpahkan tugas atau wewenang"
+    ]
+  },
+  {
+    "word": "outsource",
+    "meaning": "menyerahkan pekerjaan ke pihak luar",
+    "context": "They outsource deliveries to a local courier.",
+    "wrong": [
+      "menjadwalkan secara berselang",
+      "menyederhanakan proses agar efisien",
+      "melimpahkan tugas atau wewenang"
+    ]
+  },
+  {
+    "word": "legible",
+    "meaning": "dapat dibaca dengan jelas",
+    "context": "Make sure your handwriting is legible.",
+    "wrong": [
+      "mengutak-atik tanpa izin",
+      "penyusutan jumlah atau ukuran",
+      "waktu ketika alat atau sistem tidak beroperasi"
+    ]
+  },
+  {
+    "word": "tamper",
+    "meaning": "mengutak-atik tanpa izin",
+    "context": "Do not tamper with the safety seal.",
+    "wrong": [
+      "dapat dibaca dengan jelas",
+      "penyusutan jumlah atau ukuran",
+      "waktu ketika alat atau sistem tidak beroperasi"
+    ]
+  },
+  {
+    "word": "shrinkage",
+    "meaning": "penyusutan jumlah atau ukuran",
+    "context": "Allow for fabric shrinkage after washing.",
+    "wrong": [
+      "dapat dibaca dengan jelas",
+      "mengutak-atik tanpa izin",
+      "waktu ketika alat atau sistem tidak beroperasi"
+    ]
+  },
+  {
+    "word": "downtime",
+    "meaning": "waktu ketika alat atau sistem tidak beroperasi",
+    "context": "The factory reduced machine downtime.",
+    "wrong": [
+      "dapat dibaca dengan jelas",
+      "mengutak-atik tanpa izin",
+      "penyusutan jumlah atau ukuran"
+    ]
+  },
+  {
+    "word": "replenish",
+    "meaning": "mengisi kembali sesuatu yang berkurang",
+    "context": "Drink water to replenish lost fluids.",
+    "wrong": [
+      "menahan atau tidak memberikan",
+      "membebaskan kewajiban atau biaya",
+      "kehilangan hak akibat pelanggaran syarat"
+    ]
+  },
+  {
+    "word": "withhold",
+    "meaning": "menahan atau tidak memberikan",
+    "context": "They withheld payment until the work was checked.",
+    "wrong": [
+      "mengisi kembali sesuatu yang berkurang",
+      "membebaskan kewajiban atau biaya",
+      "kehilangan hak akibat pelanggaran syarat"
+    ]
+  },
+  {
+    "word": "waive",
+    "meaning": "membebaskan kewajiban atau biaya",
+    "context": "The store agreed to waive the delivery fee.",
+    "wrong": [
+      "mengisi kembali sesuatu yang berkurang",
+      "menahan atau tidak memberikan",
+      "kehilangan hak akibat pelanggaran syarat"
+    ]
+  },
+  {
+    "word": "forfeit",
+    "meaning": "kehilangan hak akibat pelanggaran syarat",
+    "context": "Late arrival may mean you forfeit your place.",
+    "wrong": [
+      "mengisi kembali sesuatu yang berkurang",
+      "menahan atau tidak memberikan",
+      "membebaskan kewajiban atau biaya"
+    ]
+  },
+  {
+    "word": "pending",
+    "meaning": "masih menunggu keputusan atau proses",
+    "context": "Your request is pending approval.",
+    "wrong": [
+      "sementara dan belum dipastikan",
+      "sudah melewati jatuh tempo",
+      "dilakukan sedikit demi sedikit secara terpisah"
+    ]
+  },
+  {
+    "word": "piecemeal",
+    "meaning": "dilakukan sedikit demi sedikit secara terpisah",
+    "context": "Piecemeal repairs did not solve the whole problem.",
+    "wrong": [
+      "sementara dan belum dipastikan",
+      "sudah melewati jatuh tempo",
+      "masih menunggu keputusan atau proses"
+    ]
+  }
+]);
+VOCAB_BANK.hard.push(...[
+  {
+    "word": "counterfactual",
+    "meaning": "keadaan hipotetis tentang apa yang tidak terjadi",
+    "context": "The counterfactual asks what would have happened without the policy.",
+    "wrong": [
+      "faktor yang mengacaukan hubungan sebab-akibat",
+      "keterkaitan variabel penjelas dengan galat dalam model",
+      "keragaman antaranggota atau kelompok"
+    ]
+  },
+  {
+    "word": "confounder",
+    "meaning": "faktor yang mengacaukan hubungan sebab-akibat",
+    "context": "Age could be a confounder in this study.",
+    "wrong": [
+      "keadaan hipotetis tentang apa yang tidak terjadi",
+      "keterkaitan variabel penjelas dengan galat dalam model",
+      "keragaman antaranggota atau kelompok"
+    ]
+  },
+  {
+    "word": "endogeneity",
+    "meaning": "keterkaitan variabel penjelas dengan galat dalam model",
+    "context": "Endogeneity can bias the estimated effect.",
+    "wrong": [
+      "keadaan hipotetis tentang apa yang tidak terjadi",
+      "faktor yang mengacaukan hubungan sebab-akibat",
+      "keragaman antaranggota atau kelompok"
+    ]
+  },
+  {
+    "word": "heterogeneity",
+    "meaning": "keragaman antaranggota atau kelompok",
+    "context": "The average hides considerable heterogeneity across regions.",
+    "wrong": [
+      "keadaan hipotetis tentang apa yang tidak terjadi",
+      "faktor yang mengacaukan hubungan sebab-akibat",
+      "keterkaitan variabel penjelas dengan galat dalam model"
+    ]
+  },
+  {
+    "word": "fungible",
+    "meaning": "dapat saling dipertukarkan dengan unit setara",
+    "context": "Cash is fungible, unlike a unique painting.",
+    "wrong": [
+      "sulit dijual cepat tanpa potongan besar",
+      "dibebani kewajiban atau hak pihak lain",
+      "bebas dari beban kewajiban atau hak pihak lain"
+    ]
+  },
+  {
+    "word": "illiquid",
+    "meaning": "sulit dijual cepat tanpa potongan besar",
+    "context": "The land is valuable but illiquid.",
+    "wrong": [
+      "dapat saling dipertukarkan dengan unit setara",
+      "dibebani kewajiban atau hak pihak lain",
+      "bebas dari beban kewajiban atau hak pihak lain"
+    ]
+  },
+  {
+    "word": "encumbered",
+    "meaning": "dibebani kewajiban atau hak pihak lain",
+    "context": "The property is encumbered by an existing mortgage.",
+    "wrong": [
+      "dapat saling dipertukarkan dengan unit setara",
+      "sulit dijual cepat tanpa potongan besar",
+      "bebas dari beban kewajiban atau hak pihak lain"
+    ]
+  },
+  {
+    "word": "unencumbered",
+    "meaning": "bebas dari beban kewajiban atau hak pihak lain",
+    "context": "The company holds unencumbered assets.",
+    "wrong": [
+      "dapat saling dipertukarkan dengan unit setara",
+      "sulit dijual cepat tanpa potongan besar",
+      "dibebani kewajiban atau hak pihak lain"
+    ]
+  },
+  {
+    "word": "rebuttal",
+    "meaning": "sanggahan terhadap argumen",
+    "context": "Her rebuttal addressed each claim directly.",
+    "wrong": [
+      "pengakuan terbatas terhadap poin lawan",
+      "kesimpulan yang mengikuti suatu pernyataan",
+      "batasan atau catatan peringatan"
+    ]
+  },
+  {
+    "word": "concession",
+    "meaning": "pengakuan terbatas terhadap poin lawan",
+    "context": "His concession did not mean he accepted the entire argument.",
+    "wrong": [
+      "sanggahan terhadap argumen",
+      "kesimpulan yang mengikuti suatu pernyataan",
+      "batasan atau catatan peringatan"
+    ]
+  },
+  {
+    "word": "corollary",
+    "meaning": "kesimpulan yang mengikuti suatu pernyataan",
+    "context": "A useful corollary follows from this theorem.",
+    "wrong": [
+      "sanggahan terhadap argumen",
+      "pengakuan terbatas terhadap poin lawan",
+      "batasan atau catatan peringatan"
+    ]
+  },
+  {
+    "word": "caveat",
+    "meaning": "batasan atau catatan peringatan",
+    "context": "The forecast comes with an important caveat.",
+    "wrong": [
+      "sanggahan terhadap argumen",
+      "pengakuan terbatas terhadap poin lawan",
+      "kesimpulan yang mengikuti suatu pernyataan"
+    ]
+  },
+  {
+    "word": "path-dependent",
+    "meaning": "dipengaruhi urutan keputusan sebelumnya",
+    "context": "The outcome is path-dependent because earlier choices limit later options.",
+    "wrong": [
+      "tidak dapat dikembalikan ke keadaan semula",
+      "bergantung pada syarat atau kejadian lain",
+      "cukup berarti dan tidak sederhana"
+    ]
+  },
+  {
+    "word": "irreversible",
+    "meaning": "tidak dapat dikembalikan ke keadaan semula",
+    "context": "The damage was irreversible.",
+    "wrong": [
+      "dipengaruhi urutan keputusan sebelumnya",
+      "bergantung pada syarat atau kejadian lain",
+      "cukup berarti dan tidak sederhana"
+    ]
+  },
+  {
+    "word": "contingent",
+    "meaning": "bergantung pada syarat atau kejadian lain",
+    "context": "Payment is contingent on successful inspection.",
+    "wrong": [
+      "dipengaruhi urutan keputusan sebelumnya",
+      "tidak dapat dikembalikan ke keadaan semula",
+      "cukup berarti dan tidak sederhana"
+    ]
+  },
+  {
+    "word": "nontrivial",
+    "meaning": "cukup berarti dan tidak sederhana",
+    "context": "The migration involves a nontrivial amount of work.",
+    "wrong": [
+      "dipengaruhi urutan keputusan sebelumnya",
+      "tidak dapat dikembalikan ke keadaan semula",
+      "bergantung pada syarat atau kejadian lain"
+    ]
+  },
+  {
+    "word": "parsimonious",
+    "meaning": "menjelaskan dengan sedikit asumsi atau unsur",
+    "context": "We chose the most parsimonious model that fit the data.",
+    "wrong": [
+      "tampak berkaitan tetapi hubungan itu menyesatkan",
+      "tidak tegas dan mendukung lebih dari satu tafsir",
+      "jelas tanpa keraguan atau ambiguitas"
+    ]
+  },
+  {
+    "word": "spurious",
+    "meaning": "tampak berkaitan tetapi hubungan itu menyesatkan",
+    "context": "The apparent correlation was spurious.",
+    "wrong": [
+      "menjelaskan dengan sedikit asumsi atau unsur",
+      "tidak tegas dan mendukung lebih dari satu tafsir",
+      "jelas tanpa keraguan atau ambiguitas"
+    ]
+  },
+  {
+    "word": "salvageable",
+    "meaning": "masih dapat diselamatkan atau diperbaiki",
+    "context": "Despite the damage, most of the stock is salvageable.",
+    "wrong": [
+      "sangat sulit ditangani atau dipecahkan",
+      "dapat ditangani atau dipecahkan",
+      "dapat dikembalikan ke keadaan sebelumnya"
+    ]
+  },
+  {
+    "word": "intractable",
+    "meaning": "sangat sulit ditangani atau dipecahkan",
+    "context": "The dispute became an intractable problem.",
+    "wrong": [
+      "masih dapat diselamatkan atau diperbaiki",
+      "dapat ditangani atau dipecahkan",
+      "dapat dikembalikan ke keadaan sebelumnya"
+    ]
+  },
+  {
+    "word": "tractable",
+    "meaning": "dapat ditangani atau dipecahkan",
+    "context": "The simplified case is more tractable.",
+    "wrong": [
+      "masih dapat diselamatkan atau diperbaiki",
+      "sangat sulit ditangani atau dipecahkan",
+      "dapat dikembalikan ke keadaan sebelumnya"
+    ]
+  },
+  {
+    "word": "reversible",
+    "meaning": "dapat dikembalikan ke keadaan sebelumnya",
+    "context": "This is a reversible decision, so we can test it.",
+    "wrong": [
+      "masih dapat diselamatkan atau diperbaiki",
+      "sangat sulit ditangani atau dipecahkan",
+      "dapat ditangani atau dipecahkan"
+    ]
+  }
+]);
